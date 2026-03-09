@@ -1,0 +1,39 @@
+---
+import PbImage from './PbImage.astro';
+
+interface Props {
+  artiste: any;
+  date?: string | null;
+  scene_nom?: string | null;
+}
+
+const { artiste, date, scene_nom } = Astro.props;
+---
+
+<article class="bg-beige rounded-[20px] overflow-hidden hover:-translate-y-1 transition-transform">
+  <a href={`/artistes/${artiste.id}`} class="block h-full">
+    <div class="w-full h-52 overflow-hidden">
+      <PbImage
+        record={artiste}
+        recordImage={artiste.photo_principale}
+        alt={artiste.nom}
+        class="w-full h-52 object-cover"
+        width={400}
+        height={208}
+      />
+    </div>
+    <div class="p-6">
+      <h2 class="font-titre text-base font-bold text-marron uppercase mb-2 leading-snug">{artiste.nom}</h2>
+      {artiste.genre_musical && (
+        <span class="inline-block px-3 py-1 bg-beige-claire text-marron/60 text-xs uppercase tracking-wider rounded-full mb-3">
+          {artiste.genre_musical}
+        </span>
+      )}
+      <p class="text-marron/60 text-sm">
+        {date && <time>{date}</time>}
+        {date && scene_nom && <br />}
+        {scene_nom && <span>{scene_nom}</span>}
+      </p>
+    </div>
+  </a>
+</article>

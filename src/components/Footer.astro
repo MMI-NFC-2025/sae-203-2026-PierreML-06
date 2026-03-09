@@ -1,0 +1,80 @@
+---
+import facebookUrl from '../assets/icons/facebook.svg?url';
+import instagramUrl from '../assets/icons/instagram.svg?url';
+import xUrl from '../assets/icons/X.svg?url';
+import youtubeUrl from '../assets/icons/youtube.svg?url';
+
+const footerLinks = [
+  { href: '/festival', label: 'Le festival' },
+  { href: '/programmation', label: 'La programmation' },
+  { href: '/artistes', label: 'Nos artistes' },
+  { href: '/scenes', label: 'Nos scènes' },
+  { href: '/infos_partique', label: 'Infos pratiques' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const socialLinks = [
+  { href: 'https://www.facebook.com/?locale=fr_FR', label: 'Facebook', icon: facebookUrl },
+  { href: 'https://www.instagram.com/', label: 'Instagram', icon: instagramUrl },
+  { href: 'https://x.com/', label: 'Twitter/X', icon: xUrl },
+  { href: 'https://www.youtube.com/', label: 'YouTube', icon: youtubeUrl },
+];
+---
+
+<footer class="bg-marron text-beige-claire py-16 px-8">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+    <div>
+      <p class="font-titre text-2xl font-bold text-beige-claire uppercase tracking-widest">FESTICLOZE</p>
+    </div>
+
+    <nav aria-label="Liens utiles du pied de page">
+      <h3 class="font-corps text-or text-sm uppercase tracking-widest mb-4 font-semibold">Menu</h3>
+      <ul class="list-none p-0 m-0 flex flex-col gap-2">
+        {footerLinks.map(link => (
+          <li>
+            <a href={link.href} class="text-beige-claire/80 hover:text-or transition-colors text-sm">
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div>
+      <h3 class="font-corps text-or text-sm uppercase tracking-widest mb-4 font-semibold">Contact</h3>
+      <address class="not-italic text-beige-claire/80 text-sm leading-relaxed">
+        festicloze@gmail.com<br />
+        09.54.21.67.21<br />
+        Temple Saint-Martin de Montbéliard<br />
+        25200
+      </address>
+    </div>
+
+    <div>
+      <h3 class="font-corps text-or text-sm uppercase tracking-widest mb-4 font-semibold">Nous suivre</h3>
+      <div class="flex gap-4">
+        {socialLinks.map(s => (
+          <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`Suivez-nous sur ${s.label}`}>
+            <img src={s.icon} alt="" aria-hidden="true" class="w-7 h-7 opacity-80 hover:opacity-100 transition-opacity" />
+          </a>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- BOUTON RETOUR EN HAUT -->
+<button
+  id="btn-retour-haut"
+  aria-label="Retour en haut de page"
+  class="hidden fixed bottom-6 right-6 w-12 h-12 bg-rouge rounded-full flex items-center justify-center shadow-lg z-50 cursor-pointer hover:-translate-y-1 transition-transform">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
+
+<script>
+  import '../js/scrollTop.js';
+</script>

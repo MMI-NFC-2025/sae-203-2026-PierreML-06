@@ -1,0 +1,35 @@
+---
+import PbImage from './PbImage.astro';
+
+interface Props {
+  scene: any;
+}
+
+const { scene } = Astro.props;
+---
+
+<article class="bg-beige rounded-[20px] overflow-hidden hover:-translate-y-1 transition-transform">
+  <a href={`/scenes/${scene.id}`} class="block">
+    <div class="w-full h-64 overflow-hidden">
+      <PbImage
+        record={scene}
+        recordImage={scene.photo}
+        alt={scene.nom}
+        class="w-full h-64 object-cover"
+        width={600}
+        height={256}
+      />
+    </div>
+    <div class="p-7">
+      <h2 class="font-titre text-xl font-bold text-marron uppercase mb-3">{scene.nom}</h2>
+      {scene.description && (
+        <p class="text-marron/70 text-sm leading-relaxed line-clamp-3 mb-4">{scene.description}</p>
+      )}
+      {scene.capacite && (
+        <p class="text-marron/50 text-xs font-semibold uppercase tracking-wide">
+          Capacité : {scene.capacite} places
+        </p>
+      )}
+    </div>
+  </a>
+</article>

@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CarteArtiste from '../../components/CarteArtiste.astro';
+import pb from '../../js/backend.mjs';
+
+let artistes: any[] = [];
+let erreur = false;
+
+try {
+  artistes = await pb.collection('artistes').getFullList({
+    sort: 'dates_de_representation',
+    expand: 'scene',
+  });
+} catch (e) {
+  erreur = true;
+}
+---
+
+<Layout title="Nos Artistes — Festicloze">
+  <main class="pt-17.5">
+    <section class="max-w-6xl mx-auto px-6 py-12">
+
+      <header class="text-center mb-12">
+        <h1 class="font-titre text-4xl text-marron">NOS ARTISTES</h1>
+      </header>
+
+      {erreur && (
+        <p class="text-center text-marron/60 py-20">Impossible de charger les artistes. Veuillez réessayer plus tard.</p>
+      )}
+
+      {!erreur && artistes.length === 0 && (
+        <p class="text-center text-marron/60 py-20">Aucun artiste pour le moment.</p>
+      )}
+
+      {!erreur && artistes.length > 0 && (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {artistes.map((artiste) => (
+            <CarteArtiste
+              artiste={artiste}
+              date={artiste.dates_de_representation
+                ? new Date(artiste.dates_de_representation).toLocaleDateString('fr-FR', {
+                    weekday: 'long', day: 'numeric', month: 'long',
+                  })
+                : null}
+              scene_nom={artiste.expand?.scene?.nom ?? null}
+            />
+          ))}
+        </div>
+      )}
+
+    </section>
+  </main>
+</Layout>

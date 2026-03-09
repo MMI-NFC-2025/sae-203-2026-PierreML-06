@@ -1,0 +1,79 @@
+---
+import logoUrl from '../assets/icons/logo.svg?url';
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Accueil', active: currentPath === '/' },
+  { href: '/festival', label: 'Le Festival', active: currentPath === '/festival' },
+  { href: '/programmation', label: 'La Programmation', active: currentPath === '/programmation' },
+  { href: '/artistes', label: 'Nos Artistes', active: currentPath.startsWith('/artistes') },
+  { href: '/scenes', label: 'Nos Scènes', active: currentPath.startsWith('/scenes') },
+  { href: '/infos_partique', label: 'Infos Pratiques', active: currentPath === '/infos_partique' },
+  { href: '/contact', label: 'Contact', active: currentPath === '/contact' },
+];
+---
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 w-full h-[70px] px-6 flex justify-between items-center z-[100] bg-beige-claire shadow-sm">
+  <a href="/" class="z-[110] shrink-0">
+    <img src={logoUrl} alt="Logo Festicloze — Retour à l'accueil" width="98" height="18" style="width:98px;height:18px" />
+  </a>
+
+  <!-- Nav desktop -->
+  <nav class="hidden md:flex items-center gap-7">
+    {navLinks.map(link => (
+      <a
+        href={link.href}
+        class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${link.active ? 'text-or' : 'text-marron'}`}>
+        {link.label}
+      </a>
+    ))}
+  </nav>
+
+  <!-- Hamburger mobile -->
+  <button
+    id="menu-btn"
+    aria-label="Ouvrir le menu de navigation"
+    aria-expanded="false"
+    aria-controls="nav-principale"
+    class="md:hidden flex flex-col gap-1.25 z-110 relative cursor-pointer bg-transparent border-none p-2">
+    <span id="barre1" class="block w-6 h-[2px] bg-marron transition-all duration-300 origin-center"></span>
+    <span id="barre2" class="block w-6 h-[2px] bg-marron transition-all duration-300"></span>
+    <span id="barre3" class="block w-6 h-[2px] bg-marron transition-all duration-300 origin-center"></span>
+  </button>
+</header>
+
+<!-- NAV OVERLAY (mobile uniquement) -->
+<nav
+  id="nav-principale"
+  class="fixed inset-0 bg-marron hidden flex-col justify-center z-99 px-10 md:hidden"
+  aria-hidden="true">
+
+  <!-- Bouton fermeture X -->
+  <button
+    id="menu-close"
+    aria-label="Fermer le menu"
+    class="absolute top-5 right-5 text-beige/60 hover:text-beige-claire transition-colors cursor-pointer bg-transparent border-none p-2">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="4" y1="4" x2="24" y2="24" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <line x1="24" y1="4" x2="4" y2="24" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <ul class="flex flex-col gap-5 list-none p-0 m-0">
+    {navLinks.map(link => (
+      <li>
+        <a
+          href={link.href}
+          class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${link.active ? 'text-or' : 'text-white'}`}>
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  import '../js/menu.js';
+</script>

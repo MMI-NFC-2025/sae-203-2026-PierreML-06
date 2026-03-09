@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import theatreImg from '../assets/img/theatre.avif';
+
+const jours = [
+  {
+    date: 'SAMEDI 20 DÉC.',
+    theme: "L'Ouverture",
+    events: [
+      { heure: '19:00', type: 'Avant-scène', titre: "Introduction à l'œuvre" },
+      { heure: '20:00', type: 'Opéra', titre: "L'ORFEO — Il Giardino Armonico" },
+    ],
+  },
+  {
+    date: 'DIMANCHE 21 DÉC.',
+    theme: 'Le Grand Classique',
+    events: [
+      { heure: '20:00', type: 'Opéra', titre: 'ARMIDE — Les Arts Florissants' },
+    ],
+  },
+  {
+    date: 'LUNDI 22 DÉC.',
+    theme: 'La Soirée Virtuose',
+    events: [
+      { heure: '19:30', type: 'Rencontre', titre: 'Avec les solistes' },
+      { heure: '20:00', type: 'Opéra', titre: 'GIULIO CESARE — Les Talens Lyriques' },
+    ],
+  },
+  {
+    date: 'MARDI 23 DÉC.',
+    theme: 'Le Final de Noël',
+    events: [
+      { heure: '20:00', type: 'Concert', titre: 'LES INDES GALANTES & NOËL — Il Seminario Musicale' },
+      { heure: '22:00', type: 'DES DUCS', titre: 'Vin chaud & Gourmandises' },
+    ],
+  },
+];
+---
+
+<Layout title="La Programmation — Festicloze">
+  <main class="pt-17.5">
+
+    <!-- INTRO -->
+    <section class="max-w-4xl mx-auto px-6 py-12">
+      <h1 class="font-titre text-4xl text-marron mb-8 text-center">LA PROGRAMMATION</h1>
+      <Image
+        src={theatreImg}
+        alt="Intérieur du théâtre avec ses balcons"
+        class="w-full rounded-[20px] object-cover max-h-96 mb-12"
+      />
+
+      <!-- PROGRAMME -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        {jours.map(jour => (
+          <article class="bg-beige rounded-[20px] p-8">
+            <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-4">
+              <h2 class="font-titre text-2xl text-marron">{jour.date}</h2>
+              <span class="text-or font-corps text-sm font-semibold italic sm:ml-3">{jour.theme}</span>
+            </div>
+            <ul class="list-none p-0 flex flex-col gap-3">
+              {jour.events.map(ev => (
+                <li class="flex items-start gap-4 text-marron/80">
+                  <span class="font-bold text-or text-sm w-12 shrink-0 pt-0.5">{ev.heure}</span>
+                  <span class="text-sm font-semibold text-marron/50 w-24 shrink-0 pt-0.5 uppercase tracking-wide">{ev.type}</span>
+                  <span class="text-sm">{ev.titre}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+
+      <div class="text-center mt-12">
+        <a
+          href="/assets/document/prog.pdf"
+          download
+          class="inline-block px-8 py-3 bg-marron text-beige-claire font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">
+          Programme complet en PDF
+        </a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

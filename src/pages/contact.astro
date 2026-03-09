@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contact — Festicloze">
+  <main class="pt-17.5">
+    <div class="max-w-2xl mx-auto px-6 py-12">
+
+      <header class="text-center mb-10">
+        <h1 class="font-titre text-4xl text-marron mb-2">TOUT SAVOIR</h1>
+        <h2 class="font-corps text-base text-marron/60 font-normal normal-case tracking-normal">Formulaire de contact</h2>
+      </header>
+
+      <form class="bg-beige rounded-[30px] p-8 flex flex-col gap-6">
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <div class="flex flex-col gap-2 flex-1">
+            <label for="firstname" class="text-marron font-semibold text-sm uppercase tracking-wide">Prénom</label>
+            <input
+              type="text"
+              id="firstname"
+              name="firstname"
+              class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors"
+            />
+          </div>
+          <div class="flex flex-col gap-2 flex-1">
+            <label for="lastname" class="text-marron font-semibold text-sm uppercase tracking-wide">Nom</label>
+            <input
+              type="text"
+              id="lastname"
+              name="lastname"
+              class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="object" class="text-marron font-semibold text-sm uppercase tracking-wide">Objet</label>
+          <input
+            type="text"
+            id="object"
+            name="object"
+            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="email" class="text-marron font-semibold text-sm uppercase tracking-wide">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="message" class="text-marron font-semibold text-sm uppercase tracking-wide">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors resize-none"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="self-center px-10 py-3 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+          Envoyer
+        </button>
+
+      </form>
+    </div>
+  </main>
+</Layout>

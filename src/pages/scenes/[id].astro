@@ -1,0 +1,114 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PbImage from '../../components/PbImage.astro';
+import pb from '../../js/backend.mjs';
+
+const { id } = Astro.params;
+
+let scene: any = null;
+let artistes: any[] = [];
+let notFound = false;
+
+try {
+  scene = await pb.collection('scenes').getOne(id as string);
+} catch (e) {
+  notFound = true;
+}
+
+if (notFound) {
+  return Astro.redirect('/404');
+}
+
+try {
+  artistes = await pb.collection('artistes').getFullList({
+    filter: `scene = "${id}"`,
+    sort: 'dates_de_representation',
+  });
+} catch (_) {}
+---
+
+<Layout title={`${scene.nom} — Festicloze`}>
+  <main class="pt-17.5">
+    <div class="max-w-4xl mx-auto px-6 py-12">
+
+      <div class="mb-8">
+        <a href="/scenes" class="text-or text-sm font-semibold hover:underline">← Nos scènes</a>
+      </div>
+
+      <!-- PHOTO + INFOS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start mb-12">
+
+        <div class="w-full rounded-[20px] overflow-hidden max-h-96">
+          <PbImage
+            record={scene}
+            recordImage={scene.photo}
+            alt={scene.nom}
+            class="w-full max-h-96 object-cover"
+            width={600}
+            height={384}
+          />
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <h1 class="font-titre text-[clamp(22px,4vw,36px)] font-bold text-marron leading-tight">{scene.nom}</h1>
+
+          {scene.description && (
+            <p class="text-marron/80 text-sm leading-relaxed">{scene.description}</p>
+          )}
+
+          <div class="bg-beige rounded-2xl p-5 flex flex-col gap-3">
+            {scene.capacite && (
+              <div class="flex items-center gap-3 text-sm text-marron/80">
+                <span class="text-or font-bold">—</span>
+                <span>Capacité : <strong>{scene.capacite} places</strong></span>
+              </div>
+            )}
+            {scene.localisation?.latitude !== 0 && scene.localisation?.longitude !== 0 && (
+              <div class="flex items-center gap-3 text-sm text-marron/80">
+                <span class="text-or font-bold">—</span>
+                <a
+                  href={`https://www.openstreetmap.org/?mlat=${scene.localisation.latitude}&mlon=${scene.localisation.longitude}&zoom=16`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-or transition-colors underline">
+                  Voir sur la carte
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ARTISTES À L'AFFICHE -->
+      {artistes.length > 0 && (
+        <section>
+          <h2 class="font-titre text-2xl text-marron mb-6">À l'affiche</h2>
+          <ul class="list-none p-0 flex flex-col gap-3">
+            {artistes.map((artiste) => {
+              const date = artiste.dates_de_representation
+                ? new Date(artiste.dates_de_representation).toLocaleDateString('fr-FR', {
+                    weekday: 'short', day: 'numeric', month: 'short',
+                  })
+                : null;
+              return (
+                <li class="bg-beige rounded-2xl px-6 py-4 flex items-center justify-between gap-4">
+                  <div>
+                    <a href={`/artistes/${artiste.id}`} class="font-titre font-bold text-marron uppercase text-sm hover:text-or transition-colors">
+                      {artiste.nom}
+                    </a>
+                    {artiste.genre_musical && (
+                      <span class="ml-3 text-marron/50 text-xs">{artiste.genre_musical}</span>
+                    )}
+                  </div>
+                  {date && <time class="text-or text-sm font-semibold shrink-0">{date}</time>}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
+    </div>
+  </main>
+</Layout>

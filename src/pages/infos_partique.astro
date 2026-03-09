@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const tarifs = [
+  { label: 'Billet pour 1 soirée', prix: '30€' },
+  { label: 'Billet pour 2 soirées', prix: '50€' },
+  { label: 'Billet pour 4 soirées', prix: '80€' },
+];
+
+const acces = [
+  {
+    titre: 'En Voiture',
+    items: [
+      'Parking gratuit à disposition des festivaliers.',
+      'Accès facilité et fléché depuis les entrées de ville.',
+    ],
+  },
+  {
+    titre: 'En Vélo',
+    items: [
+      "Parc à vélos sécurisé à l'entrée du site.",
+      "Service + : Une équipe technique est présente sur place pour les petites réparations d'urgence.",
+    ],
+  },
+  {
+    titre: 'Covoiturage (BlaBlaCar)',
+    items: [
+      'Pour partager la route, recherchez le mot-clé unique "Festicloze" sur l\'application BlaBlaCar.',
+    ],
+  },
+];
+
+const faq = [
+  'Où se situe exactement le festival ?',
+  'Le festival est-il accessible aux familles ?',
+  'Y a-t-il de la restauration sur place ?',
+];
+---
+
+<Layout title="Infos Pratiques — Festicloze">
+  <main class="pt-17.5">
+
+    <div class="max-w-4xl mx-auto px-6 py-12">
+      <h1 class="font-titre text-4xl text-marron text-center mb-12">INFOS PRATIQUES</h1>
+
+      <!-- TARIFS -->
+      <section class="mb-16">
+        <h2 class="font-titre text-2xl text-marron mb-2">Tarifs Billets</h2>
+        <p class="text-marron/60 text-sm mb-8">* gratuit pour les enfants de moins de 10 ans</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {tarifs.map(t => (
+            <article class="bg-beige rounded-[20px] p-8 flex flex-col items-center gap-6 text-center">
+              <h3 class="font-titre text-lg text-marron">{t.label}</h3>
+              <div class="flex flex-col items-center gap-4 w-full mt-auto">
+                <p class="font-titre text-4xl font-bold text-or">{t.prix}</p>
+                <a
+                  href="/404"
+                  aria-label={`Acheter un ${t.label}`}
+                  class="w-full text-center px-6 py-2.5 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">
+                  Acheter
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- ACCÈS -->
+      <section class="mb-16">
+        <h2 class="font-titre text-2xl text-marron mb-8">Comment venir</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {acces.map(a => (
+            <div class="bg-beige rounded-[20px] p-6">
+              <h3 class="font-titre text-base text-marron mb-4">{a.titre}</h3>
+              <ul class="list-none p-0 flex flex-col gap-2">
+                {a.items.map(item => (
+                  <li class="flex items-start gap-2 text-marron/80 text-sm">
+                    <span class="text-or mt-1">•</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section>
+        <h2 class="font-titre text-2xl text-marron mb-8">FAQ</h2>
+        <ul class="list-none p-0 flex flex-col gap-3 mb-10">
+          {faq.map(q => (
+            <li class="bg-beige rounded-2xl px-6 py-4 text-marron/80 text-sm font-semibold cursor-pointer hover:bg-beige/80 transition-colors">
+              {q}
+            </li>
+          ))}
+        </ul>
+        <div class="text-center">
+          <a
+            href="/contact"
+            class="inline-block px-8 py-3 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">
+            POSER UNE QUESTION
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</Layout>
