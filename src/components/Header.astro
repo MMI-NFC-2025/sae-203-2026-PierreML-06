@@ -1,5 +1,6 @@
 ---
 import logoUrl from '../assets/icons/logo.svg?url';
+import userUrl from '../assets/icons/user.svg?url';
 
 const currentPath = Astro.url.pathname;
 
@@ -29,7 +30,24 @@ const navLinks = [
         {link.label}
       </a>
     ))}
+    <a
+      id="user-btn-desktop"
+      href="/profil"
+      aria-label="Mon compte"
+      class="ml-2 w-9 h-9 rounded-full border border-beige hover:border-or transition-colors flex items-center justify-center shrink-0 overflow-hidden">
+      <img id="user-icon-desktop" src={userUrl} alt="" aria-hidden="true" class="w-5 h-5 transition-all" />
+    </a>
   </nav>
+
+  <!-- Bouton user mobile -->
+  <div class="md:hidden flex items-center gap-3">
+    <a
+      id="user-btn-mobile"
+      href="/profil"
+      aria-label="Mon compte"
+      class="w-9 h-9 rounded-full border border-beige hover:border-or transition-colors flex items-center justify-center shrink-0 overflow-hidden">
+      <img id="user-icon-mobile" src={userUrl} alt="" aria-hidden="true" class="w-5 h-5 transition-all" />
+    </a>
 
   <!-- Hamburger mobile -->
   <button
@@ -37,11 +55,12 @@ const navLinks = [
     aria-label="Ouvrir le menu de navigation"
     aria-expanded="false"
     aria-controls="nav-principale"
-    class="md:hidden flex flex-col gap-1.25 z-110 relative cursor-pointer bg-transparent border-none p-2">
+    class="flex flex-col gap-1.25 z-110 relative cursor-pointer bg-transparent border-none p-2">
     <span id="barre1" class="block w-6 h-[2px] bg-marron transition-all duration-300 origin-center"></span>
     <span id="barre2" class="block w-6 h-[2px] bg-marron transition-all duration-300"></span>
     <span id="barre3" class="block w-6 h-[2px] bg-marron transition-all duration-300 origin-center"></span>
   </button>
+  </div>
 </header>
 
 <!-- NAV OVERLAY (mobile uniquement) -->
@@ -76,4 +95,36 @@ const navLinks = [
 
 <script>
   import '../js/menu.js';
+  import pb, { getImageUrl } from '../js/backend.mjs';
+
+  function applyAvatar(imgEl: HTMLImageElement, user: Record<string, any>) {
+    if (user['img']) {
+      const url = getImageUrl(user, user['img']);
+      if (url) {
+        imgEl.src = url;
+        imgEl.alt = user['name'] || 'Mon profil';
+        imgEl.removeAttribute('aria-hidden');
+        imgEl.className = 'w-full h-full object-cover';
+        return;
+      }
+    }
+    // Pas de photo : initiale dans un span, on cache l'img
+    imgEl.style.display = 'none';
+    const parent = imgEl.parentElement;
+    if (parent && !parent.querySelector('.user-initiale')) {
+      const span = document.createElement('span');
+      span.className = 'user-initiale font-corps font-bold text-marron text-sm';
+      const nom = user['name'] || user['email'] || '';
+      span.textContent = nom.charAt(0).toUpperCase();
+      parent.appendChild(span);
+    }
+  }
+
+  if (pb.authStore.isValid && pb.authStore.model) {
+    const user = pb.authStore.model as Record<string, any>;
+    const desktop = document.getElementById('user-icon-desktop') as HTMLImageElement | null;
+    const mobile = document.getElementById('user-icon-mobile') as HTMLImageElement | null;
+    if (desktop) applyAvatar(desktop, user);
+    if (mobile) applyAvatar(mobile, user);
+  }
 </script>

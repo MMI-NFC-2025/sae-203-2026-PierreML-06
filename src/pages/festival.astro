@@ -18,6 +18,7 @@ import saintMartinImg from '../assets/img/saint_martin.avif';
       <div class="absolute inset-0 bg-black/50"></div>
       <div class="relative z-10 px-8 md:px-16 pb-10 md:pb-16 w-full max-w-6xl mx-auto">
         <h1 class="font-titre text-[32px] md:text-[48px] font-normal leading-none tracking-[2.56px]" style="color:#ffffff">LE FESTIVAL</h1>
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mt-3">Temple Saint-Martin · Montbéliard</p>
       </div>
     </section>
 
@@ -25,11 +26,18 @@ import saintMartinImg from '../assets/img/saint_martin.avif';
     <div class="max-w-6xl mx-auto px-8 md:px-16 py-12 md:py-20 md:grid md:grid-cols-2 md:gap-16 md:items-center">
 
       <section>
-        <h2 class="font-corps font-bold text-marron text-base tracking-wide mb-4">L'Esprit Festicloze</h2>
-        <p class="text-marron/80 text-sm leading-relaxed">
-          Né au majestueux Temple Saint-Martin, Festicloze célèbre l'opéra baroque au cœur des Lumières de Montbéliard.
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">L'essence du festival</p>
+        <h2 class="font-titre text-3xl md:text-4xl text-marron leading-none mb-2">L'Esprit Festicloze</h2>
+        <div class="h-px w-12 bg-or mb-6"></div>
+        <p class="text-marron/80 text-sm leading-relaxed mb-4">
+          Né au majestueux Temple Saint-Martin, Festicloze célèbre l'opéra baroque au coeur des Lumières de Montbéliard.
           Concerts, danses et rencontres s'unissent pour offrir une expérience unique, mêlant excellence musicale,
           patrimoine historique et magie de Noël.
+        </p>
+        <p class="text-marron/80 text-sm leading-relaxed">
+          Chaque édition est une invitation à redécouvrir les chefs-d'oeuvre du répertoire baroque interprétés
+          par les ensembles les plus renommés d'Europe, dans un écrin architectural exceptionnel qui amplifie
+          l'émotion de chaque note, de chaque souffle.
         </p>
       </section>
 
@@ -42,33 +50,84 @@ import saintMartinImg from '../assets/img/saint_martin.avif';
       </div>
     </div>
 
-    <!-- ÉQUIPE -->
-    <section class="max-w-6xl mx-auto px-8 md:px-16 pb-12">
-      <h2 class="font-corps font-bold text-marron text-base tracking-wide mb-4">Équipe</h2>
-      <div class="md:grid md:grid-cols-2 md:gap-16 md:items-start">
-        <p class="text-marron/80 text-sm leading-relaxed mb-4 md:mb-0">
-          Orchestré par une équipe passionnée, Festicloze s'appuie sur une régie technique d'experts.
-          De la direction artistique à la mise en lumière, tous s'unissent en coulisses pour garantir
-          une qualité de spectacle irréprochable.
+    <!-- CITATION -->
+    <section class="bg-marron py-16 px-8">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="font-titre text-xl md:text-2xl text-beige-claire leading-relaxed italic mb-6">
+          "Festicloze est né de la conviction que la musique baroque, dans sa grandeur et son humanité, a quelque chose d'essentiel à offrir à chacun."
         </p>
-        <ul class="list-disc pl-5 flex flex-col gap-2 text-marron/80 text-sm">
-          <li>Sarah Monteverdi (Directrice Artistique)</li>
-          <li>L'Atelier des Lumières (Scénographie)</li>
-        </ul>
+        <p class="font-corps text-or text-xs uppercase tracking-[4px]">— Sarah Monteverdi, Directrice Artistique</p>
+      </div>
+    </section>
+
+    <!-- ÉQUIPE -->
+    <section class="max-w-6xl mx-auto px-8 md:px-16 py-12 md:py-20">
+      <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Les visages du festival</p>
+      <h2 class="font-titre text-3xl md:text-4xl text-marron leading-none mb-2">Notre Équipe</h2>
+      <div class="h-px w-12 bg-or mb-10"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <article class="bg-white rounded-2xl border-t-2 border-or shadow-sm p-6">
+          <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Direction artistique</p>
+          <h3 class="font-titre text-xl text-marron mb-3">Sarah Monteverdi</h3>
+          <p class="text-marron/70 text-sm leading-relaxed">
+            Cheffe d'orchestre et musicologue de renommée internationale, Sarah Monteverdi dirige Festicloze depuis sa création.
+            Passionnée de baroque, elle orchestre chaque édition avec une exigence artistique et une sensibilité hors du commun.
+          </p>
+        </article>
+        <article class="bg-white rounded-2xl border-t-2 border-or shadow-sm p-6">
+          <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Scénographie</p>
+          <h3 class="font-titre text-xl text-marron mb-3">L'Atelier des Lumières</h3>
+          <p class="text-marron/70 text-sm leading-relaxed">
+            Collectif de scénographes et créateurs lumière, L'Atelier des Lumières transforme chaque soir le Temple Saint-Martin
+            en un espace magique. Leur maîtrise des jeux de lumière subliment les architectures baroques et les performances des artistes.
+          </p>
+        </article>
       </div>
     </section>
 
     <!-- VALEURS, THÉMATIQUE, ENGAGEMENTS -->
-    <section class="max-w-6xl mx-auto px-8 md:px-16 pb-16 flex flex-col md:flex-row md:gap-12 gap-4">
-      <p class="text-marron text-sm leading-relaxed tracking-wide md:flex-1">
-        <strong>Valeurs</strong> : Respect du patrimoine et transmission du baroque à tous les publics.
-      </p>
-      <p class="text-marron text-sm leading-relaxed tracking-wide md:flex-1">
-        <strong>Thématique 2025</strong> : La magie de Noël sublime les artistes dans une ambiance chaleureuse.
-      </p>
-      <p class="text-marron text-sm leading-relaxed tracking-wide md:flex-1">
-        <strong>Engagements</strong> : Un événement éco-responsable, inclusif et ancré dans le territoire local.
-      </p>
+    <section class="bg-beige py-12 md:py-16">
+      <div class="max-w-6xl mx-auto px-8 md:px-16">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Ce qui nous guide</p>
+        <h2 class="font-titre text-3xl md:text-4xl text-marron leading-none mb-2">Nos Engagements</h2>
+        <div class="h-px w-12 bg-or mb-10"></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-beige rounded-2xl p-6">
+            <p class="font-corps font-bold text-or text-sm uppercase tracking-wide mb-3">Valeurs</p>
+            <p class="text-marron/80 text-sm leading-relaxed">
+              Respect du patrimoine et transmission du baroque à tous les publics. Festicloze croit profondément
+              que la grande musique n'a pas de frontières sociales ni d'âge.
+            </p>
+          </div>
+          <div class="bg-beige rounded-2xl p-6">
+            <p class="font-corps font-bold text-or text-sm uppercase tracking-wide mb-3">Thématique 2025</p>
+            <p class="text-marron/80 text-sm leading-relaxed">
+              La magie de Noël sublime les artistes dans une ambiance chaleureuse. Cette année, le festival
+              explore les liens entre fête, spiritualité et joie à travers le prisme du répertoire baroque.
+            </p>
+          </div>
+          <div class="bg-beige rounded-2xl p-6">
+            <p class="font-corps font-bold text-or text-sm uppercase tracking-wide mb-3">Engagements</p>
+            <p class="text-marron/80 text-sm leading-relaxed">
+              Un événement éco-responsable, inclusif et ancré dans le territoire local. Partenariats avec les
+              artisans et producteurs de la région de Montbéliard pour chaque édition.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-marron py-16 px-8">
+      <div class="max-w-6xl mx-auto text-center">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-4">Ne manquez pas l'événement</p>
+        <h2 class="font-titre text-3xl md:text-4xl text-beige-claire mb-8">Réservez votre place</h2>
+        <a
+          href="/infos_partique"
+          class="inline-block px-10 py-4 bg-rouge text-white font-corps font-bold uppercase text-sm tracking-widest rounded-full hover:-translate-y-0.5 transition-transform">
+          Voir les tarifs
+        </a>
+      </div>
     </section>
 
   </main>

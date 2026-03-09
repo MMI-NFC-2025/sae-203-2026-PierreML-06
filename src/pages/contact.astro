@@ -1,78 +1,160 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import mailIcon from '../assets/icons/mail.svg?url';
+import phoneIcon from '../assets/icons/phone.svg?url';
+import locateIcon from '../assets/icons/locate.svg?url';
+import sendIcon from '../assets/icons/send.svg?url';
 ---
 
 <Layout title="Contact — Festicloze">
   <main class="pt-17.5">
-    <div class="max-w-2xl mx-auto px-6 py-12">
+    <div class="max-w-5xl mx-auto px-6 py-12">
 
-      <header class="mb-10">
-        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Une question ?</p>
-        <h1 class="font-titre text-4xl md:text-5xl text-marron leading-none mb-2">Contact</h1>
-        <div class="h-px w-12 bg-or mb-4"></div>
-        <p class="text-marron/50 font-corps text-sm">Nous répondons sous 48h ouvrées.</p>
-      </header>
+      <div class="flex flex-col md:flex-row md:gap-16 md:items-start">
 
-      <form class="bg-beige rounded-[30px] p-8 flex flex-col gap-6">
+        <!-- COLONNE GAUCHE : infos -->
+        <div class="md:w-2/5 mb-10 md:mb-0">
+          <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Une question ?</p>
+          <h1 class="font-titre text-4xl md:text-5xl text-marron leading-none mb-2">Contact</h1>
+          <div class="h-px w-12 bg-or mb-6"></div>
+          <p class="text-marron/50 font-corps text-sm mb-10">Nous répondons sous 48h ouvrées. N'hésitez pas à nous écrire pour toute question sur la programmation, les billets ou l'accessibilité.</p>
 
-        <div class="flex flex-col sm:flex-row gap-4">
-          <div class="flex flex-col gap-2 flex-1">
-            <label for="firstname" class="text-marron font-semibold text-sm uppercase tracking-wide">Prénom</label>
-            <input
-              type="text"
-              id="firstname"
-              name="firstname"
-              class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors"
-            />
+          <div class="flex flex-col gap-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-beige rounded-xl flex items-center justify-center shrink-0">
+                <img src={mailIcon} alt="" aria-hidden="true" class="w-5 h-5" />
+              </div>
+              <div>
+                <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Email</p>
+                <p class="font-corps text-marron text-sm font-semibold">festicloze@gmail.com</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-beige rounded-xl flex items-center justify-center shrink-0">
+                <img src={phoneIcon} alt="" aria-hidden="true" class="w-5 h-5" />
+              </div>
+              <div>
+                <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Téléphone</p>
+                <p class="font-corps text-marron text-sm font-semibold">09.54.21.67.21</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-beige rounded-xl flex items-center justify-center shrink-0">
+                <img src={locateIcon} alt="" aria-hidden="true" class="w-5 h-5" />
+              </div>
+              <div>
+                <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Adresse</p>
+                <p class="font-corps text-marron text-sm font-semibold">Temple Saint-Martin de Montbéliard, 25200</p>
+              </div>
+            </div>
           </div>
-          <div class="flex flex-col gap-2 flex-1">
-            <label for="lastname" class="text-marron font-semibold text-sm uppercase tracking-wide">Nom</label>
-            <input
-              type="text"
-              id="lastname"
-              name="lastname"
-              class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors"
-            />
-          </div>
         </div>
 
-        <div class="flex flex-col gap-2">
-          <label for="object" class="text-marron font-semibold text-sm uppercase tracking-wide">Objet</label>
-          <input
-            type="text"
-            id="object"
-            name="object"
-            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors"
-          />
+        <!-- COLONNE DROITE : formulaire -->
+        <div class="md:flex-1">
+          <form id="form-contact" class="bg-beige rounded-2xl p-8 flex flex-col gap-6">
+
+            <div class="flex flex-col sm:flex-row gap-4">
+              <div class="flex flex-col gap-2 flex-1">
+                <label for="firstname" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Prénom</label>
+                <input
+                  type="text"
+                  id="firstname"
+                  name="firstname"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+                />
+              </div>
+              <div class="flex flex-col gap-2 flex-1">
+                <label for="lastname" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nom</label>
+                <input
+                  type="text"
+                  id="lastname"
+                  name="lastname"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+                />
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="object" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Objet</label>
+              <input
+                type="text"
+                id="object"
+                name="object"
+                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+              />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="email" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">E-mail</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+              />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label for="message" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="6"
+                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors resize-none"
+              ></textarea>
+            </div>
+
+            <div id="retour-contact" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+
+            <button
+              type="submit"
+              id="btn-contact"
+              class="self-center flex items-center gap-2 px-10 py-3 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+              <img src={sendIcon} alt="" aria-hidden="true" class="w-4 h-4" />
+              Envoyer
+            </button>
+
+          </form>
         </div>
 
-        <div class="flex flex-col gap-2">
-          <label for="email" class="text-marron font-semibold text-sm uppercase tracking-wide">E-mail</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors"
-          />
-        </div>
-
-        <div class="flex flex-col gap-2">
-          <label for="message" class="text-marron font-semibold text-sm uppercase tracking-wide">Message</label>
-          <textarea
-            id="message"
-            name="message"
-            rows="6"
-            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border border-transparent focus:border-or focus:outline-none transition-colors resize-none"
-          ></textarea>
-        </div>
-
-        <button
-          type="submit"
-          class="self-center px-10 py-3 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
-          Envoyer
-        </button>
-
-      </form>
+      </div>
     </div>
   </main>
 </Layout>
+
+<script>
+  import pb from '../js/backend.mjs';
+
+  const form = document.getElementById('form-contact') as HTMLFormElement;
+  const retour = document.getElementById('retour-contact') as HTMLElement;
+  const btn = document.getElementById('btn-contact') as HTMLButtonElement;
+
+  function showRetour(ok: boolean, msg: string) {
+    retour.textContent = msg;
+    retour.className = `text-sm font-corps px-4 py-3 rounded-xl ${ok ? 'bg-vert/10 text-vert' : 'bg-rouge/10 text-rouge'}`;
+    retour.classList.remove('hidden');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    btn.disabled = true;
+
+    try {
+      await pb.collection('contact').create({
+        prenom: fd.get('firstname'),
+        nom: fd.get('lastname'),
+        objet: fd.get('object'),
+        e_mail: fd.get('email'),
+        message: fd.get('message'),
+      });
+      showRetour(true, 'Votre message a bien été envoyé. Nous vous répondrons sous 48h.');
+      form.reset();
+    } catch (err: any) {
+      showRetour(false, 'Une erreur est survenue. Veuillez réessayer.');
+    }
+
+    btn.disabled = false;
+  });
+</script>

@@ -38,13 +38,15 @@ const date = artiste.dates_de_representation
     <div class="max-w-4xl mx-auto px-6 py-12">
 
       <div class="mb-8">
-        <a href="/artistes" class="text-or text-sm font-semibold hover:underline">← Nos artistes</a>
+        <a href="/artistes" class="inline-flex items-center gap-2 text-marron/50 hover:text-or text-xs font-corps font-bold uppercase tracking-widest transition-colors">
+          &larr; Nos artistes
+        </a>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
         <!-- PHOTO -->
-        <div class="w-full rounded-[20px] overflow-hidden max-h-96">
+        <div class="w-full rounded-2xl overflow-hidden max-h-96 shadow-lg">
           <PbImage
             record={artiste}
             recordImage={artiste.photo_principale}
@@ -59,25 +61,26 @@ const date = artiste.dates_de_representation
         <div class="flex flex-col gap-6">
           <div>
             {artiste.genre_musical && (
-              <span class="inline-block px-4 py-1 bg-beige text-marron/60 text-xs uppercase tracking-widest rounded-full mb-3">
+              <span class="inline-block px-4 py-1 bg-beige text-or text-xs uppercase tracking-widest rounded-full mb-3">
                 {artiste.genre_musical}
               </span>
             )}
+            <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Ensemble baroque</p>
             <h1 class="font-titre text-[clamp(24px,4vw,40px)] font-bold text-marron leading-tight">{artiste.nom}</h1>
           </div>
 
           {(date || scene) && (
-            <div class="bg-beige rounded-2xl p-5 flex flex-col gap-2">
+            <div class="bg-beige rounded-2xl p-5 flex flex-col gap-4">
               {date && (
-                <div class="flex items-center gap-3 text-sm text-marron/80">
-                  <span class="text-or font-bold">—</span>
-                  <time>{date}</time>
+                <div>
+                  <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Date de représentation</p>
+                  <time class="font-corps text-marron text-sm font-semibold">{date}</time>
                 </div>
               )}
               {scene && (
-                <div class="flex items-center gap-3 text-sm text-marron/80">
-                  <span class="text-or font-bold">—</span>
-                  <a href={`/scenes/${scene.id}`} class="hover:text-or transition-colors">{scene.nom}</a>
+                <div>
+                  <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Scène</p>
+                  <a href={`/scenes/${scene.id}`} class="font-corps text-marron text-sm font-semibold hover:text-or transition-colors">{scene.nom}</a>
                 </div>
               )}
             </div>
@@ -85,7 +88,8 @@ const date = artiste.dates_de_representation
 
           {artiste.description && (
             <div>
-              <h2 class="font-titre text-lg text-marron mb-3">Biographie</h2>
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Biographie</p>
+              <h2 class="font-titre text-lg text-marron mb-3 sr-only">Biographie</h2>
               <p class="text-marron/80 text-sm leading-relaxed">{artiste.description}</p>
             </div>
           )}
@@ -102,7 +106,8 @@ const date = artiste.dates_de_representation
       <!-- GALERIE -->
       {galerie.length > 0 && (
         <section class="mt-14">
-          <h2 class="font-titre text-2xl text-marron mb-6">Galerie</h2>
+          <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Galerie</p>
+          <h2 class="font-titre text-2xl text-marron mb-6">Photos</h2>
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             {galerie.map((filename: string) => (
               <div class="rounded-2xl overflow-hidden h-48">
@@ -110,7 +115,7 @@ const date = artiste.dates_de_representation
                   record={artiste}
                   recordImage={filename}
                   alt={`${artiste.nom} — galerie`}
-                  class="w-full h-48 object-cover"
+                  class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500 cursor-zoom-in"
                   width={400}
                   height={192}
                 />

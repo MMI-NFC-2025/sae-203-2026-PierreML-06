@@ -1,0 +1,260 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getArtistesByDate, getScenesByNom } from '../js/backend.mjs';
+
+// Protection basique : rediriger si non connecté (géré côté client via JS)
+let artistes: any[] = [];
+let scenes: any[] = [];
+
+try {
+  artistes = await getArtistesByDate();
+  scenes = await getScenesByNom();
+} catch (_) {}
+
+const modeParam = Astro.url.searchParams.get('mode') ?? 'artiste';
+const idParam = Astro.url.searchParams.get('id') ?? '';
+
+// Pré-remplissage si modification
+const artisteEdite = idParam ? artistes.find(a => a.id === idParam) : null;
+const sceneEditee = idParam ? scenes.find(s => s.id === idParam) : null;
+---
+
+<Layout title="Administration — Festicloze">
+  <main class="pt-17.5">
+    <div class="max-w-5xl mx-auto px-6 py-12">
+
+      <header class="mb-10">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Backoffice</p>
+        <h1 class="font-titre text-4xl text-marron leading-none mb-2">Administration</h1>
+        <div class="h-px w-12 bg-or mb-6"></div>
+        <p class="text-marron/50 font-corps text-sm">Gérer les artistes et les scènes du festival.</p>
+      </header>
+
+      <!-- ONGLETS -->
+      <div class="flex gap-3 mb-10">
+        <a
+          href="/admin?mode=artiste"
+          class={`px-5 py-2 rounded-full text-xs font-corps font-bold uppercase tracking-widest border transition-colors ${modeParam === 'artiste' ? 'bg-marron text-beige-claire border-marron' : 'border-beige text-marron hover:border-marron'}`}>
+          Artistes
+        </a>
+        <a
+          href="/admin?mode=scene"
+          class={`px-5 py-2 rounded-full text-xs font-corps font-bold uppercase tracking-widest border transition-colors ${modeParam === 'scene' ? 'bg-marron text-beige-claire border-marron' : 'border-beige text-marron hover:border-marron'}`}>
+          Scènes
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+        <!-- FORMULAIRE -->
+        <div>
+          {modeParam === 'artiste' && (
+            <form id="form-artiste" class="bg-beige rounded-2xl p-8 flex flex-col gap-5">
+              <h2 class="font-titre text-xl text-marron mb-2">
+                {artisteEdite ? `Modifier : ${artisteEdite.nom}` : 'Ajouter un artiste'}
+              </h2>
+              <input type="hidden" name="id" value={artisteEdite?.id ?? ''} />
+
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nom</label>
+                <input type="text" name="nom" required value={artisteEdite?.nom ?? ''}
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors" />
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Genre musical</label>
+                <input type="text" name="genre_musical" value={artisteEdite?.genre_musical ?? ''}
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors" />
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Description</label>
+                <textarea name="description" rows="4"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors resize-none">{artisteEdite?.description ?? ''}</textarea>
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Date de représentation</label>
+                <input type="datetime-local" name="dates_de_representation"
+                  value={artisteEdite?.dates_de_representation ? artisteEdite.dates_de_representation.substring(0, 16) : ''}
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors" />
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Scène</label>
+                <select name="scene"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors">
+                  <option value="">— Aucune scène —</option>
+                  {scenes.map(s => (
+                    <option value={s.id} selected={artisteEdite?.scene === s.id}>{s.nom}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div id="retour-artiste" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+
+              <div class="flex gap-3">
+                <button type="submit"
+                  class="px-8 py-3 bg-vert text-white font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+                  {artisteEdite ? 'Enregistrer' : 'Ajouter'}
+                </button>
+                {artisteEdite && (
+                  <a href="/admin?mode=artiste"
+                    class="px-6 py-3 border border-beige text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:border-marron transition-colors">
+                    Annuler
+                  </a>
+                )}
+              </div>
+            </form>
+          )}
+
+          {modeParam === 'scene' && (
+            <form id="form-scene" class="bg-beige rounded-2xl p-8 flex flex-col gap-5">
+              <h2 class="font-titre text-xl text-marron mb-2">
+                {sceneEditee ? `Modifier : ${sceneEditee.nom}` : 'Ajouter une scène'}
+              </h2>
+              <input type="hidden" name="id" value={sceneEditee?.id ?? ''} />
+
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nom</label>
+                <input type="text" name="nom" required value={sceneEditee?.nom ?? ''}
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors" />
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Description</label>
+                <textarea name="description" rows="4"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors resize-none">{sceneEditee?.description ?? ''}</textarea>
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Capacité</label>
+                <input type="number" name="capacite" value={sceneEditee?.capacite ?? ''}
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors" />
+              </div>
+
+              <div id="retour-scene" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+
+              <div class="flex gap-3">
+                <button type="submit"
+                  class="px-8 py-3 bg-vert text-white font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+                  {sceneEditee ? 'Enregistrer' : 'Ajouter'}
+                </button>
+                {sceneEditee && (
+                  <a href="/admin?mode=scene"
+                    class="px-6 py-3 border border-beige text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:border-marron transition-colors">
+                    Annuler
+                  </a>
+                )}
+              </div>
+            </form>
+          )}
+        </div>
+
+        <!-- LISTE EXISTANTS -->
+        <div>
+          {modeParam === 'artiste' && (
+            <div>
+              <h2 class="font-corps font-bold text-marron text-xs uppercase tracking-widest mb-4">
+                Artistes existants ({artistes.length})
+              </h2>
+              <ul class="flex flex-col gap-2 max-h-[600px] overflow-y-auto pr-1">
+                {artistes.map(a => (
+                  <li class="bg-white rounded-xl px-4 py-3 flex items-center justify-between gap-3 border-l-2 border-or shadow-sm">
+                    <div>
+                      <p class="font-corps font-bold text-marron text-sm">{a.nom}</p>
+                      {a.genre_musical && <p class="text-or text-xs font-corps">{a.genre_musical}</p>}
+                    </div>
+                    <a href={`/admin?mode=artiste&id=${a.id}`}
+                      class="text-marron/40 hover:text-or text-xs font-corps font-bold uppercase tracking-widest transition-colors shrink-0">
+                      Modifier
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {modeParam === 'scene' && (
+            <div>
+              <h2 class="font-corps font-bold text-marron text-xs uppercase tracking-widest mb-4">
+                Scènes existantes ({scenes.length})
+              </h2>
+              <ul class="flex flex-col gap-2">
+                {scenes.map(s => (
+                  <li class="bg-white rounded-xl px-4 py-3 flex items-center justify-between gap-3 border-l-2 border-or shadow-sm">
+                    <div>
+                      <p class="font-corps font-bold text-marron text-sm">{s.nom}</p>
+                      {s.capacite && <p class="text-or text-xs font-corps">{s.capacite} places</p>}
+                    </div>
+                    <a href={`/admin?mode=scene&id=${s.id}`}
+                      class="text-marron/40 hover:text-or text-xs font-corps font-bold uppercase tracking-widest transition-colors shrink-0">
+                      Modifier
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import pb, { saveArtiste, saveScene } from '../js/backend.mjs';
+
+  function showRetour(el: HTMLElement, ok: boolean, msg: string) {
+    el.textContent = msg;
+    el.className = `text-sm font-corps px-4 py-3 rounded-xl ${ok ? 'bg-vert/10 text-vert' : 'bg-rouge/10 text-rouge'}`;
+    el.classList.remove('hidden');
+  }
+
+  const formArtiste = document.getElementById('form-artiste') as HTMLFormElement | null;
+  if (formArtiste) {
+    formArtiste.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(formArtiste);
+      const retour = document.getElementById('retour-artiste') as HTMLElement;
+      try {
+        const data: Record<string, any> = {
+          nom: fd.get('nom'),
+          genre_musical: fd.get('genre_musical'),
+          description: fd.get('description'),
+          dates_de_representation: fd.get('dates_de_representation') || null,
+          scene: fd.get('scene') || null,
+        };
+        const id = fd.get('id') as string;
+        await saveArtiste(data, id || null);
+        showRetour(retour, true, id ? 'Artiste mis à jour.' : 'Artiste ajouté.');
+        if (!id) formArtiste.reset();
+      } catch (err: any) {
+        showRetour(retour, false, 'Erreur : ' + (err.message ?? 'inconnue'));
+      }
+    });
+  }
+
+  const formScene = document.getElementById('form-scene') as HTMLFormElement | null;
+  if (formScene) {
+    formScene.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(formScene);
+      const retour = document.getElementById('retour-scene') as HTMLElement;
+      try {
+        const data: Record<string, any> = {
+          nom: fd.get('nom'),
+          description: fd.get('description'),
+          capacite: fd.get('capacite') ? Number(fd.get('capacite')) : null,
+        };
+        const id = fd.get('id') as string;
+        await saveScene(data, id || null);
+        showRetour(retour, true, id ? 'Scène mise à jour.' : 'Scène ajoutée.');
+        if (!id) formScene.reset();
+      } catch (err: any) {
+        showRetour(retour, false, 'Erreur : ' + (err.message ?? 'inconnue'));
+      }
+    });
+  }
+</script>

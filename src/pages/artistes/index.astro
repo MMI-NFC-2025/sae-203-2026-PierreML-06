@@ -1,30 +1,116 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import CarteArtiste from '../../components/CarteArtiste.astro';
-import pb from '../../js/backend.mjs';
+import { getArtistesByDate, getScenesByNom } from '../../js/backend.mjs';
+
+const triParam = Astro.url.searchParams.get('tri') ?? 'date';
 
 let artistes: any[] = [];
+let scenes: any[] = [];
 let erreur = false;
 
 try {
-  artistes = await pb.collection('artistes').getFullList({
-    sort: 'dates_de_representation',
-    expand: 'scene',
-  });
+  artistes = await getArtistesByDate();
+  scenes = await getScenesByNom();
 } catch (e) {
   erreur = true;
 }
+
+// Tri alpha côté serveur si demandé
+if (triParam === 'alpha') {
+  artistes = [...artistes].sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+}
+
+// Genres et jours disponibles pour les filtres
+const genres = [...new Set(artistes.map(a => a.genre_musical).filter(Boolean))].sort();
+const jours: { label: string; iso: string }[] = [];
+artistes.forEach(a => {
+  if (a.dates_de_representation) {
+    const iso = a.dates_de_representation.substring(0, 10);
+    if (!jours.find(j => j.iso === iso)) {
+      const label = new Date(iso).toLocaleDateString('fr-FR', {
+        weekday: 'long', day: 'numeric', month: 'long',
+      });
+      jours.push({ iso, label });
+    }
+  }
+});
+jours.sort((a, b) => a.iso.localeCompare(b.iso));
 ---
 
 <Layout title="Nos Artistes — Festicloze">
   <main class="pt-17.5">
     <section class="max-w-6xl mx-auto px-6 py-12">
 
-      <header class="mb-12">
+      <header class="mb-10">
         <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">À l'affiche</p>
         <h1 class="font-titre text-4xl md:text-5xl text-marron leading-none">Nos Artistes</h1>
         <div class="h-px w-12 bg-or mt-4"></div>
       </header>
+
+      <!-- FILTRES & TRI -->
+      {!erreur && artistes.length > 0 && (
+        <div class="mb-10 flex flex-col gap-6">
+
+          <!-- Tri -->
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="font-corps text-marron/50 text-xs uppercase tracking-widest">Trier par</span>
+            <a
+              href="/artistes?tri=date"
+              class={`px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border transition-colors ${triParam === 'date' ? 'bg-marron text-beige-claire border-marron' : 'bg-transparent text-marron border-beige hover:border-marron'}`}>
+              Date
+            </a>
+            <a
+              href="/artistes?tri=alpha"
+              class={`px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border transition-colors ${triParam === 'alpha' ? 'bg-marron text-beige-claire border-marron' : 'bg-transparent text-marron border-beige hover:border-marron'}`}>
+              A — Z
+            </a>
+          </div>
+
+          <!-- Filtres par jour -->
+          {jours.length > 0 && (
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="font-corps text-marron/50 text-xs uppercase tracking-widest">Par jour</span>
+              {jours.map(j => (
+                <a
+                  href={`/artistes/jour/${j.iso}`}
+                  class="px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border border-beige text-marron hover:border-or hover:text-or transition-colors">
+                  {new Date(j.iso).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}
+                </a>
+              ))}
+            </div>
+          )}
+
+          <!-- Filtres par genre -->
+          {genres.length > 0 && (
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="font-corps text-marron/50 text-xs uppercase tracking-widest">Par genre</span>
+              {genres.map(g => (
+                <a
+                  href={`/artistes/genre/${encodeURIComponent(g)}`}
+                  class="px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border border-beige text-marron hover:border-or hover:text-or transition-colors">
+                  {g}
+                </a>
+              ))}
+            </div>
+          )}
+
+          <!-- Filtres par scène -->
+          {scenes.length > 0 && (
+            <div class="flex items-center gap-3 flex-wrap">
+              <span class="font-corps text-marron/50 text-xs uppercase tracking-widest">Par scène</span>
+              {scenes.map(s => (
+                <a
+                  href={`/artistes/scene/${s.id}`}
+                  class="px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border border-beige text-marron hover:border-or hover:text-or transition-colors">
+                  {s.nom}
+                </a>
+              ))}
+            </div>
+          )}
+
+        </div>
+      )}
 
       {erreur && (
         <p class="text-center text-marron/60 py-20">Impossible de charger les artistes. Veuillez réessayer plus tard.</p>

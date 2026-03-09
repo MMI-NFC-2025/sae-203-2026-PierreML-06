@@ -8,7 +8,7 @@ const jours = [
     date: 'SAMEDI 20 DÉC.',
     theme: "L'Ouverture",
     events: [
-      { heure: '19:00', type: 'Avant-scène', titre: "Introduction à l'œuvre" },
+      { heure: '19:00', type: 'Avant-scène', titre: "Introduction à l'oeuvre" },
       { heure: '20:00', type: 'Opéra', titre: "L'ORFEO — Il Giardino Armonico" },
     ],
   },
@@ -42,27 +42,28 @@ const jours = [
   <main class="pt-17.5">
 
     <!-- INTRO -->
-    <section class="max-w-4xl mx-auto px-6 py-12">
+    <section class="max-w-5xl mx-auto px-6 py-12">
       <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Programme 2025</p>
       <h1 class="font-titre text-4xl md:text-5xl text-marron leading-none mb-2">La Programmation</h1>
       <div class="h-px w-12 bg-or mb-10"></div>
       <Image
         src={theatreImg}
         alt="Intérieur du théâtre avec ses balcons"
-        class="w-full rounded-[20px] object-cover max-h-96 mb-12"
+        class="w-full rounded-2xl object-cover max-h-105 mb-3"
       />
+      <p class="text-center text-marron/40 text-xs font-corps mb-12 italic">Temple Saint-Martin de Montbéliard</p>
 
       <!-- PROGRAMME -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         {jours.map(jour => (
-          <article class="bg-beige rounded-[20px] p-8">
-            <div class="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-4">
+          <article class="bg-white border-t-2 border-or rounded-2xl shadow-sm p-8">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-6">
               <h2 class="font-titre text-2xl text-marron">{jour.date}</h2>
-              <span class="text-or font-corps text-sm font-semibold italic sm:ml-3">{jour.theme}</span>
+              <span class="bg-beige text-or px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide sm:ml-3 self-start sm:self-auto">{jour.theme}</span>
             </div>
-            <ul class="list-none p-0 flex flex-col gap-3">
-              {jour.events.map(ev => (
-                <li class="flex items-start gap-4 text-marron/80">
+            <ul class="list-none p-0 flex flex-col">
+              {jour.events.map((ev, i) => (
+                <li class={`flex items-start gap-4 text-marron/80 border-b border-beige last:border-0 pb-3 last:pb-0 mb-3 last:mb-0`}>
                   <span class="font-bold text-or text-sm w-12 shrink-0 pt-0.5">{ev.heure}</span>
                   <span class="text-sm font-semibold text-marron/50 w-24 shrink-0 pt-0.5 uppercase tracking-wide">{ev.type}</span>
                   <span class="text-sm">{ev.titre}</span>
@@ -77,9 +78,22 @@ const jours = [
         <a
           href="/assets/document/prog.pdf"
           download
-          class="inline-block px-8 py-3 bg-marron text-beige-claire font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">
+          class="inline-block px-8 py-3 bg-marron text-beige-claire font-corps font-bold text-xs tracking-widest uppercase rounded-full hover:-translate-y-0.5 transition-transform">
           Programme complet en PDF
         </a>
+      </div>
+    </section>
+
+    <!-- INFOS PRATIQUES -->
+    <section class="bg-beige py-12 px-6">
+      <div class="max-w-5xl mx-auto text-center">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Informations</p>
+        <h2 class="font-titre text-2xl text-marron mb-4">Accès aux représentations</h2>
+        <div class="h-px w-12 bg-or mx-auto mb-6"></div>
+        <p class="text-marron/70 font-corps text-sm leading-relaxed max-w-xl mx-auto">
+          Toutes les représentations ont lieu au Temple Saint-Martin, 25200 Montbéliard.
+          Portes ouvertes 30 min avant le début.
+        </p>
       </div>
     </section>
 

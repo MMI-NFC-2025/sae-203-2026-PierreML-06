@@ -1,10 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ticketIcon from '../assets/icons/ticket_purple.svg?url';
+import locateIcon from '../assets/icons/locate.svg?url';
 
 const tarifs = [
-  { label: 'Billet pour 1 soirée', prix: '30€' },
-  { label: 'Billet pour 2 soirées', prix: '50€' },
-  { label: 'Billet pour 4 soirées', prix: '80€' },
+  { label: 'Billet pour 1 soirée', prix: '30€', populaire: false },
+  { label: 'Billet pour 2 soirées', prix: '50€', populaire: true },
+  { label: 'Billet pour 4 soirées', prix: '80€', populaire: false },
 ];
 
 const acces = [
@@ -16,10 +18,10 @@ const acces = [
     ],
   },
   {
-    titre: 'En Vélo',
+    titre: 'En Train',
     items: [
-      "Parc à vélos sécurisé à l'entrée du site.",
-      "Service + : Une équipe technique est présente sur place pour les petites réparations d'urgence.",
+      'Gare de Montbéliard à 15 min à pied du Temple Saint-Martin.',
+      'Connexions TGV depuis Belfort et Besançon.',
     ],
   },
   {
@@ -31,31 +33,50 @@ const acces = [
 ];
 
 const faq = [
-  'Où se situe exactement le festival ?',
-  'Le festival est-il accessible aux familles ?',
-  'Y a-t-il de la restauration sur place ?',
+  { question: 'Où se situe exactement le festival ?', reponse: 'Le festival se déroule au Temple Saint-Martin, 4 Place Saint-Martin, 25200 Montbéliard.' },
+  { question: 'Le festival est-il accessible aux familles ?', reponse: 'Oui, le festival accueille tous les publics. L\'entrée est gratuite pour les enfants de moins de 10 ans.' },
+  { question: 'Y a-t-il de la restauration sur place ?', reponse: 'Des espaces de restauration et de convivialité sont ouverts avant et après chaque représentation.' },
 ];
 ---
 
 <Layout title="Infos Pratiques — Festicloze">
   <main class="pt-17.5">
 
+    <!-- HERO -->
+    <section class="bg-marron py-16 px-8">
+      <div class="max-w-4xl mx-auto">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Avant de venir</p>
+        <h1 class="font-titre text-4xl md:text-5xl text-beige-claire leading-none mb-2">Infos Pratiques</h1>
+        <div class="h-px w-12 bg-or mb-6"></div>
+        <p class="text-beige-claire/70 font-corps text-sm leading-relaxed max-w-md">
+          Tout ce que vous devez savoir pour vivre pleinement le festival.
+        </p>
+      </div>
+    </section>
+
     <div class="max-w-4xl mx-auto px-6 py-12">
-      <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Avant de venir</p>
-      <h1 class="font-titre text-4xl md:text-5xl text-marron leading-none mb-2">Infos Pratiques</h1>
-      <div class="h-px w-12 bg-or mb-12"></div>
 
       <!-- TARIFS -->
       <section class="mb-16">
-        <h2 class="font-titre text-2xl text-marron mb-2">Tarifs Billets</h2>
+        <div class="flex items-center gap-3 mb-3">
+          <img src={ticketIcon} alt="" aria-hidden="true" class="w-8 h-8" />
+          <p class="font-corps text-or text-xs uppercase tracking-[4px]">Billetterie</p>
+        </div>
+        <h2 class="font-titre text-3xl text-marron leading-none mb-2">Tarifs Billets</h2>
+        <div class="h-px w-12 bg-or mb-4"></div>
         <p class="text-marron/60 text-sm mb-8">* gratuit pour les enfants de moins de 10 ans</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {tarifs.map(t => (
-            <article class="bg-beige rounded-[20px] p-8 flex flex-col items-center gap-6 text-center">
+            <article class={`rounded-[20px] p-8 flex flex-col items-center gap-6 text-center relative ${t.populaire ? 'bg-white border-2 border-or shadow-md' : 'bg-beige'}`}>
+              {t.populaire && (
+                <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-or text-white font-corps font-bold text-xs uppercase tracking-wide px-4 py-1 rounded-full">
+                  Le plus populaire
+                </span>
+              )}
               <h3 class="font-titre text-lg text-marron">{t.label}</h3>
               <div class="flex flex-col items-center gap-4 w-full mt-auto">
-                <p class="font-titre text-4xl font-bold text-or">{t.prix}</p>
+                <p class="font-titre text-5xl font-bold text-or">{t.prix}</p>
                 <a
                   href="/404"
                   aria-label={`Acheter un ${t.label}`}
@@ -70,15 +91,17 @@ const faq = [
 
       <!-- ACCÈS -->
       <section class="mb-16">
-        <h2 class="font-titre text-2xl text-marron mb-8">Comment venir</h2>
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Transports</p>
+        <h2 class="font-titre text-3xl text-marron leading-none mb-2">Comment venir</h2>
+        <div class="h-px w-12 bg-or mb-10"></div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           {acces.map(a => (
-            <div class="bg-beige rounded-[20px] p-6">
-              <h3 class="font-titre text-base text-marron mb-4">{a.titre}</h3>
+            <div class="bg-white border-t-2 border-or rounded-2xl shadow-sm p-6">
+              <h3 class="font-corps font-bold text-marron text-sm uppercase tracking-widest mb-4">{a.titre}</h3>
               <ul class="list-none p-0 flex flex-col gap-2">
                 {a.items.map(item => (
                   <li class="flex items-start gap-2 text-marron/80 text-sm">
-                    <span class="text-or mt-1">•</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-or shrink-0 mt-1.5 inline-block"></span>
                     {item}
                   </li>
                 ))}
@@ -89,12 +112,18 @@ const faq = [
       </section>
 
       <!-- FAQ -->
-      <section>
-        <h2 class="font-titre text-2xl text-marron mb-8">FAQ</h2>
+      <section class="mb-12">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Vos questions</p>
+        <h2 class="font-titre text-3xl text-marron leading-none mb-2">FAQ</h2>
+        <div class="h-px w-12 bg-or mb-10"></div>
         <ul class="list-none p-0 flex flex-col gap-3 mb-10">
-          {faq.map(q => (
-            <li class="bg-beige rounded-2xl px-6 py-4 text-marron/80 text-sm font-semibold cursor-pointer hover:bg-beige/80 transition-colors">
-              {q}
+          {faq.map(f => (
+            <li class="bg-white border-l-4 border-or rounded-2xl px-6 py-5">
+              <div class="flex items-center justify-between gap-4 mb-2">
+                <p class="font-corps font-bold text-sm text-marron">{f.question}</p>
+                <span class="text-or font-titre text-xl shrink-0">+</span>
+              </div>
+              <p class="text-marron/60 font-corps text-sm leading-relaxed">{f.reponse}</p>
             </li>
           ))}
         </ul>
@@ -108,5 +137,23 @@ const faq = [
       </section>
 
     </div>
+
+    <!-- ADRESSE -->
+    <section class="bg-marron py-14 px-8">
+      <div class="max-w-4xl mx-auto text-center">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-4">Nous trouver</p>
+        <h2 class="font-titre text-2xl text-beige-claire mb-2">Temple Saint-Martin</h2>
+        <p class="font-corps text-beige-claire/70 text-sm mb-6">4 Place Saint-Martin · 25200 Montbéliard</p>
+        <a
+          href="https://www.openstreetmap.org/?mlat=47.5099&mlon=6.7976&zoom=16"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-8 py-3 border border-or text-or font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-or hover:text-marron transition-colors">
+          <img src={locateIcon} alt="" aria-hidden="true" class="w-4 h-4" />
+          Voir sur la carte
+        </a>
+      </div>
+    </section>
+
   </main>
 </Layout>

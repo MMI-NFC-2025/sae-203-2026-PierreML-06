@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Créer un compte — Festicloze">
+  <main class="pt-17.5 min-h-screen flex items-center justify-center bg-beige-claire px-6 py-12">
+    <div class="w-full max-w-md">
+
+      <div class="text-center mb-10">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Rejoindre le festival</p>
+        <h1 class="font-titre text-4xl text-marron leading-none mb-2">Créer un compte</h1>
+        <div class="h-px w-12 bg-or mx-auto mb-4"></div>
+        <p class="text-marron/50 font-corps text-sm">Accédez à votre espace festivalier personnel.</p>
+      </div>
+
+      <form id="form-inscription" class="bg-beige rounded-2xl p-8 flex flex-col gap-5">
+
+        <div class="flex flex-col gap-1.5">
+          <label for="name" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nom complet</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            autocomplete="name"
+            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="email" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Adresse e-mail</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            autocomplete="email"
+            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            minlength="8"
+            autocomplete="new-password"
+            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="passwordConfirm" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Confirmer le mot de passe</label>
+          <input
+            type="password"
+            id="passwordConfirm"
+            name="passwordConfirm"
+            required
+            minlength="8"
+            autocomplete="new-password"
+            class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+          />
+        </div>
+
+        <div id="retour-inscription" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+
+        <button
+          type="submit"
+          id="btn-inscription"
+          class="px-8 py-3 bg-marron text-beige-claire font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+          Créer mon compte
+        </button>
+
+      </form>
+
+      <p class="text-center font-corps text-sm text-marron/50 mt-6">
+        Déjà un compte ?
+        <a href="/login" class="text-or font-bold hover:underline">Se connecter</a>
+      </p>
+
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import pb from '../js/backend.mjs';
+
+  const form = document.getElementById('form-inscription') as HTMLFormElement;
+  const retour = document.getElementById('retour-inscription') as HTMLElement;
+  const btn = document.getElementById('btn-inscription') as HTMLButtonElement;
+
+  function showRetour(ok: boolean, msg: string) {
+    retour.textContent = msg;
+    retour.className = `text-sm font-corps px-4 py-3 rounded-xl ${ok ? 'bg-vert/10 text-vert' : 'bg-rouge/10 text-rouge'}`;
+    retour.classList.remove('hidden');
+  }
+
+  // Rediriger si déjà connecté
+  if (pb.authStore.isValid) {
+    window.location.href = '/profil';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const name = fd.get('name') as string;
+    const email = fd.get('email') as string;
+    const password = fd.get('password') as string;
+    const passwordConfirm = fd.get('passwordConfirm') as string;
+
+    if (password !== passwordConfirm) {
+      showRetour(false, 'Les mots de passe ne correspondent pas.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Création en cours...';
+
+    try {
+      await pb.collection('users').create({ name, email, password, passwordConfirm });
+      await pb.collection('users').authWithPassword(email, password);
+      showRetour(true, 'Compte créé avec succès. Redirection...');
+      setTimeout(() => {
+        window.location.href = '/profil';
+      }, 800);
+    } catch (err: any) {
+      const msg = err?.response?.data?.email?.message ?? err?.message ?? 'Une erreur est survenue.';
+      showRetour(false, msg);
+      btn.disabled = false;
+      btn.textContent = 'Créer mon compte';
+    }
+  });
+</script>

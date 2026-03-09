@@ -1,0 +1,357 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Mon Profil — Festicloze">
+  <main class="pt-17.5 min-h-screen bg-beige-claire px-6 py-12">
+    <div class="max-w-2xl mx-auto">
+
+      <!-- État chargement -->
+      <div id="profil-loading" class="text-center py-20">
+        <p class="font-corps text-marron/40 text-sm">Chargement...</p>
+      </div>
+
+      <!-- Contenu profil -->
+      <div id="profil-content" class="hidden flex-col gap-8">
+
+        <!-- En-tête -->
+        <div>
+          <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Mon espace</p>
+          <h1 class="font-titre text-4xl text-marron leading-none mb-2">Mon Profil</h1>
+          <div class="h-px w-12 bg-or mb-6"></div>
+        </div>
+
+        <!-- Carte identité -->
+        <div class="bg-beige rounded-2xl p-8 flex flex-col sm:flex-row items-center sm:items-start gap-8">
+          <!-- Avatar cliquable -->
+          <div class="shrink-0 relative group cursor-pointer" id="avatar-click-zone">
+            <div class="w-24 h-24 rounded-full bg-marron/10 border-2 border-beige overflow-hidden flex items-center justify-center">
+              <img id="avatar-img" src="" alt="" class="w-full h-full object-cover hidden" />
+              <span id="avatar-initiales" class="font-titre text-3xl text-marron/40"></span>
+            </div>
+            <div class="absolute inset-0 rounded-full bg-marron/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white font-corps text-xs font-bold uppercase tracking-wide text-center leading-tight px-1">Changer</span>
+            </div>
+            <input type="file" id="input-photo" accept="image/*" class="hidden" />
+          </div>
+
+          <div class="flex flex-col gap-3 flex-1 text-center sm:text-left">
+            <div>
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Nom</p>
+              <p id="profil-nom" class="font-titre text-2xl text-marron"></p>
+            </div>
+            <div>
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Email</p>
+              <p id="profil-email" class="font-corps text-marron text-sm font-semibold"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modifier le profil -->
+        <div class="bg-beige rounded-2xl p-8">
+          <h2 class="font-titre text-xl text-marron mb-6">Modifier le profil</h2>
+          <form id="form-profil" class="flex flex-col gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label for="edit-name" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nom complet</label>
+              <input
+                type="text"
+                id="edit-name"
+                name="name"
+                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="edit-email" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Adresse e-mail</label>
+              <input
+                type="email"
+                id="edit-email"
+                name="email"
+                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+              />
+            </div>
+            <div id="retour-profil" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+            <div>
+              <button
+                type="submit"
+                id="btn-profil"
+                class="px-8 py-3 bg-marron text-beige-claire font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+                Enregistrer
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Modifier le mot de passe -->
+        <div class="bg-beige rounded-2xl p-8">
+          <h2 class="font-titre text-xl text-marron mb-6">Changer le mot de passe</h2>
+          <form id="form-mdp" class="flex flex-col gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label for="old-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Mot de passe actuel</label>
+              <input
+                type="password"
+                id="old-password"
+                name="oldPassword"
+                required
+                autocomplete="current-password"
+                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="new-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nouveau mot de passe</label>
+              <input
+                type="password"
+                id="new-password"
+                name="password"
+                required
+                minlength="8"
+                autocomplete="new-password"
+                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="confirm-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Confirmer le mot de passe</label>
+              <input
+                type="password"
+                id="confirm-password"
+                name="passwordConfirm"
+                required
+                minlength="8"
+                autocomplete="new-password"
+                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+              />
+            </div>
+            <div id="retour-mdp" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+            <div>
+              <button
+                type="submit"
+                id="btn-mdp"
+                class="px-8 py-3 bg-marron text-beige-claire font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+                Changer le mot de passe
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Zone danger -->
+        <div class="bg-beige rounded-2xl p-8 border border-rouge/20">
+          <h2 class="font-titre text-xl text-marron mb-2">Zone de danger</h2>
+          <p class="text-marron/50 font-corps text-sm mb-6">Ces actions sont irréversibles.</p>
+          <div class="flex flex-wrap gap-3">
+            <button
+              id="btn-logout"
+              class="px-6 py-3 border border-marron text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-marron hover:text-beige-claire transition-colors cursor-pointer">
+              Se déconnecter
+            </button>
+            <button
+              id="btn-supprimer"
+              class="px-6 py-3 border border-rouge text-rouge font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-rouge hover:text-white transition-colors cursor-pointer">
+              Supprimer le compte
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal confirmation suppression -->
+        <div id="modal-suppression" class="hidden fixed inset-0 z-200 items-center justify-center bg-marron/60 px-6">
+          <div class="bg-beige-claire rounded-2xl p-8 max-w-sm w-full shadow-xl">
+            <h3 class="font-titre text-xl text-marron mb-3">Supprimer le compte</h3>
+            <p class="text-marron/60 font-corps text-sm mb-6">Cette action est définitive. Toutes vos données seront supprimées.</p>
+            <div class="flex flex-col gap-3">
+              <input
+                type="password"
+                id="confirm-delete-password"
+                placeholder="Confirmez votre mot de passe"
+                class="bg-beige rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-rouge outline-none transition-colors"
+              />
+              <div id="retour-suppression" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+              <button
+                id="btn-confirm-supprimer"
+                class="px-6 py-3 bg-rouge text-white font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+                Confirmer la suppression
+              </button>
+              <button
+                id="btn-annuler-suppression"
+                class="px-6 py-3 border border-beige text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:border-marron transition-colors cursor-pointer">
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import pb, { getImageUrl } from '../js/backend.mjs';
+
+  const loading = document.getElementById('profil-loading') as HTMLElement;
+  const content = document.getElementById('profil-content') as HTMLElement;
+
+  function showRetour(id: string, ok: boolean, msg: string) {
+    const el = document.getElementById(id) as HTMLElement;
+    el.textContent = msg;
+    el.className = `text-sm font-corps px-4 py-3 rounded-xl ${ok ? 'bg-vert/10 text-vert' : 'bg-rouge/10 text-rouge'}`;
+    el.classList.remove('hidden');
+  }
+
+  function updateAvatar(user: Record<string, any>) {
+    const avatarImg = document.getElementById('avatar-img') as HTMLImageElement;
+    const avatarInitiales = document.getElementById('avatar-initiales') as HTMLElement;
+    if (user['img']) {
+      const url = getImageUrl(user, user['img']);
+      if (url) {
+        avatarImg.src = url;
+        avatarImg.alt = user['name'] || '';
+        avatarImg.classList.remove('hidden');
+        avatarInitiales.classList.add('hidden');
+        return;
+      }
+    }
+    avatarImg.classList.add('hidden');
+    avatarInitiales.classList.remove('hidden');
+    const nom = user['name'] || user['email'] || '';
+    avatarInitiales.textContent = nom.charAt(0).toUpperCase();
+  }
+
+  async function init() {
+    if (!pb.authStore.isValid) {
+      window.location.href = '/login';
+      return;
+    }
+    try {
+      await pb.collection('users').authRefresh();
+    } catch {
+      pb.authStore.clear();
+      window.location.href = '/login';
+      return;
+    }
+
+    const user = pb.authStore.model;
+    if (!user) { window.location.href = '/login'; return; }
+
+    // Remplir les infos affichées
+    (document.getElementById('profil-nom') as HTMLElement).textContent = user['name'] || 'Festivalier';
+    (document.getElementById('profil-email') as HTMLElement).textContent = user['email'] || '';
+    (document.getElementById('edit-name') as HTMLInputElement).value = user['name'] || '';
+    (document.getElementById('edit-email') as HTMLInputElement).value = user['email'] || '';
+    updateAvatar(user);
+
+    loading.classList.add('hidden');
+    content.style.display = 'flex';
+  }
+
+  // --- Photo de profil ---
+  document.getElementById('avatar-click-zone')?.addEventListener('click', () => {
+    document.getElementById('input-photo')?.click();
+  });
+
+  document.getElementById('input-photo')?.addEventListener('change', async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file || !pb.authStore.model) return;
+    try {
+      const fd = new FormData();
+      fd.append('img', file);
+      await pb.collection('users').update(pb.authStore.model['id'], fd);
+      await pb.collection('users').authRefresh();
+      const user = pb.authStore.model as Record<string, any>;
+      updateAvatar(user);
+      // Mettre à jour aussi les icônes du header
+      const desktopIcon = document.getElementById('user-icon-desktop') as HTMLImageElement | null;
+      const mobileIcon = document.getElementById('user-icon-mobile') as HTMLImageElement | null;
+      if (user['img']) {
+        const url = getImageUrl(user, user['img']);
+        if (url) {
+          if (desktopIcon) { desktopIcon.src = url; desktopIcon.className = 'w-full h-full object-cover'; }
+          if (mobileIcon) { mobileIcon.src = url; mobileIcon.className = 'w-full h-full object-cover'; }
+        }
+      }
+    } catch {
+      // silencieux
+    }
+  });
+
+  // --- Modifier profil (nom + email) ---
+  document.getElementById('form-profil')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-profil') as HTMLButtonElement;
+    const name = (document.getElementById('edit-name') as HTMLInputElement).value.trim();
+    const email = (document.getElementById('edit-email') as HTMLInputElement).value.trim();
+    if (!pb.authStore.model) return;
+    btn.disabled = true;
+    try {
+      await pb.collection('users').update(pb.authStore.model['id'], { name, email });
+      await pb.collection('users').authRefresh();
+      const user = pb.authStore.model as Record<string, any>;
+      (document.getElementById('profil-nom') as HTMLElement).textContent = user['name'] || '';
+      (document.getElementById('profil-email') as HTMLElement).textContent = user['email'] || '';
+      updateAvatar(user);
+      showRetour('retour-profil', true, 'Profil mis à jour.');
+    } catch (err: any) {
+      showRetour('retour-profil', false, err?.message ?? 'Une erreur est survenue.');
+    }
+    btn.disabled = false;
+  });
+
+  // --- Changer mot de passe ---
+  document.getElementById('form-mdp')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-mdp') as HTMLButtonElement;
+    const oldPassword = (document.getElementById('old-password') as HTMLInputElement).value;
+    const password = (document.getElementById('new-password') as HTMLInputElement).value;
+    const passwordConfirm = (document.getElementById('confirm-password') as HTMLInputElement).value;
+    if (password !== passwordConfirm) {
+      showRetour('retour-mdp', false, 'Les mots de passe ne correspondent pas.');
+      return;
+    }
+    if (!pb.authStore.model) return;
+    btn.disabled = true;
+    try {
+      await pb.collection('users').update(pb.authStore.model['id'], { oldPassword, password, passwordConfirm });
+      showRetour('retour-mdp', true, 'Mot de passe modifié avec succès.');
+      (document.getElementById('form-mdp') as HTMLFormElement).reset();
+    } catch (err: any) {
+      showRetour('retour-mdp', false, err?.message ?? 'Mot de passe actuel incorrect.');
+    }
+    btn.disabled = false;
+  });
+
+  // --- Déconnexion ---
+  document.getElementById('btn-logout')?.addEventListener('click', () => {
+    pb.authStore.clear();
+    window.location.href = '/';
+  });
+
+  // --- Suppression de compte ---
+  const modal = document.getElementById('modal-suppression') as HTMLElement;
+
+  document.getElementById('btn-supprimer')?.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    (document.getElementById('confirm-delete-password') as HTMLInputElement).value = '';
+    document.getElementById('retour-suppression')?.classList.add('hidden');
+  });
+
+  document.getElementById('btn-annuler-suppression')?.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  document.getElementById('btn-confirm-supprimer')?.addEventListener('click', async () => {
+    const password = (document.getElementById('confirm-delete-password') as HTMLInputElement).value;
+    if (!pb.authStore.model) return;
+    const email = pb.authStore.model['email'];
+    const btn = document.getElementById('btn-confirm-supprimer') as HTMLButtonElement;
+    btn.disabled = true;
+    try {
+      // Vérifier le mot de passe en se reconnectant
+      await pb.collection('users').authWithPassword(email, password);
+      await pb.collection('users').delete(pb.authStore.model['id']);
+      pb.authStore.clear();
+      window.location.href = '/';
+    } catch (err: any) {
+      showRetour('retour-suppression', false, 'Mot de passe incorrect.');
+      btn.disabled = false;
+    }
+  });
+
+  init();
+</script>

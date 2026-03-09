@@ -6,6 +6,13 @@ import img1 from '../assets/img/image_display4.avif';
 import img2 from '../assets/img/image_display3.avif';
 import img3 from '../assets/img/image_display2.avif';
 import img4 from '../assets/img/image_display1.avif';
+import logoCreditMutuel from '../assets/icons/logo_credit_mutuel.svg?url';
+import logoCocaCola from '../assets/icons/logo_coca_cola.svg?url';
+import logoDeezer from '../assets/icons/logo_deezer.svg?url';
+import logoNrj from '../assets/icons/logo_nrj.svg?url';
+import logoWeezevent from '../assets/icons/logo_weezevent.svg?url';
+import logoDesperados from '../assets/icons/logo_desperados.svg?url';
+import logoLumimix from '../assets/icons/logo_lumimix.svg?url';
 
 const carouselItems = [
   { jour: 'Jour 1', date: 'Sam. 20 déc.', src: img1, alt: "L'Orfeo", titre: "L'Orfeo", ensemble: 'Il Giardino Armonico', sous: "Aux origines de l'opéra" },
@@ -14,7 +21,17 @@ const carouselItems = [
   { jour: 'Jour 4', date: 'Mar. 23 déc.', src: img4, alt: 'Grand Final de Noel', titre: 'Grand Final de Noël', ensemble: 'Il Seminario Musicale', sous: 'La fête baroque' },
 ];
 
-const partenaires = [
+const partenairesLogos = [
+  { src: logoCreditMutuel, alt: 'Crédit Mutuel' },
+  { src: logoCocaCola, alt: 'Coca-Cola' },
+  { src: logoDeezer, alt: 'Deezer' },
+  { src: logoNrj, alt: 'NRJ' },
+  { src: logoWeezevent, alt: 'Weezevent' },
+  { src: logoDesperados, alt: 'Desperados' },
+  { src: logoLumimix, alt: 'Lumimix' },
+];
+
+const partenairesInstitutionnels = [
   'Ville de Montbéliard',
   'Pays de Montbéliard Agglomération',
   'Région Bourgogne-Franche-Comté',
@@ -22,7 +39,6 @@ const partenaires = [
   'Conservatoire du Pays de Montbéliard',
   'France Bleu Belfort-Montbéliard',
   "L'Est Républicain",
-  'Crédit Mutuel',
 ];
 ---
 
@@ -47,7 +63,7 @@ const partenaires = [
         <div class="flex flex-col items-center gap-5 md:items-start">
           <div class="flex flex-col items-center gap-3 md:items-start">
             <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Festival Baroque de Noël</p>
-            <h1 class="font-titre text-[clamp(44px,8vw,72px)] font-normal text-beige-claire leading-none tracking-widest text-center md:text-left">FESTICLOZE</h1>
+            <h1 class="font-titre text-[clamp(44px,8vw,72px)] font-normal leading-none tracking-widest text-center md:text-left" style="color:#ffffff">FESTICLOZE</h1>
             <div class="h-px w-16 bg-or"></div>
             <span class="px-5 py-1.5 bg-beige text-vert font-corps font-bold text-xs tracking-widest rounded-full uppercase">
               Noël 2025
@@ -241,9 +257,23 @@ const partenaires = [
         <div class="text-center mb-10">
           <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Ils nous soutiennent</p>
           <h2 class="font-titre text-2xl md:text-3xl text-marron">Nos Partenaires</h2>
+          <div class="h-px w-12 bg-or mx-auto mt-4"></div>
         </div>
+
+        <!-- Logos partenaires -->
+        <div class="flex flex-wrap justify-center items-center gap-6 mb-10">
+          {partenairesLogos.map(p => (
+            <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
+              <img src={p.src} alt={p.alt} class="max-h-10 max-w-full object-contain" />
+            </div>
+          ))}
+        </div>
+
+        <!-- Partenaires institutionnels -->
+        <div class="h-px w-full bg-beige-claire mb-8"></div>
+        <p class="text-center font-corps text-marron/40 text-xs uppercase tracking-widest mb-5">Soutiens institutionnels</p>
         <ul class="flex flex-wrap justify-center gap-3 list-none p-0">
-          {partenaires.map(p => (
+          {partenairesInstitutionnels.map(p => (
             <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">
               {p}
             </li>
