@@ -3,182 +3,252 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Mon Profil — Festicloze">
-  <main class="pt-17.5 min-h-screen bg-beige-claire px-6 py-12">
-    <div class="max-w-2xl mx-auto">
+  <main class="pt-17.5 min-h-screen bg-beige-claire">
 
-      <!-- État chargement -->
-      <div id="profil-loading" class="text-center py-20">
-        <p class="font-corps text-marron/40 text-sm">Chargement...</p>
+    <!-- Chargement -->
+    <div id="profil-loading" class="flex items-center justify-center py-40">
+      <p class="font-corps text-marron/40 text-sm">Chargement...</p>
+    </div>
+
+    <!-- Contenu -->
+    <div id="profil-content" class="max-w-5xl mx-auto px-6 py-12" style="display:none">
+
+      <!-- En-tête -->
+      <div class="mb-10">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Mon espace</p>
+        <h1 class="font-titre text-4xl md:text-5xl text-marron leading-none mb-2">Mon Profil</h1>
+        <div class="h-px w-12 bg-or"></div>
       </div>
 
-      <!-- Contenu profil -->
-      <div id="profil-content" class="hidden flex-col gap-8">
+      <!-- Layout 2 colonnes desktop -->
+      <div class="flex flex-col md:flex-row gap-8 items-start">
 
-        <!-- En-tête -->
-        <div>
-          <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Mon espace</p>
-          <h1 class="font-titre text-4xl text-marron leading-none mb-2">Mon Profil</h1>
-          <div class="h-px w-12 bg-or mb-6"></div>
-        </div>
+        <!-- COLONNE GAUCHE -->
+        <div class="w-full md:w-72 shrink-0 flex flex-col gap-6">
 
-        <!-- Carte identité -->
-        <div class="bg-beige rounded-2xl p-8 flex flex-col sm:flex-row items-center sm:items-start gap-8">
-          <!-- Avatar cliquable -->
-          <div class="shrink-0 relative group cursor-pointer" id="avatar-click-zone">
-            <div class="w-24 h-24 rounded-full bg-marron/10 border-2 border-beige overflow-hidden flex items-center justify-center">
-              <img id="avatar-img" src="" alt="" class="w-full h-full object-cover hidden" />
-              <span id="avatar-initiales" class="font-titre text-3xl text-marron/40"></span>
+          <!-- Carte identité -->
+          <div class="bg-beige rounded-2xl p-6 flex flex-col items-center text-center gap-5">
+            <div class="relative group cursor-pointer" id="avatar-click-zone">
+              <div class="w-28 h-28 rounded-full bg-marron/10 border-2 border-beige overflow-hidden flex items-center justify-center">
+                <img id="avatar-img" src="" alt="" class="w-full h-full object-cover hidden" />
+                <span id="avatar-initiales" class="font-titre text-4xl text-marron/40"></span>
+              </div>
+              <div class="absolute inset-0 rounded-full bg-marron/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="text-white font-corps text-xs font-bold uppercase tracking-wide">Changer</span>
+              </div>
+              <input type="file" id="input-photo" accept="image/*" class="hidden" />
             </div>
-            <div class="absolute inset-0 rounded-full bg-marron/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span class="text-white font-corps text-xs font-bold uppercase tracking-wide text-center leading-tight px-1">Changer</span>
+            <div>
+              <p id="profil-nom" class="font-titre text-xl text-marron"></p>
+              <p id="profil-email" class="font-corps text-marron/50 text-xs mt-1"></p>
             </div>
-            <input type="file" id="input-photo" accept="image/*" class="hidden" />
           </div>
 
-          <div class="flex flex-col gap-3 flex-1 text-center sm:text-left">
-            <div>
-              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Nom</p>
-              <p id="profil-nom" class="font-titre text-2xl text-marron"></p>
-            </div>
-            <div>
-              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Email</p>
-              <p id="profil-email" class="font-corps text-marron text-sm font-semibold"></p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Modifier le profil -->
-        <div class="bg-beige rounded-2xl p-8">
-          <h2 class="font-titre text-xl text-marron mb-6">Modifier le profil</h2>
-          <form id="form-profil" class="flex flex-col gap-5">
-            <div class="flex flex-col gap-1.5">
-              <label for="edit-name" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nom complet</label>
-              <input
-                type="text"
-                id="edit-name"
-                name="name"
-                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5">
-              <label for="edit-email" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Adresse e-mail</label>
-              <input
-                type="email"
-                id="edit-email"
-                name="email"
-                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
-              />
-            </div>
-            <div id="retour-profil" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
-            <div>
-              <button
-                type="submit"
-                id="btn-profil"
-                class="px-8 py-3 bg-marron text-beige-claire font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
-                Enregistrer
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Modifier le mot de passe -->
-        <div class="bg-beige rounded-2xl p-8">
-          <h2 class="font-titre text-xl text-marron mb-6">Changer le mot de passe</h2>
-          <form id="form-mdp" class="flex flex-col gap-5">
-            <div class="flex flex-col gap-1.5">
-              <label for="old-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Mot de passe actuel</label>
-              <input
-                type="password"
-                id="old-password"
-                name="oldPassword"
-                required
-                autocomplete="current-password"
-                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5">
-              <label for="new-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nouveau mot de passe</label>
-              <input
-                type="password"
-                id="new-password"
-                name="password"
-                required
-                minlength="8"
-                autocomplete="new-password"
-                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5">
-              <label for="confirm-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Confirmer le mot de passe</label>
-              <input
-                type="password"
-                id="confirm-password"
-                name="passwordConfirm"
-                required
-                minlength="8"
-                autocomplete="new-password"
-                class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
-              />
-            </div>
-            <div id="retour-mdp" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
-            <div>
-              <button
-                type="submit"
-                id="btn-mdp"
-                class="px-8 py-3 bg-marron text-beige-claire font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
-                Changer le mot de passe
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Zone danger -->
-        <div class="bg-beige rounded-2xl p-8 border border-rouge/20">
-          <h2 class="font-titre text-xl text-marron mb-2">Zone de danger</h2>
-          <p class="text-marron/50 font-corps text-sm mb-6">Ces actions sont irréversibles.</p>
-          <div class="flex flex-wrap gap-3">
-            <button
-              id="btn-logout"
-              class="px-6 py-3 border border-marron text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-marron hover:text-beige-claire transition-colors cursor-pointer">
-              Se déconnecter
-            </button>
-            <button
-              id="btn-supprimer"
-              class="px-6 py-3 border border-rouge text-rouge font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-rouge hover:text-white transition-colors cursor-pointer">
-              Supprimer le compte
-            </button>
-          </div>
-        </div>
-
-        <!-- Modal confirmation suppression -->
-        <div id="modal-suppression" class="hidden fixed inset-0 z-200 items-center justify-center bg-marron/60 px-6">
-          <div class="bg-beige-claire rounded-2xl p-8 max-w-sm w-full shadow-xl">
-            <h3 class="font-titre text-xl text-marron mb-3">Supprimer le compte</h3>
-            <p class="text-marron/60 font-corps text-sm mb-6">Cette action est définitive. Toutes vos données seront supprimées.</p>
+          <!-- Zone danger -->
+          <div class="bg-beige rounded-2xl p-6 border border-rouge/20">
+            <h2 class="font-titre text-base text-marron mb-1">Zone de danger</h2>
+            <p class="text-marron/40 font-corps text-xs mb-5">Ces actions sont irréversibles.</p>
             <div class="flex flex-col gap-3">
-              <input
-                type="password"
-                id="confirm-delete-password"
-                placeholder="Confirmez votre mot de passe"
-                class="bg-beige rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-rouge outline-none transition-colors"
-              />
-              <div id="retour-suppression" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
               <button
-                id="btn-confirm-supprimer"
-                class="px-6 py-3 bg-rouge text-white font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
-                Confirmer la suppression
+                id="btn-logout"
+                class="w-full px-4 py-2.5 border border-marron text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-marron hover:text-beige-claire transition-colors cursor-pointer">
+                Se déconnecter
               </button>
               <button
-                id="btn-annuler-suppression"
-                class="px-6 py-3 border border-beige text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:border-marron transition-colors cursor-pointer">
-                Annuler
+                id="btn-supprimer"
+                class="w-full px-4 py-2.5 border border-rouge text-rouge font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-rouge hover:text-white transition-colors cursor-pointer">
+                Supprimer le compte
               </button>
             </div>
+          </div>
+
+        </div>
+
+        <!-- COLONNE DROITE -->
+        <div class="flex-1 flex flex-col gap-6">
+
+          <!-- Modifier le profil -->
+          <div class="bg-beige rounded-2xl p-8">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="font-titre text-xl text-marron">Informations</h2>
+              <button
+                id="btn-modifier-profil"
+                type="button"
+                class="px-5 py-2 border border-marron text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-marron hover:text-beige-claire transition-colors cursor-pointer">
+                Modifier
+              </button>
+            </div>
+            <form id="form-profil" class="flex flex-col gap-5">
+              <div class="flex flex-col gap-1.5">
+                <label for="edit-name" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nom complet</label>
+                <input
+                  type="text"
+                  id="edit-name"
+                  name="name"
+                  readonly
+                  class="bg-transparent rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-transparent outline-none transition-colors"
+                />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="edit-email" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Adresse e-mail</label>
+                <input
+                  type="email"
+                  id="edit-email"
+                  name="email"
+                  readonly
+                  class="bg-transparent rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-transparent outline-none transition-colors"
+                />
+              </div>
+              <div id="retour-profil" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+              <div id="actions-profil" class="flex-wrap gap-3" style="display:none">
+                <button
+                  type="submit"
+                  id="btn-profil"
+                  class="px-8 py-3 bg-marron text-beige-claire font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+                  Enregistrer
+                </button>
+                <button
+                  type="button"
+                  id="btn-annuler-profil"
+                  class="px-8 py-3 border border-beige text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:border-marron transition-colors cursor-pointer">
+                  Annuler
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Mot de passe -->
+          <div class="bg-beige rounded-2xl p-8">
+            <div class="flex items-center justify-between">
+              <h2 class="font-titre text-xl text-marron">Mot de passe</h2>
+              <button
+                id="btn-modifier-mdp"
+                type="button"
+                class="px-5 py-2 border border-marron text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-marron hover:text-beige-claire transition-colors cursor-pointer">
+                Modifier
+              </button>
+            </div>
+            <p id="mdp-hint" class="font-corps text-marron/30 text-lg tracking-[6px] mt-3">••••••••</p>
+
+            <form id="form-mdp" class="flex flex-col gap-5 mt-6" style="display:none">
+              <div class="flex flex-col gap-1.5">
+                <label for="old-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Mot de passe actuel</label>
+                <input
+                  type="password"
+                  id="old-password"
+                  name="oldPassword"
+                  autocomplete="current-password"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+                />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="new-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Nouveau mot de passe</label>
+                <input
+                  type="password"
+                  id="new-password"
+                  name="password"
+                  minlength="8"
+                  autocomplete="new-password"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+                />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="confirm-password" class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Confirmer le mot de passe</label>
+                <input
+                  type="password"
+                  id="confirm-password"
+                  name="passwordConfirm"
+                  minlength="8"
+                  autocomplete="new-password"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors"
+                />
+              </div>
+              <div id="retour-mdp" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+              <div class="flex flex-wrap gap-3">
+                <button
+                  type="submit"
+                  id="btn-mdp"
+                  class="px-8 py-3 bg-marron text-beige-claire font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+                  Enregistrer
+                </button>
+                <button
+                  type="button"
+                  id="btn-annuler-mdp"
+                  class="px-8 py-3 border border-beige text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:border-marron transition-colors cursor-pointer">
+                  Annuler
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FAVORIS -->
+      <div class="mt-8 flex flex-col gap-6">
+
+        <!-- Artistes favoris -->
+        <div class="bg-beige rounded-2xl p-8">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Mes favoris</p>
+              <h2 class="font-titre text-xl text-marron">Artistes</h2>
+            </div>
+            <a href="/artistes" class="px-5 py-2 border border-marron text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-marron hover:text-beige-claire transition-colors">
+              Explorer
+            </a>
+          </div>
+          <div id="liste-artistes-perf" class="flex flex-col gap-2">
+            <p class="font-corps text-marron/40 text-sm">Chargement...</p>
+          </div>
+        </div>
+
+        <!-- Scènes favorites -->
+        <div class="bg-beige rounded-2xl p-8">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Mes favoris</p>
+              <h2 class="font-titre text-xl text-marron">Scènes</h2>
+            </div>
+            <a href="/scenes" class="px-5 py-2 border border-marron text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-marron hover:text-beige-claire transition-colors">
+              Explorer
+            </a>
+          </div>
+          <div id="liste-scenes-pref" class="flex flex-col gap-2">
+            <p class="font-corps text-marron/40 text-sm">Chargement...</p>
           </div>
         </div>
 
       </div>
     </div>
+
+    <!-- Modal suppression -->
+    <div id="modal-suppression" class="fixed inset-0 z-200 items-center justify-center bg-marron/60 px-6" style="display:none">
+      <div class="bg-beige-claire rounded-2xl p-8 max-w-sm w-full shadow-xl">
+        <h3 class="font-titre text-xl text-marron mb-3">Supprimer le compte</h3>
+        <p class="text-marron/60 font-corps text-sm mb-6">Cette action est définitive. Toutes vos données seront supprimées.</p>
+        <div class="flex flex-col gap-3">
+          <input
+            type="password"
+            id="confirm-delete-password"
+            placeholder="Confirmez votre mot de passe"
+            class="bg-beige rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-rouge outline-none transition-colors"
+          />
+          <div id="retour-suppression" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
+          <button
+            id="btn-confirm-supprimer"
+            class="px-6 py-3 bg-rouge text-white font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
+            Confirmer la suppression
+          </button>
+          <button
+            id="btn-annuler-suppression"
+            class="px-6 py-3 border border-beige text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:border-marron transition-colors cursor-pointer">
+            Annuler
+          </button>
+        </div>
+      </div>
+    </div>
+
   </main>
 </Layout>
 
@@ -210,15 +280,11 @@ import Layout from '../layouts/Layout.astro';
     }
     avatarImg.classList.add('hidden');
     avatarInitiales.classList.remove('hidden');
-    const nom = user['name'] || user['email'] || '';
-    avatarInitiales.textContent = nom.charAt(0).toUpperCase();
+    avatarInitiales.textContent = (user['name'] || user['email'] || '').charAt(0).toUpperCase();
   }
 
   async function init() {
-    if (!pb.authStore.isValid) {
-      window.location.href = '/login';
-      return;
-    }
+    if (!pb.authStore.isValid) { window.location.href = '/login'; return; }
     try {
       await pb.collection('users').authRefresh();
     } catch {
@@ -226,19 +292,18 @@ import Layout from '../layouts/Layout.astro';
       window.location.href = '/login';
       return;
     }
-
-    const user = pb.authStore.model;
+    const user = pb.authStore.record;
     if (!user) { window.location.href = '/login'; return; }
 
-    // Remplir les infos affichées
     (document.getElementById('profil-nom') as HTMLElement).textContent = user['name'] || 'Festivalier';
     (document.getElementById('profil-email') as HTMLElement).textContent = user['email'] || '';
     (document.getElementById('edit-name') as HTMLInputElement).value = user['name'] || '';
     (document.getElementById('edit-email') as HTMLInputElement).value = user['email'] || '';
     updateAvatar(user);
 
-    loading.classList.add('hidden');
-    content.style.display = 'flex';
+    loading.style.display = 'none';
+    content.style.display = 'block';
+    renderFavoris();
   }
 
   // --- Photo de profil ---
@@ -248,15 +313,14 @@ import Layout from '../layouts/Layout.astro';
 
   document.getElementById('input-photo')?.addEventListener('change', async (e) => {
     const file = (e.target as HTMLInputElement).files?.[0];
-    if (!file || !pb.authStore.model) return;
+    if (!file || !pb.authStore.record) return;
     try {
       const fd = new FormData();
       fd.append('img', file);
-      await pb.collection('users').update(pb.authStore.model['id'], fd);
+      await pb.collection('users').update(pb.authStore.record['id'], fd);
       await pb.collection('users').authRefresh();
-      const user = pb.authStore.model as Record<string, any>;
+      const user = pb.authStore.record as Record<string, any>;
       updateAvatar(user);
-      // Mettre à jour aussi les icônes du header
       const desktopIcon = document.getElementById('user-icon-desktop') as HTMLImageElement | null;
       const mobileIcon = document.getElementById('user-icon-mobile') as HTMLImageElement | null;
       if (user['img']) {
@@ -266,35 +330,94 @@ import Layout from '../layouts/Layout.astro';
           if (mobileIcon) { mobileIcon.src = url; mobileIcon.className = 'w-full h-full object-cover'; }
         }
       }
-    } catch {
-      // silencieux
-    }
+    } catch { /* silencieux */ }
   });
 
-  // --- Modifier profil (nom + email) ---
+  // --- Mode édition profil ---
+  const inputName = document.getElementById('edit-name') as HTMLInputElement;
+  const inputEmail = document.getElementById('edit-email') as HTMLInputElement;
+  const btnModifierProfil = document.getElementById('btn-modifier-profil') as HTMLButtonElement;
+  const actionsProfil = document.getElementById('actions-profil') as HTMLElement;
+
+  const CLS_READONLY = 'bg-transparent rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-transparent outline-none transition-colors';
+  const CLS_EDIT = 'bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors';
+
+  function enterEditProfil() {
+    inputName.readOnly = false;
+    inputEmail.readOnly = false;
+    inputName.className = CLS_EDIT;
+    inputEmail.className = CLS_EDIT;
+    btnModifierProfil.style.display = 'none';
+    actionsProfil.style.display = 'flex';
+    inputName.focus();
+  }
+
+  function exitEditProfil() {
+    inputName.readOnly = true;
+    inputEmail.readOnly = true;
+    inputName.className = CLS_READONLY;
+    inputEmail.className = CLS_READONLY;
+    btnModifierProfil.style.display = '';
+    actionsProfil.style.display = 'none';
+    document.getElementById('retour-profil')?.classList.add('hidden');
+  }
+
+  btnModifierProfil.addEventListener('click', enterEditProfil);
+
+  document.getElementById('btn-annuler-profil')?.addEventListener('click', () => {
+    const user = pb.authStore.record as Record<string, any> | null;
+    if (user) { inputName.value = user['name'] || ''; inputEmail.value = user['email'] || ''; }
+    exitEditProfil();
+  });
+
   document.getElementById('form-profil')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-profil') as HTMLButtonElement;
-    const name = (document.getElementById('edit-name') as HTMLInputElement).value.trim();
-    const email = (document.getElementById('edit-email') as HTMLInputElement).value.trim();
-    if (!pb.authStore.model) return;
+    const name = inputName.value.trim();
+    const email = inputEmail.value.trim();
+    if (!pb.authStore.record) return;
     btn.disabled = true;
     try {
-      await pb.collection('users').update(pb.authStore.model['id'], { name, email });
+      await pb.collection('users').update(pb.authStore.record['id'], { name, email });
       await pb.collection('users').authRefresh();
-      const user = pb.authStore.model as Record<string, any>;
+      const user = pb.authStore.record as Record<string, any>;
       (document.getElementById('profil-nom') as HTMLElement).textContent = user['name'] || '';
       (document.getElementById('profil-email') as HTMLElement).textContent = user['email'] || '';
       updateAvatar(user);
       showRetour('retour-profil', true, 'Profil mis à jour.');
+      exitEditProfil();
     } catch (err: any) {
       showRetour('retour-profil', false, err?.message ?? 'Une erreur est survenue.');
     }
     btn.disabled = false;
   });
 
-  // --- Changer mot de passe ---
-  document.getElementById('form-mdp')?.addEventListener('submit', async (e) => {
+  // --- Mode édition mot de passe ---
+  const formMdp = document.getElementById('form-mdp') as HTMLFormElement;
+  const btnModifierMdp = document.getElementById('btn-modifier-mdp') as HTMLButtonElement;
+  const mdpHint = document.getElementById('mdp-hint') as HTMLElement;
+
+  function enterEditMdp() {
+    formMdp.style.display = 'flex';
+    formMdp.style.flexDirection = 'column';
+    mdpHint.style.display = 'none';
+    btnModifierMdp.style.display = 'none';
+    (document.getElementById('old-password') as HTMLInputElement).focus();
+  }
+
+  function exitEditMdp() {
+    formMdp.style.display = 'none';
+    mdpHint.style.display = '';
+    btnModifierMdp.style.display = '';
+    formMdp.reset();
+    document.getElementById('retour-mdp')?.classList.add('hidden');
+  }
+
+  btnModifierMdp.addEventListener('click', enterEditMdp);
+
+  document.getElementById('btn-annuler-mdp')?.addEventListener('click', exitEditMdp);
+
+  formMdp.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-mdp') as HTMLButtonElement;
     const oldPassword = (document.getElementById('old-password') as HTMLInputElement).value;
@@ -304,12 +427,12 @@ import Layout from '../layouts/Layout.astro';
       showRetour('retour-mdp', false, 'Les mots de passe ne correspondent pas.');
       return;
     }
-    if (!pb.authStore.model) return;
+    if (!pb.authStore.record) return;
     btn.disabled = true;
     try {
-      await pb.collection('users').update(pb.authStore.model['id'], { oldPassword, password, passwordConfirm });
+      await pb.collection('users').update(pb.authStore.record['id'], { oldPassword, password, passwordConfirm });
       showRetour('retour-mdp', true, 'Mot de passe modifié avec succès.');
-      (document.getElementById('form-mdp') as HTMLFormElement).reset();
+      setTimeout(exitEditMdp, 1200);
     } catch (err: any) {
       showRetour('retour-mdp', false, err?.message ?? 'Mot de passe actuel incorrect.');
     }
@@ -337,21 +460,111 @@ import Layout from '../layouts/Layout.astro';
 
   document.getElementById('btn-confirm-supprimer')?.addEventListener('click', async () => {
     const password = (document.getElementById('confirm-delete-password') as HTMLInputElement).value;
-    if (!pb.authStore.model) return;
-    const email = pb.authStore.model['email'];
+    if (!pb.authStore.record) return;
+    const email = pb.authStore.record['email'];
     const btn = document.getElementById('btn-confirm-supprimer') as HTMLButtonElement;
     btn.disabled = true;
     try {
-      // Vérifier le mot de passe en se reconnectant
       await pb.collection('users').authWithPassword(email, password);
-      await pb.collection('users').delete(pb.authStore.model['id']);
+      await pb.collection('users').delete(pb.authStore.record['id']);
       pb.authStore.clear();
       window.location.href = '/';
-    } catch (err: any) {
+    } catch {
       showRetour('retour-suppression', false, 'Mot de passe incorrect.');
       btn.disabled = false;
     }
   });
+
+  // --- Favoris ---
+  async function renderFavoris() {
+    const user = pb.authStore.record as Record<string, any> | null;
+    if (!user) return;
+
+    const listeArtistes = document.getElementById('liste-artistes-perf') as HTMLElement;
+    const listeScenes = document.getElementById('liste-scenes-pref') as HTMLElement;
+
+    // Artistes perf
+    const artistesIds: string[] = Array.isArray(user['artistes_perf']) ? user['artistes_perf'] : [];
+    if (artistesIds.length === 0) {
+      listeArtistes.innerHTML = '<p class="font-corps text-marron/40 text-sm">Aucun artiste favori pour le moment.</p>';
+    } else {
+      try {
+        const artistes = await pb.collection('artistes').getFullList({
+          filter: artistesIds.map(id => `id = "${id}"`).join(' || '),
+        });
+        listeArtistes.innerHTML = '';
+        artistes.forEach((artiste: Record<string, any>) => {
+          const el = document.createElement('div');
+          el.className = 'flex items-center justify-between bg-beige-claire rounded-xl px-4 py-3 border-l-4 border-or';
+          el.innerHTML = `
+            <a href="/artistes/${artiste['id']}" class="flex flex-col">
+              <span class="font-titre font-bold text-marron text-sm uppercase hover:text-or transition-colors">${artiste['nom']}</span>
+              ${artiste['genre_musical'] ? `<span class="font-corps text-marron/50 text-xs mt-0.5">${artiste['genre_musical']}</span>` : ''}
+            </a>
+            <button
+              data-remove-artiste="${artiste['id']}"
+              class="w-7 h-7 flex items-center justify-center text-marron/30 hover:text-rouge transition-colors rounded-full hover:bg-rouge/10 cursor-pointer border-none bg-transparent"
+              aria-label="Retirer des favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          `;
+          listeArtistes.appendChild(el);
+        });
+        listeArtistes.querySelectorAll<HTMLButtonElement>('[data-remove-artiste]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.removeArtiste!;
+            btn.disabled = true;
+            await pb.collection('users').update(pb.authStore.record!['id'], { 'artistes_perf-': [id] });
+            await pb.collection('users').authRefresh();
+            renderFavoris();
+          });
+        });
+      } catch {
+        listeArtistes.innerHTML = '<p class="font-corps text-rouge/60 text-sm">Impossible de charger les artistes.</p>';
+      }
+    }
+
+    // Scenes pref
+    const scenesIds: string[] = Array.isArray(user['scenes_pref']) ? user['scenes_pref'] : [];
+    if (scenesIds.length === 0) {
+      listeScenes.innerHTML = '<p class="font-corps text-marron/40 text-sm">Aucune scène favorite pour le moment.</p>';
+    } else {
+      try {
+        const scenes = await pb.collection('scenes').getFullList({
+          filter: scenesIds.map(id => `id = "${id}"`).join(' || '),
+        });
+        listeScenes.innerHTML = '';
+        scenes.forEach((scene: Record<string, any>) => {
+          const el = document.createElement('div');
+          el.className = 'flex items-center justify-between bg-beige-claire rounded-xl px-4 py-3 border-l-4 border-or';
+          el.innerHTML = `
+            <a href="/scenes/${scene['id']}" class="flex flex-col">
+              <span class="font-titre font-bold text-marron text-sm uppercase hover:text-or transition-colors">${scene['nom']}</span>
+              ${scene['capacite'] ? `<span class="font-corps text-marron/50 text-xs mt-0.5">${scene['capacite']} places</span>` : ''}
+            </a>
+            <button
+              data-remove-scene="${scene['id']}"
+              class="w-7 h-7 flex items-center justify-center text-marron/30 hover:text-rouge transition-colors rounded-full hover:bg-rouge/10 cursor-pointer border-none bg-transparent"
+              aria-label="Retirer des favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          `;
+          listeScenes.appendChild(el);
+        });
+        listeScenes.querySelectorAll<HTMLButtonElement>('[data-remove-scene]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.removeScene!;
+            btn.disabled = true;
+            await pb.collection('users').update(pb.authStore.record!['id'], { 'scenes_pref-': [id] });
+            await pb.collection('users').authRefresh();
+            renderFavoris();
+          });
+        });
+      } catch {
+        listeScenes.innerHTML = '<p class="font-corps text-rouge/60 text-sm">Impossible de charger les scènes.</p>';
+      }
+    }
+  }
 
   init();
 </script>

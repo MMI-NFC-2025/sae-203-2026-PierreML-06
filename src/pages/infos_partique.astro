@@ -3,40 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import ticketIcon from '../assets/icons/ticket_purple.svg?url';
 import locateIcon from '../assets/icons/locate.svg?url';
 
-const tarifs = [
-  { label: 'Billet pour 1 soirée', prix: '30€', populaire: false },
-  { label: 'Billet pour 2 soirées', prix: '50€', populaire: true },
-  { label: 'Billet pour 4 soirées', prix: '80€', populaire: false },
-];
-
-const acces = [
-  {
-    titre: 'En Voiture',
-    items: [
-      'Parking gratuit à disposition des festivaliers.',
-      'Accès facilité et fléché depuis les entrées de ville.',
-    ],
-  },
-  {
-    titre: 'En Train',
-    items: [
-      'Gare de Montbéliard à 15 min à pied du Temple Saint-Martin.',
-      'Connexions TGV depuis Belfort et Besançon.',
-    ],
-  },
-  {
-    titre: 'Covoiturage (BlaBlaCar)',
-    items: [
-      'Pour partager la route, recherchez le mot-clé unique "Festicloze" sur l\'application BlaBlaCar.',
-    ],
-  },
-];
-
-const faq = [
-  { question: 'Où se situe exactement le festival ?', reponse: 'Le festival se déroule au Temple Saint-Martin, 4 Place Saint-Martin, 25200 Montbéliard.' },
-  { question: 'Le festival est-il accessible aux familles ?', reponse: 'Oui, le festival accueille tous les publics. L\'entrée est gratuite pour les enfants de moins de 10 ans.' },
-  { question: 'Y a-t-il de la restauration sur place ?', reponse: 'Des espaces de restauration et de convivialité sont ouverts avant et après chaque représentation.' },
-];
 ---
 
 <Layout title="Infos Pratiques — Festicloze">
@@ -67,25 +33,28 @@ const faq = [
         <p class="text-marron/60 text-sm mb-8">* gratuit pour les enfants de moins de 10 ans</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {tarifs.map(t => (
-            <article class={`rounded-[20px] p-8 flex flex-col items-center gap-6 text-center relative ${t.populaire ? 'bg-white border-2 border-or shadow-md' : 'bg-beige'}`}>
-              {t.populaire && (
-                <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-or text-white font-corps font-bold text-xs uppercase tracking-wide px-4 py-1 rounded-full">
-                  Le plus populaire
-                </span>
-              )}
-              <h3 class="font-titre text-lg text-marron">{t.label}</h3>
-              <div class="flex flex-col items-center gap-4 w-full mt-auto">
-                <p class="font-titre text-5xl font-bold text-or">{t.prix}</p>
-                <a
-                  href="/404"
-                  aria-label={`Acheter un ${t.label}`}
-                  class="w-full text-center px-6 py-2.5 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">
-                  Acheter
-                </a>
-              </div>
-            </article>
-          ))}
+          <article class="rounded-[20px] p-8 flex flex-col items-center gap-6 text-center relative bg-beige">
+            <h3 class="font-titre text-lg text-marron">Billet pour 1 soirée</h3>
+            <div class="flex flex-col items-center gap-4 w-full mt-auto">
+              <p class="font-titre text-5xl font-bold text-or">30€</p>
+              <a href="/404" aria-label="Acheter un billet pour 1 soirée" class="w-full text-center px-6 py-2.5 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">Acheter</a>
+            </div>
+          </article>
+          <article class="rounded-[20px] p-8 flex flex-col items-center gap-6 text-center relative bg-white border-2 border-or shadow-md">
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-or text-white font-corps font-bold text-xs uppercase tracking-wide px-4 py-1 rounded-full">Le plus populaire</span>
+            <h3 class="font-titre text-lg text-marron">Billet pour 2 soirées</h3>
+            <div class="flex flex-col items-center gap-4 w-full mt-auto">
+              <p class="font-titre text-5xl font-bold text-or">50€</p>
+              <a href="/404" aria-label="Acheter un billet pour 2 soirées" class="w-full text-center px-6 py-2.5 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">Acheter</a>
+            </div>
+          </article>
+          <article class="rounded-[20px] p-8 flex flex-col items-center gap-6 text-center relative bg-beige">
+            <h3 class="font-titre text-lg text-marron">Billet pour 4 soirées</h3>
+            <div class="flex flex-col items-center gap-4 w-full mt-auto">
+              <p class="font-titre text-5xl font-bold text-or">80€</p>
+              <a href="/404" aria-label="Acheter un billet pour 4 soirées" class="w-full text-center px-6 py-2.5 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">Acheter</a>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -95,19 +64,26 @@ const faq = [
         <h2 class="font-titre text-3xl text-marron leading-none mb-2">Comment venir</h2>
         <div class="h-px w-12 bg-or mb-10"></div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {acces.map(a => (
-            <div class="bg-white border-t-2 border-or rounded-2xl shadow-sm p-6">
-              <h3 class="font-corps font-bold text-marron text-sm uppercase tracking-widest mb-4">{a.titre}</h3>
-              <ul class="list-none p-0 flex flex-col gap-2">
-                {a.items.map(item => (
-                  <li class="flex items-start gap-2 text-marron/80 text-sm">
-                    <span class="w-1.5 h-1.5 rounded-full bg-or shrink-0 mt-1.5 inline-block"></span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div class="bg-white border-t-2 border-or rounded-2xl shadow-sm p-6">
+            <h3 class="font-corps font-bold text-marron text-sm uppercase tracking-widest mb-4">En Voiture</h3>
+            <ul class="list-none p-0 flex flex-col gap-2">
+              <li class="flex items-start gap-2 text-marron/80 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-or shrink-0 mt-1.5 inline-block"></span>Parking gratuit à disposition des festivaliers.</li>
+              <li class="flex items-start gap-2 text-marron/80 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-or shrink-0 mt-1.5 inline-block"></span>Accès facilité et fléché depuis les entrées de ville.</li>
+            </ul>
+          </div>
+          <div class="bg-white border-t-2 border-or rounded-2xl shadow-sm p-6">
+            <h3 class="font-corps font-bold text-marron text-sm uppercase tracking-widest mb-4">En Train</h3>
+            <ul class="list-none p-0 flex flex-col gap-2">
+              <li class="flex items-start gap-2 text-marron/80 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-or shrink-0 mt-1.5 inline-block"></span>Gare de Montbéliard à 15 min à pied du Temple Saint-Martin.</li>
+              <li class="flex items-start gap-2 text-marron/80 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-or shrink-0 mt-1.5 inline-block"></span>Connexions TGV depuis Belfort et Besançon.</li>
+            </ul>
+          </div>
+          <div class="bg-white border-t-2 border-or rounded-2xl shadow-sm p-6">
+            <h3 class="font-corps font-bold text-marron text-sm uppercase tracking-widest mb-4">Covoiturage (BlaBlaCar)</h3>
+            <ul class="list-none p-0 flex flex-col gap-2">
+              <li class="flex items-start gap-2 text-marron/80 text-sm"><span class="w-1.5 h-1.5 rounded-full bg-or shrink-0 mt-1.5 inline-block"></span>Pour partager la route, recherchez le mot-clé unique "Festicloze" sur l'application BlaBlaCar.</li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -117,15 +93,33 @@ const faq = [
         <h2 class="font-titre text-3xl text-marron leading-none mb-2">FAQ</h2>
         <div class="h-px w-12 bg-or mb-10"></div>
         <ul class="list-none p-0 flex flex-col gap-3 mb-10">
-          {faq.map(f => (
-            <li class="bg-white border-l-4 border-or rounded-2xl px-6 py-5">
-              <div class="flex items-center justify-between gap-4 mb-2">
-                <p class="font-corps font-bold text-sm text-marron">{f.question}</p>
-                <span class="text-or font-titre text-xl shrink-0">+</span>
-              </div>
-              <p class="text-marron/60 font-corps text-sm leading-relaxed">{f.reponse}</p>
-            </li>
-          ))}
+          <li class="bg-white border-l-4 border-or rounded-2xl overflow-hidden">
+            <button class="faq-btn w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer bg-transparent border-none" aria-expanded="false" aria-controls="faq-reponse-0">
+              <p class="font-corps font-bold text-sm text-marron">Où se situe exactement le festival ?</p>
+              <span class="faq-icone text-or font-titre text-xl shrink-0 transition-transform duration-300">+</span>
+            </button>
+            <div id="faq-reponse-0" class="faq-reponse px-6 pb-5" style="display:none">
+              <p class="text-marron/60 font-corps text-sm leading-relaxed">Le festival se déroule au Temple Saint-Martin, 4 Place Saint-Martin, 25200 Montbéliard.</p>
+            </div>
+          </li>
+          <li class="bg-white border-l-4 border-or rounded-2xl overflow-hidden">
+            <button class="faq-btn w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer bg-transparent border-none" aria-expanded="false" aria-controls="faq-reponse-1">
+              <p class="font-corps font-bold text-sm text-marron">Le festival est-il accessible aux familles ?</p>
+              <span class="faq-icone text-or font-titre text-xl shrink-0 transition-transform duration-300">+</span>
+            </button>
+            <div id="faq-reponse-1" class="faq-reponse px-6 pb-5" style="display:none">
+              <p class="text-marron/60 font-corps text-sm leading-relaxed">Oui, le festival accueille tous les publics. L'entrée est gratuite pour les enfants de moins de 10 ans.</p>
+            </div>
+          </li>
+          <li class="bg-white border-l-4 border-or rounded-2xl overflow-hidden">
+            <button class="faq-btn w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer bg-transparent border-none" aria-expanded="false" aria-controls="faq-reponse-2">
+              <p class="font-corps font-bold text-sm text-marron">Y a-t-il de la restauration sur place ?</p>
+              <span class="faq-icone text-or font-titre text-xl shrink-0 transition-transform duration-300">+</span>
+            </button>
+            <div id="faq-reponse-2" class="faq-reponse px-6 pb-5" style="display:none">
+              <p class="text-marron/60 font-corps text-sm leading-relaxed">Des espaces de restauration et de convivialité sont ouverts avant et après chaque représentation.</p>
+            </div>
+          </li>
         </ul>
         <div class="text-center">
           <a
@@ -157,3 +151,24 @@ const faq = [
 
   </main>
 </Layout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const reponseId = btn.getAttribute('aria-controls')!;
+      const reponse = document.getElementById(reponseId) as HTMLElement;
+      const icone = btn.querySelector('.faq-icone') as HTMLElement;
+
+      if (expanded) {
+        reponse.style.display = 'none';
+        btn.setAttribute('aria-expanded', 'false');
+        icone.style.transform = 'rotate(0deg)';
+      } else {
+        reponse.style.display = 'block';
+        btn.setAttribute('aria-expanded', 'true');
+        icone.style.transform = 'rotate(45deg)';
+      }
+    });
+  });
+</script>

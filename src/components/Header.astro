@@ -22,7 +22,7 @@ const navLinks = [
   </a>
 
   <!-- Nav desktop -->
-  <nav class="hidden md:flex items-center gap-7">
+  <nav id="nav-desktop" class="hidden md:flex items-center gap-7">
     {navLinks.map(link => (
       <a
         href={link.href}
@@ -80,7 +80,7 @@ const navLinks = [
     </svg>
   </button>
 
-  <ul class="flex flex-col gap-5 list-none p-0 m-0">
+  <ul id="nav-mobile-list" class="flex flex-col gap-5 list-none p-0 m-0">
     {navLinks.map(link => (
       <li>
         <a
@@ -120,11 +120,38 @@ const navLinks = [
     }
   }
 
-  if (pb.authStore.isValid && pb.authStore.model) {
-    const user = pb.authStore.model as Record<string, any>;
+  if (pb.authStore.isValid && pb.authStore.record) {
+    const user = pb.authStore.record as Record<string, any>;
     const desktop = document.getElementById('user-icon-desktop') as HTMLImageElement | null;
     const mobile = document.getElementById('user-icon-mobile') as HTMLImageElement | null;
     if (desktop) applyAvatar(desktop, user);
     if (mobile) applyAvatar(mobile, user);
+
+    // Lien Admin uniquement pour les admins
+    if (user['admin']) {
+      const isAdmin = window.location.pathname === '/admin';
+      const clsDesktop = `font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${isAdmin ? 'text-or' : 'text-marron'}`;
+      const clsMobile = `font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${isAdmin ? 'text-or' : 'text-white'}`;
+
+      const navDesktop = document.getElementById('nav-desktop');
+      if (navDesktop) {
+        const a = document.createElement('a');
+        a.href = '/admin';
+        a.className = clsDesktop;
+        a.textContent = 'Admin';
+        navDesktop.insertBefore(a, navDesktop.lastElementChild);
+      }
+
+      const navMobile = document.getElementById('nav-mobile-list');
+      if (navMobile) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '/admin';
+        a.className = clsMobile;
+        a.textContent = 'Admin';
+        li.appendChild(a);
+        navMobile.appendChild(li);
+      }
+    }
   }
 </script>

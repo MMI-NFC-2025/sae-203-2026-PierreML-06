@@ -3,8 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import CarteArtiste from '../../components/CarteArtiste.astro';
 import { getArtistesByDate, getScenesByNom } from '../../js/backend.mjs';
 
-const triParam = Astro.url.searchParams.get('tri') ?? 'date';
-
 let artistes: any[] = [];
 let scenes: any[] = [];
 let erreur = false;
@@ -16,22 +14,17 @@ try {
   erreur = true;
 }
 
-// Tri alpha côté serveur si demandé
-if (triParam === 'alpha') {
-  artistes = [...artistes].sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
-}
+const genres = [...new Set(artistes.map((a: any) => a.genre_musical).filter(Boolean))].sort() as string[];
 
-// Genres et jours disponibles pour les filtres
-const genres = [...new Set(artistes.map(a => a.genre_musical).filter(Boolean))].sort();
-const jours: { label: string; iso: string }[] = [];
-artistes.forEach(a => {
+const jours: { iso: string; label: string }[] = [];
+artistes.forEach((a: any) => {
   if (a.dates_de_representation) {
-    const iso = a.dates_de_representation.substring(0, 10);
+    const iso = (a.dates_de_representation as string).substring(0, 10);
     if (!jours.find(j => j.iso === iso)) {
-      const label = new Date(iso).toLocaleDateString('fr-FR', {
-        weekday: 'long', day: 'numeric', month: 'long',
+      jours.push({
+        iso,
+        label: new Date(iso).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }),
       });
-      jours.push({ iso, label });
     }
   }
 });
@@ -42,100 +35,186 @@ jours.sort((a, b) => a.iso.localeCompare(b.iso));
   <main class="pt-17.5">
     <section class="max-w-6xl mx-auto px-6 py-12">
 
-      <header class="mb-10">
+      <header class="mb-8">
         <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">À l'affiche</p>
         <h1 class="font-titre text-4xl md:text-5xl text-marron leading-none">Nos Artistes</h1>
         <div class="h-px w-12 bg-or mt-4"></div>
       </header>
 
-      <!-- FILTRES & TRI -->
       {!erreur && artistes.length > 0 && (
-        <div class="mb-10 flex flex-col gap-6">
+        <div class="mb-10 flex flex-col gap-4">
 
-          <!-- Tri -->
-          <div class="flex items-center gap-3 flex-wrap">
-            <span class="font-corps text-marron/50 text-xs uppercase tracking-widest">Trier par</span>
-            <a
-              href="/artistes?tri=date"
-              class={`px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border transition-colors ${triParam === 'date' ? 'bg-marron text-beige-claire border-marron' : 'bg-transparent text-marron border-beige hover:border-marron'}`}>
-              Date
-            </a>
-            <a
-              href="/artistes?tri=alpha"
-              class={`px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border transition-colors ${triParam === 'alpha' ? 'bg-marron text-beige-claire border-marron' : 'bg-transparent text-marron border-beige hover:border-marron'}`}>
-              A — Z
-            </a>
+          <!-- Barre de recherche + tri -->
+          <div class="flex items-center gap-3">
+            <div class="relative flex-1">
+              <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-marron/40 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+              <input
+                id="recherche-artiste"
+                type="text"
+                placeholder="Rechercher un artiste..."
+                class="w-full bg-beige rounded-xl pl-10 pr-4 py-2.5 text-marron text-sm border-b-2 border-transparent focus:border-or outline-none transition-colors font-corps"
+              />
+            </div>
+            <button data-sort="date" class="filtre-sort shrink-0 px-4 py-2.5 rounded-xl text-xs font-corps font-bold uppercase tracking-wide border cursor-pointer transition-colors bg-marron text-beige-claire border-marron">Date</button>
+            <button data-sort="alpha" class="filtre-sort shrink-0 px-4 py-2.5 rounded-xl text-xs font-corps font-bold uppercase tracking-wide border cursor-pointer transition-colors bg-transparent text-marron border-beige hover:border-marron">A — Z</button>
           </div>
 
-          <!-- Filtres par jour -->
-          {jours.length > 0 && (
-            <div class="flex items-center gap-3 flex-wrap">
-              <span class="font-corps text-marron/50 text-xs uppercase tracking-widest">Par jour</span>
-              {jours.map(j => (
-                <a
-                  href={`/artistes/jour/${j.iso}`}
-                  class="px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border border-beige text-marron hover:border-or hover:text-or transition-colors">
-                  {new Date(j.iso).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}
-                </a>
-              ))}
-            </div>
-          )}
-
-          <!-- Filtres par genre -->
-          {genres.length > 0 && (
-            <div class="flex items-center gap-3 flex-wrap">
-              <span class="font-corps text-marron/50 text-xs uppercase tracking-widest">Par genre</span>
-              {genres.map(g => (
-                <a
-                  href={`/artistes/genre/${encodeURIComponent(g)}`}
-                  class="px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border border-beige text-marron hover:border-or hover:text-or transition-colors">
-                  {g}
-                </a>
-              ))}
-            </div>
-          )}
-
-          <!-- Filtres par scène -->
-          {scenes.length > 0 && (
-            <div class="flex items-center gap-3 flex-wrap">
-              <span class="font-corps text-marron/50 text-xs uppercase tracking-widest">Par scène</span>
-              {scenes.map(s => (
-                <a
-                  href={`/artistes/scene/${s.id}`}
-                  class="px-4 py-1.5 rounded-full text-xs font-corps font-bold uppercase tracking-wide border border-beige text-marron hover:border-or hover:text-or transition-colors">
-                  {s.nom}
-                </a>
-              ))}
-            </div>
-          )}
+          <!-- Filtres dropdown -->
+          <div class="flex flex-wrap items-center gap-3">
+            {jours.length > 0 && (
+              <div class="flex flex-col gap-1">
+                <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">Jour</label>
+                <select id="filtre-jour" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
+                  <option value="">Tous les jours</option>
+                  {jours.map(j => (
+                    <option value={j.iso}>{j.label}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {genres.length > 0 && (
+              <div class="flex flex-col gap-1">
+                <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">Genre</label>
+                <select id="filtre-genre" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
+                  <option value="">Tous les genres</option>
+                  {genres.map(g => (
+                    <option value={g}>{g}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {scenes.length > 0 && (
+              <div class="flex flex-col gap-1">
+                <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">Scène</label>
+                <select id="filtre-scene" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
+                  <option value="">Toutes les scènes</option>
+                  {scenes.map(s => (
+                    <option value={s.id}>{s.nom}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
 
         </div>
       )}
 
-      {erreur && (
-        <p class="text-center text-marron/60 py-20">Impossible de charger les artistes. Veuillez réessayer plus tard.</p>
-      )}
-
-      {!erreur && artistes.length === 0 && (
-        <p class="text-center text-marron/60 py-20">Aucun artiste pour le moment.</p>
-      )}
+      {erreur && <p class="text-center text-marron/60 py-20">Impossible de charger les artistes. Veuillez réessayer plus tard.</p>}
+      {!erreur && artistes.length === 0 && <p class="text-center text-marron/60 py-20">Aucun artiste pour le moment.</p>}
 
       {!erreur && artistes.length > 0 && (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {artistes.map((artiste) => (
-            <CarteArtiste
-              artiste={artiste}
-              date={artiste.dates_de_representation
+        <>
+          <p id="aucun-resultat" class="text-center text-marron/60 py-10 hidden font-corps text-sm">Aucun artiste ne correspond à votre recherche.</p>
+          <div id="grille-artistes" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {artistes.map((artiste: any) => {
+              const jour = artiste.dates_de_representation
+                ? (artiste.dates_de_representation as string).substring(0, 10)
+                : '';
+              const dateLabel = artiste.dates_de_representation
                 ? new Date(artiste.dates_de_representation).toLocaleDateString('fr-FR', {
                     weekday: 'long', day: 'numeric', month: 'long',
                   })
-                : null}
-              scene_nom={artiste.expand?.scene?.nom ?? null}
-            />
-          ))}
-        </div>
+                : null;
+              const scene_nom = artiste.expand?.scene?.nom ?? null;
+              const scene_id = (artiste.scene as string) ?? '';
+              return (
+                <div
+                  data-nom={artiste.nom.toLowerCase()}
+                  data-genre-label={(artiste.genre_musical ?? '').toLowerCase()}
+                  data-date={artiste.dates_de_representation ?? ''}
+                  data-jour={jour}
+                  data-genre={artiste.genre_musical ?? ''}
+                  data-scene={scene_id}
+                >
+                  <CarteArtiste artiste={artiste} date={dateLabel} scene_nom={scene_nom} />
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
     </section>
   </main>
 </Layout>
+
+<script>
+  import { initFavBtns } from '../../js/favoris.mjs';
+  initFavBtns();
+
+  const grille = document.getElementById('grille-artistes');
+  const aucunResultat = document.getElementById('aucun-resultat');
+  if (!grille) throw new Error();
+
+  const ACTIF = 'bg-marron text-beige-claire border-marron';
+  const INACTIF_SORT = 'bg-transparent text-marron border-beige hover:border-marron';
+
+  let activeJour = '';
+  let activeGenre = '';
+  let activeScene = '';
+  let activeSort = 'date';
+  let recherche = '';
+
+  function cards(): HTMLElement[] {
+    return Array.from(grille!.children) as HTMLElement[];
+  }
+
+  function applyFilters() {
+    let visible = 0;
+    cards().forEach(card => {
+      const match =
+        (!activeJour  || card.dataset.jour  === activeJour)  &&
+        (!activeGenre || card.dataset.genre === activeGenre) &&
+        (!activeScene || card.dataset.scene === activeScene) &&
+        (!recherche   || (card.dataset.nom ?? '').includes(recherche) || (card.dataset.genreLabel ?? '').includes(recherche));
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    if (aucunResultat) aucunResultat.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function applySort() {
+    const sorted = cards().sort((a, b) => {
+      if (activeSort === 'alpha') return (a.dataset.nom ?? '').localeCompare(b.dataset.nom ?? '', 'fr');
+      return (a.dataset.date ?? '').localeCompare(b.dataset.date ?? '');
+    });
+    sorted.forEach(c => grille!.appendChild(c));
+  }
+
+  function updateSortBtns(sort: string) {
+    document.querySelectorAll<HTMLElement>('[data-sort]').forEach(btn => {
+      const isActif = btn.dataset.sort === sort;
+      btn.className = `filtre-sort shrink-0 px-4 py-2.5 rounded-xl text-xs font-corps font-bold uppercase tracking-wide border cursor-pointer transition-colors ${isActif ? ACTIF : INACTIF_SORT}`;
+    });
+  }
+
+  document.getElementById('recherche-artiste')?.addEventListener('input', (e) => {
+    recherche = (e.target as HTMLInputElement).value.toLowerCase().trim();
+    applyFilters();
+  });
+
+  document.getElementById('filtre-jour')?.addEventListener('change', (e) => {
+    activeJour = (e.target as HTMLSelectElement).value;
+    applyFilters();
+  });
+
+  document.getElementById('filtre-genre')?.addEventListener('change', (e) => {
+    activeGenre = (e.target as HTMLSelectElement).value;
+    applyFilters();
+  });
+
+  document.getElementById('filtre-scene')?.addEventListener('change', (e) => {
+    activeScene = (e.target as HTMLSelectElement).value;
+    applyFilters();
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-sort]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeSort = btn.dataset.sort!;
+      updateSortBtns(activeSort);
+      applySort();
+    });
+  });
+</script>

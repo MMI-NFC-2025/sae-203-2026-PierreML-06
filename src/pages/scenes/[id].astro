@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import PbImage from '../../components/PbImage.astro';
 import pb from '../../js/backend.mjs';
+import starEmpty from '../../assets/icons/favorite.png?url';
+import starFilled from '../../assets/icons/favorite_filled.png?url';
 
 const { id } = Astro.params;
 
@@ -15,9 +17,7 @@ try {
   notFound = true;
 }
 
-if (notFound) {
-  return Astro.redirect('/404');
-}
+if (notFound) return Astro.redirect('/404');
 
 try {
   artistes = await pb.collection('artistes').getFullList({
@@ -29,92 +29,152 @@ try {
 
 <Layout title={`${scene.nom} — Festicloze`}>
   <main class="pt-17.5">
-    <div class="max-w-4xl mx-auto px-6 py-12">
 
-      <div class="mb-8">
-        <a href="/scenes" class="inline-flex items-center gap-2 text-marron/50 hover:text-or text-xs font-corps font-bold uppercase tracking-widest transition-colors">
-          &larr; Nos scènes
-        </a>
+    <!-- HERO -->
+    <div class="relative h-72 md:h-105 overflow-hidden">
+      <PbImage
+        record={scene}
+        recordImage={scene.photo}
+        alt={scene.nom}
+        class="w-full h-full object-cover"
+        width={1200}
+        height={420}
+      />
+      <div class="absolute inset-0 bg-linear-to-t from-marron/80 via-marron/30 to-transparent"></div>
+
+      <!-- Bouton retour -->
+      <a href="/scenes" class="absolute top-6 left-6 inline-flex items-center gap-2 text-white/70 hover:text-white text-xs font-corps font-bold uppercase tracking-widest transition-colors bg-marron/30 backdrop-blur-sm px-4 py-2 rounded-full">
+        &larr; Scènes
+      </a>
+
+      <!-- Bouton favori -->
+      <button
+        id="fav-btn-detail"
+        class="fav-btn absolute top-6 right-6 w-10 h-10 flex items-center justify-center bg-marron/40 backdrop-blur-sm rounded-full hover:bg-marron/60 transition-colors cursor-pointer border-none"
+        data-type="scene"
+        data-id={scene.id}
+        aria-label="Ajouter aux favoris"
+        style="display:none">
+        <img src={starEmpty} alt="" class="star-empty w-5 h-5" />
+        <img src={starFilled} alt="" class="star-filled hidden w-5 h-5" />
+      </button>
+
+      <!-- Titre en bas du hero -->
+      <div class="absolute bottom-0 left-0 right-0 px-6 pb-8 md:px-10">
+        <p class="font-corps text-or/80 text-xs uppercase tracking-[4px] mb-2">Lieu de représentation</p>
+        <h1 class="font-titre text-3xl md:text-5xl text-white leading-tight">{scene.nom}</h1>
       </div>
+    </div>
 
-      <!-- PHOTO + INFOS -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start mb-12">
+    <!-- CONTENU -->
+    <div class="max-w-4xl mx-auto px-6 py-10">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
 
-        <div class="w-full rounded-2xl overflow-hidden max-h-96 shadow-lg">
-          <PbImage
-            record={scene}
-            recordImage={scene.photo}
-            alt={scene.nom}
-            class="w-full max-h-96 object-cover"
-            width={600}
-            height={384}
-          />
-        </div>
-
-        <div class="flex flex-col gap-6">
-          <div>
-            <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Lieu de représentation</p>
-            <h1 class="font-titre text-[clamp(22px,4vw,36px)] font-bold text-marron leading-tight">{scene.nom}</h1>
-          </div>
-
+        <!-- COLONNE GAUCHE : description + artistes -->
+        <div class="md:col-span-2 flex flex-col gap-8">
           {scene.description && (
-            <p class="text-marron/80 text-sm leading-relaxed">{scene.description}</p>
+            <div>
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">À propos</p>
+              <p class="text-marron/80 text-sm leading-relaxed">{scene.description}</p>
+            </div>
           )}
 
-          <div class="flex flex-col gap-3">
-            {scene.capacite && (
-              <div class="bg-beige rounded-xl px-5 py-4">
-                <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Capacité</p>
-                <p class="font-corps text-marron text-sm font-bold">{scene.capacite} places</p>
+          <button
+            id="fav-text-btn"
+            class="self-start inline-block px-8 py-3 border border-or text-or font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-or hover:text-marron transition-colors cursor-pointer"
+            style="display:none">
+            Ajouter aux favoris
+          </button>
+
+          {artistes.length > 0 && (
+            <section>
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Programmation</p>
+              <h2 class="font-titre text-2xl text-marron mb-5">Artistes à l'affiche</h2>
+              <div class="flex flex-col gap-3">
+                {artistes.map((artiste) => {
+                  const date = artiste.dates_de_representation
+                    ? new Date(artiste.dates_de_representation).toLocaleDateString('fr-FR', {
+                        weekday: 'short', day: 'numeric', month: 'short',
+                      })
+                    : null;
+                  return (
+                    <a
+                      href={`/artistes/${artiste.id}`}
+                      class="flex items-center justify-between bg-white border-l-4 border-or rounded-2xl px-5 py-4 hover:-translate-y-0.5 transition-transform shadow-sm group"
+                    >
+                      <div>
+                        <p class="font-titre font-bold text-marron uppercase text-sm group-hover:text-or transition-colors">
+                          {artiste.nom}
+                        </p>
+                        {artiste.genre_musical && (
+                          <p class="text-marron/50 text-xs font-corps mt-0.5">{artiste.genre_musical}</p>
+                        )}
+                      </div>
+                      {date && <time class="text-or text-sm font-semibold font-corps shrink-0">{date}</time>}
+                    </a>
+                  );
+                })}
               </div>
-            )}
-            {scene.localisation?.latitude !== 0 && scene.localisation?.longitude !== 0 && (
-              <div class="bg-beige rounded-xl px-5 py-4">
-                <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Localisation</p>
-                <a
-                  href={`https://www.openstreetmap.org/?mlat=${scene.localisation.latitude}&mlon=${scene.localisation.longitude}&zoom=16`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="font-corps text-marron text-sm font-bold hover:text-or transition-colors underline">
-                  Voir sur la carte
-                </a>
-              </div>
-            )}
-          </div>
+            </section>
+          )}
+        </div>
+
+        <!-- COLONNE DROITE : infos pratiques -->
+        <div class="flex flex-col gap-3">
+          {scene.capacite && (
+            <div class="bg-beige rounded-2xl p-5">
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Capacité</p>
+              <p class="font-corps text-marron text-sm font-semibold">{scene.capacite} places</p>
+            </div>
+          )}
+          {scene.localisation?.latitude !== 0 && scene.localisation?.longitude !== 0 && (
+            <div class="bg-beige rounded-2xl p-5">
+              <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Localisation</p>
+              <a
+                href={`https://www.openstreetmap.org/?mlat=${scene.localisation.latitude}&mlon=${scene.localisation.longitude}&zoom=16`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-corps text-marron text-sm font-semibold hover:text-or transition-colors underline">
+                Voir sur la carte
+              </a>
+            </div>
+          )}
         </div>
 
       </div>
-
-      <!-- ARTISTES À L'AFFICHE -->
-      {artistes.length > 0 && (
-        <section>
-          <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Programmation</p>
-          <h2 class="font-titre text-2xl text-marron mb-6">Artistes à l'affiche</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {artistes.map((artiste) => {
-              const date = artiste.dates_de_representation
-                ? new Date(artiste.dates_de_representation).toLocaleDateString('fr-FR', {
-                    weekday: 'short', day: 'numeric', month: 'short',
-                  })
-                : null;
-              return (
-                <div class="bg-white border-t-2 border-or rounded-2xl p-5 flex items-center justify-between hover:-translate-y-0.5 transition-transform shadow-sm">
-                  <div>
-                    <a href={`/artistes/${artiste.id}`} class="font-titre font-bold text-marron uppercase text-sm hover:text-or transition-colors">
-                      {artiste.nom}
-                    </a>
-                    {artiste.genre_musical && (
-                      <p class="text-marron/50 text-xs font-corps mt-0.5">{artiste.genre_musical}</p>
-                    )}
-                  </div>
-                  {date && <time class="text-or text-sm font-semibold font-corps shrink-0">{date}</time>}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
     </div>
   </main>
 </Layout>
+
+<script>
+  import pb from '../../js/backend.mjs';
+  import { initFavBtns, isFavoriScene, toggleFavoriScene } from '../../js/favoris.mjs';
+  initFavBtns();
+
+  const textBtn = document.getElementById('fav-text-btn') as HTMLButtonElement | null;
+  if (textBtn && pb.authStore.isValid) {
+    const starBtn = document.querySelector<HTMLElement>('.fav-btn[data-type="scene"]');
+    const id = starBtn?.dataset.id ?? '';
+
+    function syncTextBtn() {
+      const isFav = isFavoriScene(id);
+      textBtn!.textContent = isFav ? 'Supprimer des favoris' : 'Ajouter aux favoris';
+      textBtn!.style.display = '';
+    }
+    syncTextBtn();
+
+    textBtn.addEventListener('click', async () => {
+      textBtn.disabled = true;
+      await toggleFavoriScene(id);
+      syncTextBtn();
+      const empty = starBtn?.querySelector<HTMLImageElement>('.star-empty');
+      const filled = starBtn?.querySelector<HTMLImageElement>('.star-filled');
+      if (empty && filled) {
+        const isFav = isFavoriScene(id);
+        empty.classList.toggle('hidden', isFav);
+        filled.classList.toggle('hidden', !isFav);
+      }
+      textBtn.disabled = false;
+    });
+  }
+</script>

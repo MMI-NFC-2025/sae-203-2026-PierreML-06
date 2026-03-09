@@ -74,6 +74,19 @@ const sceneEditee = idParam ? scenes.find(s => s.id === idParam) : null;
               </div>
 
               <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Photo principale</label>
+                {artisteEdite?.photo_principale && (
+                  <img
+                    src={`https://pbsae203.pierre-mouilleseaux-lhuillier.fr/api/files/artistes/${artisteEdite.id}/${artisteEdite.photo_principale}`}
+                    alt="Photo actuelle"
+                    class="w-full h-32 object-cover rounded-xl mb-2"
+                  />
+                )}
+                <input type="file" name="photo_principale" accept="image/*"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-corps file:font-bold file:uppercase file:bg-marron file:text-beige-claire cursor-pointer" />
+              </div>
+
+              <div class="flex flex-col gap-1.5">
                 <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Date de représentation</label>
                 <input type="datetime-local" name="dates_de_representation"
                   value={artisteEdite?.dates_de_representation ? artisteEdite.dates_de_representation.substring(0, 16) : ''}
@@ -133,6 +146,19 @@ const sceneEditee = idParam ? scenes.find(s => s.id === idParam) : null;
                   class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors" />
               </div>
 
+              <div class="flex flex-col gap-1.5">
+                <label class="font-corps text-xs font-bold text-marron/60 uppercase tracking-widest">Photo</label>
+                {sceneEditee?.photo && (
+                  <img
+                    src={`https://pbsae203.pierre-mouilleseaux-lhuillier.fr/api/files/scenes/${sceneEditee.id}/${sceneEditee.photo}`}
+                    alt="Photo actuelle"
+                    class="w-full h-32 object-cover rounded-xl mb-2"
+                  />
+                )}
+                <input type="file" name="photo" accept="image/*"
+                  class="bg-beige-claire rounded-xl px-4 py-3 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-corps file:font-bold file:uppercase file:bg-marron file:text-beige-claire cursor-pointer" />
+              </div>
+
               <div id="retour-scene" class="hidden text-sm font-corps px-4 py-3 rounded-xl"></div>
 
               <div class="flex gap-3">
@@ -158,7 +184,7 @@ const sceneEditee = idParam ? scenes.find(s => s.id === idParam) : null;
               <h2 class="font-corps font-bold text-marron text-xs uppercase tracking-widest mb-4">
                 Artistes existants ({artistes.length})
               </h2>
-              <ul class="flex flex-col gap-2 max-h-[600px] overflow-y-auto pr-1">
+              <ul class="flex flex-col gap-2 max-h-150 overflow-y-auto pr-1">
                 {artistes.map(a => (
                   <li class="bg-white rounded-xl px-4 py-3 flex items-center justify-between gap-3 border-l-2 border-or shadow-sm">
                     <div>
@@ -204,7 +230,12 @@ const sceneEditee = idParam ? scenes.find(s => s.id === idParam) : null;
 </Layout>
 
 <script>
-  import pb, { saveArtiste, saveScene } from '../js/backend.mjs';
+  import pb from '../js/backend.mjs';
+
+  // Protection : réservé aux admins
+  if (!pb.authStore.isValid || !pb.authStore.record?.['admin']) {
+    window.location.href = '/';
+  }
 
   function showRetour(el: HTMLElement, ok: boolean, msg: string) {
     el.textContent = msg;
@@ -216,20 +247,28 @@ const sceneEditee = idParam ? scenes.find(s => s.id === idParam) : null;
   if (formArtiste) {
     formArtiste.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const fd = new FormData(formArtiste);
+      const raw = new FormData(formArtiste);
       const retour = document.getElementById('retour-artiste') as HTMLElement;
       try {
-        const data: Record<string, any> = {
-          nom: fd.get('nom'),
-          genre_musical: fd.get('genre_musical'),
-          description: fd.get('description'),
-          dates_de_representation: fd.get('dates_de_representation') || null,
-          scene: fd.get('scene') || null,
-        };
-        const id = fd.get('id') as string;
-        await saveArtiste(data, id || null);
-        showRetour(retour, true, id ? 'Artiste mis à jour.' : 'Artiste ajouté.');
-        if (!id) formArtiste.reset();
+        const id = (raw.get('id') as string) || '';
+        const fd = new FormData();
+        fd.append('nom', raw.get('nom') as string);
+        fd.append('genre_musical', raw.get('genre_musical') as string);
+        fd.append('description', raw.get('description') as string);
+        const dateVal = raw.get('dates_de_representation') as string;
+        if (dateVal) fd.append('dates_de_representation', dateVal);
+        const sceneVal = raw.get('scene') as string;
+        if (sceneVal) fd.append('scene', sceneVal);
+        const file = raw.get('photo_principale') as File;
+        if (file && file.size > 0) fd.append('photo_principale', file);
+        if (id) {
+          await pb.collection('artistes').update(id, fd);
+          showRetour(retour, true, 'Artiste mis à jour.');
+        } else {
+          await pb.collection('artistes').create(fd);
+          showRetour(retour, true, 'Artiste ajouté.');
+          formArtiste.reset();
+        }
       } catch (err: any) {
         showRetour(retour, false, 'Erreur : ' + (err.message ?? 'inconnue'));
       }
@@ -240,18 +279,25 @@ const sceneEditee = idParam ? scenes.find(s => s.id === idParam) : null;
   if (formScene) {
     formScene.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const fd = new FormData(formScene);
+      const raw = new FormData(formScene);
       const retour = document.getElementById('retour-scene') as HTMLElement;
       try {
-        const data: Record<string, any> = {
-          nom: fd.get('nom'),
-          description: fd.get('description'),
-          capacite: fd.get('capacite') ? Number(fd.get('capacite')) : null,
-        };
-        const id = fd.get('id') as string;
-        await saveScene(data, id || null);
-        showRetour(retour, true, id ? 'Scène mise à jour.' : 'Scène ajoutée.');
-        if (!id) formScene.reset();
+        const id = (raw.get('id') as string) || '';
+        const fd = new FormData();
+        fd.append('nom', raw.get('nom') as string);
+        fd.append('description', raw.get('description') as string);
+        const capaciteVal = raw.get('capacite') as string;
+        if (capaciteVal) fd.append('capacite', capaciteVal);
+        const file = raw.get('photo') as File;
+        if (file && file.size > 0) fd.append('photo', file);
+        if (id) {
+          await pb.collection('scenes').update(id, fd);
+          showRetour(retour, true, 'Scène mise à jour.');
+        } else {
+          await pb.collection('scenes').create(fd);
+          showRetour(retour, true, 'Scène ajoutée.');
+          formScene.reset();
+        }
       } catch (err: any) {
         showRetour(retour, false, 'Erreur : ' + (err.message ?? 'inconnue'));
       }

@@ -1,5 +1,7 @@
 ---
 import PbImage from './PbImage.astro';
+import starEmpty from '../assets/icons/favorite.png?url';
+import starFilled from '../assets/icons/favorite_filled.png?url';
 
 interface Props {
   artiste: any;
@@ -10,7 +12,16 @@ interface Props {
 const { artiste, date, scene_nom } = Astro.props;
 ---
 
-<article class="group bg-white rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md border-t-2 border-or">
+<article class="group relative bg-white rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md border-t-2 border-or">
+  <button
+    class="fav-btn absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center bg-marron/40 backdrop-blur-sm rounded-full hover:bg-marron/60 transition-colors cursor-pointer border-none"
+    data-type="artiste"
+    data-id={artiste.id}
+    aria-label="Ajouter aux favoris"
+    style="display:none">
+    <img src={starEmpty} alt="" class="star-empty w-4 h-4" />
+    <img src={starFilled} alt="" class="star-filled hidden w-4 h-4" />
+  </button>
   <a href={`/artistes/${artiste.id}`} class="block h-full">
     <div class="relative w-full h-52 overflow-hidden">
       <PbImage
