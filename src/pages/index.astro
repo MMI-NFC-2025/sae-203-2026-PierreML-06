@@ -6,173 +6,250 @@ import img1 from '../assets/img/image_display4.avif';
 import img2 from '../assets/img/image_display3.avif';
 import img3 from '../assets/img/image_display2.avif';
 import img4 from '../assets/img/image_display1.avif';
+
+const carouselItems = [
+  { jour: 'Jour 1', date: 'Sam. 20 déc.', src: img1, alt: "L'Orfeo", titre: "L'Orfeo", ensemble: 'Il Giardino Armonico', sous: "Aux origines de l'opéra" },
+  { jour: 'Jour 2', date: 'Dim. 21 déc.', src: img2, alt: 'Armide', titre: 'Armide', ensemble: 'Les Arts Florissants', sous: 'Sous le règne du Roi-Soleil' },
+  { jour: 'Jour 3', date: 'Lun. 22 déc.', src: img3, alt: 'Giulio Cesare', titre: 'Giulio Cesare', ensemble: 'Les Talens Lyriques', sous: 'Passions et virtuosité' },
+  { jour: 'Jour 4', date: 'Mar. 23 déc.', src: img4, alt: 'Grand Final de Noel', titre: 'Grand Final de Noël', ensemble: 'Il Seminario Musicale', sous: 'La fête baroque' },
+];
+
+const partenaires = [
+  'Ville de Montbéliard',
+  'Pays de Montbéliard Agglomération',
+  'Région Bourgogne-Franche-Comté',
+  'MA Scène Nationale',
+  'Conservatoire du Pays de Montbéliard',
+  'France Bleu Belfort-Montbéliard',
+  "L'Est Républicain",
+  'Crédit Mutuel',
+];
 ---
 
 <Layout title="Festicloze — Accueil">
   <main>
 
-    <!-- HERO -->
+    <!-- ===== HERO ===== -->
     <section class="relative h-screen flex flex-col justify-center items-center overflow-hidden">
       <div class="absolute inset-0">
         <Image
           src={heroImg}
-          alt="Ambiance lumineuse et festive du festival"
+          alt="Ambiance lumineuse et festive du festival baroque de Noël"
           class="w-full h-full object-cover"
         />
-        <div class="absolute inset-0 bg-marron/55"></div>
+        <div class="absolute inset-0 bg-marron/60"></div>
       </div>
 
       <!-- Mobile : colonne centrée / Desktop : 2 colonnes -->
-      <div class="relative z-10 w-full max-w-6xl mx-auto px-8 flex flex-col items-center gap-6 md:flex-row md:justify-between md:items-center">
+      <div class="relative z-10 w-full max-w-6xl mx-auto px-8 flex flex-col items-center gap-8 md:flex-row md:justify-between md:items-center">
 
-        <!-- Gauche : titre + badge + bouton -->
-        <div class="flex flex-col items-center gap-4 md:items-start">
+        <!-- Gauche -->
+        <div class="flex flex-col items-center gap-5 md:items-start">
           <div class="flex flex-col items-center gap-3 md:items-start">
-            <h1 class="font-titre text-[clamp(40px,8vw,70px)] font-bold text-beige-claire leading-none tracking-widest text-center md:text-left">FESTICLOZE</h1>
-            <span class="px-5 py-1.5 bg-beige text-vert font-corps font-bold text-sm rounded-full">
-              noël 2025
+            <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Festival Baroque de Noël</p>
+            <h1 class="font-titre text-[clamp(44px,8vw,72px)] font-normal text-beige-claire leading-none tracking-widest text-center md:text-left">FESTICLOZE</h1>
+            <div class="h-px w-16 bg-or"></div>
+            <span class="px-5 py-1.5 bg-beige text-vert font-corps font-bold text-xs tracking-widest rounded-full uppercase">
+              Noël 2025
             </span>
           </div>
-          <a href="/404" class="inline-block px-8 py-3 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform shadow-lg">
-            Billeterie
+          <p class="text-beige-claire/70 text-sm text-center md:text-left font-corps hidden md:block max-w-xs leading-relaxed">
+            Quatre soirées d'opéra baroque au Temple Saint-Martin de Montbéliard.
+          </p>
+          <a href="/infos_partique" class="inline-block px-8 py-3 bg-rouge text-white font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform shadow-lg">
+            Billetterie
           </a>
         </div>
 
         <!-- Droite : cercle date -->
-        <div class="flex items-center justify-center w-64 h-64 md:w-80 md:h-80 bg-vert rounded-full shrink-0">
-          <p class="text-white font-corps font-bold text-base md:text-lg text-center leading-relaxed tracking-widest m-0">
-            DU 20 au 23 Décembre<br />2025
+        <div class="flex flex-col items-center justify-center w-64 h-64 md:w-80 md:h-80 bg-vert rounded-full shrink-0 gap-2">
+          <p class="text-white/60 font-corps text-xs uppercase tracking-widest">Dates</p>
+          <p class="text-white font-corps font-bold text-base md:text-lg text-center leading-snug tracking-wider m-0">
+            DU 20 AU 23<br />DÉCEMBRE 2025
           </p>
+          <div class="h-px w-8 bg-white/40 my-1"></div>
+          <p class="text-white/70 font-corps text-xs text-center tracking-wide">Montbéliard</p>
         </div>
 
       </div>
+
+      <!-- Indicateur de scroll -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+        <span class="text-beige-claire/50 font-corps text-xs uppercase tracking-widest">Découvrir</span>
+        <div class="w-px h-8 bg-beige-claire/30 animate-pulse"></div>
+      </div>
     </section>
 
-    <!-- PROGRAMMATION CAROUSEL -->
-    <section class="py-16 bg-beige-claire">
-      <header class="text-center mb-10">
-        <h2 class="inline-block px-6 py-2 bg-beige border border-beige rounded-full text-marron font-corps text-sm uppercase tracking-widest font-semibold">
-          Programmation
-        </h2>
-      </header>
+    <!-- ===== TEASER FESTIVAL ===== -->
+    <section class="bg-marron py-20 px-8">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-6">Temple Saint-Martin, Montbéliard</p>
+        <blockquote class="font-titre text-2xl md:text-3xl text-beige-claire leading-relaxed mb-8 font-normal">
+          "Une rencontre unique entre l'excellence baroque, le patrimoine historique et la magie de Noël."
+        </blockquote>
+        <div class="h-px w-12 bg-or mx-auto mb-8"></div>
+        <p class="text-beige-claire/60 font-corps text-sm leading-relaxed max-w-xl mx-auto mb-10">
+          Festicloze réunit chaque décembre les plus grands ensembles baroques européens dans le cadre exceptionnel
+          du Temple Saint-Martin. Quatre soirées, quatre univers musicaux, une seule ambiance.
+        </p>
+        <a href="/festival" class="inline-block px-8 py-3 border border-or text-or font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-or hover:text-marron transition-colors">
+          L'esprit du festival
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== PROGRAMMATION CAROUSEL ===== -->
+    <section class="py-20 bg-beige-claire">
+      <div class="max-w-6xl mx-auto px-6 mb-12">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-2">Programme</p>
+            <h2 class="font-titre text-3xl md:text-4xl text-marron leading-none">La Programmation</h2>
+          </div>
+          <a href="/programmation" class="font-corps text-xs font-bold text-marron/50 uppercase tracking-widest hover:text-or transition-colors self-start sm:self-auto">
+            Voir tout &rarr;
+          </a>
+        </div>
+      </div>
 
       <div class="relative max-w-6xl mx-auto px-10">
         <button
           id="btn-gauche"
           aria-label="Défiler vers la gauche"
-          class="hidden md:flex absolute left-0 top-1/2 -translate-y-8 z-10 w-10 h-10 bg-beige-claire border border-beige rounded-full items-center justify-center shadow hover:bg-beige transition-colors cursor-pointer">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          class="hidden md:flex absolute left-0 top-1/2 -translate-y-10 z-10 w-10 h-10 bg-beige-claire border border-beige rounded-full items-center justify-center shadow hover:bg-beige transition-colors cursor-pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
 
         <div
           id="carrouselProgrammation"
-          class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4"
+          class="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4"
           style="scrollbar-width: none; -ms-overflow-style: none;">
 
-          <article class="snap-start shrink-0 w-70 md:w-[calc(25%-18px)] bg-beige rounded-[20px] overflow-hidden hover:-translate-y-1 transition-transform">
-            <h3 class="font-corps text-xs font-semibold uppercase tracking-wider text-marron/60 px-5 pt-5 pb-2">Jour 1 — Samedi 20/12</h3>
-            <a href="/artistes" class="block">
-              <Image src={img1} alt="Scène de l'opéra L'Orfeo" class="w-full h-48 object-cover" />
-              <div class="p-5">
-                <p class="font-titre font-bold text-marron uppercase text-base mb-1">L'Orfeo</p>
-                <p class="text-marron/80 text-sm font-semibold mb-1">Il Giardino Armonico</p>
-                <p class="text-marron/60 text-sm">Aux origines de l'opéra</p>
-              </div>
-            </a>
-          </article>
-
-          <article class="snap-start shrink-0 w-70 md:w-[calc(25%-18px)] bg-beige rounded-[20px] overflow-hidden hover:-translate-y-1 transition-transform">
-            <h3 class="font-corps text-xs font-semibold uppercase tracking-wider text-marron/60 px-5 pt-5 pb-2">Jour 2 — Dimanche 21/12</h3>
-            <a href="/artistes" class="block">
-              <Image src={img2} alt="Spectacle Armide - Les Arts Florissants" class="w-full h-48 object-cover" />
-              <div class="p-5">
-                <p class="font-titre font-bold text-marron uppercase text-base mb-1">Armide</p>
-                <p class="text-marron/80 text-sm font-semibold mb-1">Les Arts Florissants</p>
-                <p class="text-marron/60 text-sm">Sous le règne du Roi-Soleil</p>
-              </div>
-            </a>
-          </article>
-
-          <article class="snap-start shrink-0 w-70 md:w-[calc(25%-18px)] bg-beige rounded-[20px] overflow-hidden hover:-translate-y-1 transition-transform">
-            <h3 class="font-corps text-xs font-semibold uppercase tracking-wider text-marron/60 px-5 pt-5 pb-2">Jour 3 — Lundi 22/12</h3>
-            <a href="/artistes" class="block">
-              <Image src={img3} alt="Spectacle Armide - Les Talens Lyriques" class="w-full h-48 object-cover" />
-              <div class="p-5">
-                <p class="font-titre font-bold text-marron uppercase text-base mb-1">Armide</p>
-                <p class="text-marron/80 text-sm font-semibold mb-1">Les Talens Lyriques</p>
-                <p class="text-marron/60 text-sm">Passions et virtuosité</p>
-              </div>
-            </a>
-          </article>
-
-          <article class="snap-start shrink-0 w-70 md:w-[calc(25%-18px)] bg-beige rounded-[20px] overflow-hidden hover:-translate-y-1 transition-transform">
-            <h3 class="font-corps text-xs font-semibold uppercase tracking-wider text-marron/60 px-5 pt-5 pb-2">Jour 4 — Mardi 23/12</h3>
-            <a href="/artistes" class="block">
-              <Image src={img4} alt="Grand Final de Noël - Il Seminario Musicale" class="w-full h-48 object-cover" />
-              <div class="p-5">
-                <p class="font-titre font-bold text-marron uppercase text-base mb-1">Grand Final de Noël</p>
-                <p class="text-marron/80 text-sm font-semibold mb-1">Il Seminario Musicale</p>
-                <p class="text-marron/60 text-sm">La fête baroque</p>
-              </div>
-            </a>
-          </article>
+          {carouselItems.map(item => (
+            <article class="group snap-start shrink-0 w-72 md:w-[calc(25%-15px)] bg-white rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md border-t-2 border-or">
+              <a href="/programmation" class="block">
+                <div class="relative overflow-hidden h-48">
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div class="absolute inset-0 bg-linear-to-t from-marron/60 to-transparent"></div>
+                  <div class="absolute bottom-3 left-4">
+                    <span class="font-corps text-white/70 text-xs uppercase tracking-widest">{item.jour}</span>
+                    <p class="font-corps text-white text-xs font-bold">{item.date}</p>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <p class="font-titre font-bold text-marron uppercase text-sm mb-1 leading-tight">{item.titre}</p>
+                  <p class="text-or text-xs font-corps font-semibold mb-2">{item.ensemble}</p>
+                  <p class="text-marron/50 text-xs font-corps italic">{item.sous}</p>
+                </div>
+              </a>
+            </article>
+          ))}
 
         </div>
 
         <button
           id="btn-droite"
           aria-label="Défiler vers la droite"
-          class="hidden md:flex absolute right-0 top-1/2 -translate-y-8 z-10 w-10 h-10 bg-beige-claire border border-beige rounded-full items-center justify-center shadow hover:bg-beige transition-colors cursor-pointer">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          class="hidden md:flex absolute right-0 top-1/2 -translate-y-10 z-10 w-10 h-10 bg-beige-claire border border-beige rounded-full items-center justify-center shadow hover:bg-beige transition-colors cursor-pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
       </div>
 
-      <div class="text-center mt-10">
-        <a href="/programmation" class="inline-block px-8 py-3 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform">
-          Voir le programme complet
+      <div class="text-center mt-12">
+        <a href="/programmation" class="inline-block px-8 py-3 bg-marron text-beige-claire font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:-translate-y-0.5 transition-transform">
+          Programme complet
         </a>
       </div>
     </section>
 
-    <!-- INFOS PRATIQUES -->
-    <section class="py-16 px-8 bg-beige max-w-4xl mx-auto my-12 rounded-[30px]">
-      <h2 class="text-center text-marron font-titre text-3xl mb-4">Infos pratiques</h2>
-      <p class="text-center text-marron/80 mb-8 max-w-xl mx-auto text-sm">
-        Le Festival Baroque de Noël vous accueille au Temple Saint-Martin de Montbéliard pour sa première édition.
-      </p>
-      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto list-none p-0">
-        {[
-          'Parking gratuit à proximité',
-          'Espace vélo',
-          'Bar hivernal & douceurs locales',
-          'Animations et découverte du baroque',
-          'Boutique du festival',
-        ].map(item => (
-          <li class="flex items-center gap-3 text-marron/80 text-sm">
-            <span class="w-2 h-2 rounded-full bg-or shrink-0"></span>
-            {item}
-          </li>
-        ))}
-      </ul>
+    <!-- ===== ARTISTES & SCÈNES CTA ===== -->
+    <section class="py-16 px-6 bg-beige">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <a href="/artistes" class="group relative overflow-hidden rounded-2xl bg-marron px-8 py-10 flex flex-col gap-3 hover:-translate-y-0.5 transition-transform">
+          <p class="font-corps text-or text-xs uppercase tracking-[4px]">À l'affiche</p>
+          <h3 class="font-titre text-2xl text-beige-claire leading-tight">Nos Artistes</h3>
+          <p class="text-beige-claire/60 text-sm font-corps leading-relaxed">
+            Les plus grands ensembles baroques européens réunis pour quatre soirées d'exception.
+          </p>
+          <span class="font-corps text-or text-xs font-bold uppercase tracking-widest group-hover:translate-x-1 transition-transform inline-block mt-2">
+            Découvrir &rarr;
+          </span>
+        </a>
+
+        <a href="/scenes" class="group relative overflow-hidden rounded-2xl bg-beige-claire px-8 py-10 flex flex-col gap-3 hover:-translate-y-0.5 transition-transform border border-beige">
+          <p class="font-corps text-or text-xs uppercase tracking-[4px]">Les lieux</p>
+          <h3 class="font-titre text-2xl text-marron leading-tight">Nos Scènes</h3>
+          <p class="text-marron/60 text-sm font-corps leading-relaxed">
+            Des lieux chargés d'histoire au cœur de Montbéliard pour des concerts d'une acoustique remarquable.
+          </p>
+          <span class="font-corps text-marron text-xs font-bold uppercase tracking-widest group-hover:translate-x-1 transition-transform inline-block mt-2">
+            Découvrir &rarr;
+          </span>
+        </a>
+
+      </div>
     </section>
 
-    <!-- PARTENAIRES -->
-    <section class="py-12 px-4 text-center max-w-4xl mx-auto">
-      <h2 class="font-titre text-3xl text-marron mb-8">Nos Partenaires</h2>
-      <ul class="flex flex-wrap justify-center gap-x-8 gap-y-3 list-none p-0">
-        {[
-          'Ville de Montbéliard',
-          'Pays de Montbéliard Agglomération',
-          'Région Bourgogne-Franche-Comté',
-          'MA Scène Nationale',
-          'Conservatoire du Pays de Montbéliard',
-          'France Bleu Belfort-Montbéliard',
-          "L'Est Républicain",
-          'Crédit Mutuel',
-        ].map(p => (
-          <li class="text-marron/70 text-sm font-semibold">{p}</li>
-        ))}
-      </ul>
+    <!-- ===== INFOS PRATIQUES ===== -->
+    <section class="py-20 px-6 bg-beige-claire">
+      <div class="max-w-6xl mx-auto">
+        <div class="md:grid md:grid-cols-2 md:gap-16 md:items-center">
+
+          <div class="mb-10 md:mb-0">
+            <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Sur place</p>
+            <h2 class="font-titre text-3xl md:text-4xl text-marron mb-4 leading-tight">Infos pratiques</h2>
+            <p class="text-marron/60 text-sm font-corps leading-relaxed mb-6">
+              Le Festival Baroque de Noël vous accueille au Temple Saint-Martin de Montbéliard
+              pour sa première édition. Tout est prévu pour votre confort.
+            </p>
+            <a href="/infos_partique" class="inline-block px-8 py-3 border border-marron text-marron font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-marron hover:text-beige-claire transition-colors">
+              En savoir plus
+            </a>
+          </div>
+
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
+            {[
+              { label: 'Parking gratuit', detail: 'Accès fléché depuis les entrées de ville' },
+              { label: 'Espace vélo', detail: 'Parc sécurisé + réparations d\'urgence' },
+              { label: 'Bar hivernal', detail: 'Vin chaud & douceurs locales' },
+              { label: 'Boutique', detail: 'Souvenirs et éditions du festival' },
+              { label: 'Restauration', detail: 'Restaurateurs partenaires sur place' },
+              { label: 'Accessibilité', detail: 'Site accessible aux personnes à mobilité réduite' },
+            ].map(item => (
+              <li class="bg-beige rounded-xl px-4 py-3 flex flex-col gap-1">
+                <span class="font-corps font-bold text-marron text-xs uppercase tracking-wide flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-or shrink-0"></span>
+                  {item.label}
+                </span>
+                <span class="text-marron/50 text-xs font-corps">{item.detail}</span>
+              </li>
+            ))}
+          </ul>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PARTENAIRES ===== -->
+    <section class="py-16 px-6 bg-beige">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+          <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Ils nous soutiennent</p>
+          <h2 class="font-titre text-2xl md:text-3xl text-marron">Nos Partenaires</h2>
+        </div>
+        <ul class="flex flex-wrap justify-center gap-3 list-none p-0">
+          {partenaires.map(p => (
+            <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">
+              {p}
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
 
   </main>
