@@ -378,16 +378,32 @@ import Layout from '../layouts/Layout.astro';
     if (!pb.authStore.record) return;
     btn.disabled = true;
     try {
-      await pb.collection('users').update(pb.authStore.record['id'], { name, email });
-      await pb.collection('users').authRefresh();
+      const currentUser = pb.authStore.record as Record<string, any>;
+      const currentName = (currentUser['name'] || '').trim();
+      const currentEmail = (currentUser['email'] || '').trim();
+      const messages: string[] = [];
+
+      if (name !== currentName) {
+        await pb.collection('users').update(currentUser['id'], { name });
+        await pb.collection('users').authRefresh();
+        messages.push('Nom mis à jour.');
+      }
+
+      if (email && email !== currentEmail) {
+        await pb.collection('users').requestEmailChange(email);
+        messages.push(`Confirmez le changement d'e-mail via le message envoyé à ${email}.`);
+      }
+
       const user = pb.authStore.record as Record<string, any>;
       (document.getElementById('profil-nom') as HTMLElement).textContent = user['name'] || '';
       (document.getElementById('profil-email') as HTMLElement).textContent = user['email'] || '';
+      inputName.value = user['name'] || '';
+      inputEmail.value = user['email'] || '';
       updateAvatar(user);
-      showRetour('retour-profil', true, 'Profil mis Ã  jour.');
       exitEditProfil();
+      showRetour('retour-profil', true, messages.length ? messages.join(' ') : 'Aucune modification.');
     } catch (err: any) {
-      showRetour('retour-profil', false, err?.message ?? 'Une erreur est survenue.');
+      showRetour('retour-profil', false, err?.response?.message ?? err?.message ?? 'Une erreur est survenue.');
     }
     btn.disabled = false;
   });
@@ -568,3 +584,4 @@ import Layout from '../layouts/Layout.astro';
 
   init();
 </script>
+

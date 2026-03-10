@@ -2,3 +2,6 @@ URL : https://pbsae203.pierre-mouilleseaux-lhuillier.fr/
 ID : user@gmail.com
 MDP : oq6Fb327UG13LPd
 
+compte admin site (accès modification artiste / scène. le compte admin peux être crée via inscription puis le booléen admin a true dans pocketbase )
+- e-mail : admin@gmail.com
+- mdp : YGVZYatwTJmEQ3o
