@@ -1,41 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
+import PbImage from '../components/PbImage.astro';
 import theatreImg from '../assets/img/theatre.avif';
+import { getArtistesByDate } from '../js/backend.mjs';
 
-const jours = [
-  {
-    date: 'SAMEDI 20 DÉC.',
-    theme: "L'Ouverture",
-    events: [
-      { heure: '19:00', type: 'Avant-scène', titre: "Introduction à l'oeuvre" },
-      { heure: '20:00', type: 'Opéra', titre: "L'ORFEO — Il Giardino Armonico" },
-    ],
-  },
-  {
-    date: 'DIMANCHE 21 DÉC.',
-    theme: 'Le Grand Classique',
-    events: [
-      { heure: '20:00', type: 'Opéra', titre: 'ARMIDE — Les Arts Florissants' },
-    ],
-  },
-  {
-    date: 'LUNDI 22 DÉC.',
-    theme: 'La Soirée Virtuose',
-    events: [
-      { heure: '19:30', type: 'Rencontre', titre: 'Avec les solistes' },
-      { heure: '20:00', type: 'Opéra', titre: 'GIULIO CESARE — Les Talens Lyriques' },
-    ],
-  },
-  {
-    date: 'MARDI 23 DÉC.',
-    theme: 'Le Final de Noël',
-    events: [
-      { heure: '20:00', type: 'Concert', titre: 'LES INDES GALANTES & NOËL — Il Seminario Musicale' },
-      { heure: '22:00', type: 'DES DUCS', titre: 'Vin chaud & Gourmandises' },
-    ],
-  },
-];
+let artistes: any[] = [];
+try {
+  artistes = await getArtistesByDate();
+} catch (_) {}
+
+// Grouper par jour
+const joursMap = new Map<string, { label: string; iso: string; artistes: any[] }>();
+for (const artiste of artistes) {
+  if (!artiste.dates_de_representation) continue;
+  const dt = new Date(artiste.dates_de_representation);
+  const iso = dt.toISOString().substring(0, 10);
+  if (!joursMap.has(iso)) {
+    joursMap.set(iso, {
+      iso,
+      label: dt.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase(),
+      artistes: [],
+    });
+  }
+  joursMap.get(iso)!.artistes.push(artiste);
+}
+const jours = Array.from(joursMap.values()).sort((a, b) => a.iso.localeCompare(b.iso));
 ---
 
 <Layout title="La Programmation — Festicloze">
@@ -54,29 +44,68 @@ const jours = [
       <p class="text-center text-marron/40 text-xs font-corps mb-12 italic">Temple Saint-Martin de Montbéliard</p>
 
       <!-- PROGRAMME -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {jours.map(jour => (
-          <article class="bg-white border-t-2 border-or rounded-2xl shadow-sm p-8">
-            <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-6">
-              <h2 class="font-titre text-2xl text-marron">{jour.date}</h2>
-              <span class="bg-beige text-or px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide sm:ml-3 self-start sm:self-auto">{jour.theme}</span>
+      {jours.length === 0 && (
+        <p class="text-center text-marron/40 font-corps text-sm py-10">Programme à venir.</p>
+      )}
+
+      {jours.length > 0 && (
+        <div class="flex flex-col gap-10">
+          {jours.map(jour => (
+            <div>
+              <!-- En-tête du jour -->
+              <div class="flex items-center gap-4 mb-5">
+                <h2 class="font-titre text-2xl text-marron">{jour.label}</h2>
+                <div class="flex-1 h-px bg-beige"></div>
+              </div>
+
+              <!-- Artistes du jour -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {jour.artistes.map((artiste: any) => {
+                  const heure = artiste.dates_de_representation
+                    ? new Date(artiste.dates_de_representation).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+                    : null;
+                  const sceneNom = artiste.expand?.scene?.nom ?? null;
+                  return (
+                    <a
+                      href={`/artistes/${artiste.id}`}
+                      class="group bg-white border-t-2 border-or rounded-2xl shadow-sm overflow-hidden hover:-translate-y-0.5 transition-transform flex"
+                    >
+                      {artiste.photo_principale && (
+                        <div class="w-24 shrink-0 overflow-hidden">
+                          <PbImage
+                            record={artiste}
+                            recordImage={artiste.photo_principale}
+                            alt={artiste.nom}
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            width={96}
+                            height={120}
+                          />
+                        </div>
+                      )}
+                      <div class="p-5 flex flex-col justify-between flex-1">
+                        <div>
+                          <p class="font-titre font-bold text-marron uppercase text-sm leading-tight group-hover:text-or transition-colors">{artiste.nom}</p>
+                          {artiste.genre_musical && (
+                            <p class="text-or text-xs font-corps font-semibold mt-1">{artiste.genre_musical}</p>
+                          )}
+                        </div>
+                        <div class="flex items-center justify-between mt-3 pt-3 border-t border-beige">
+                          {heure && <span class="font-corps text-marron font-bold text-sm">{heure}</span>}
+                          {sceneNom && <span class="font-corps text-marron/40 text-xs">{sceneNom}</span>}
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
             </div>
-            <ul class="list-none p-0 flex flex-col">
-              {jour.events.map((ev, i) => (
-                <li class={`flex items-start gap-4 text-marron/80 border-b border-beige last:border-0 pb-3 last:pb-0 mb-3 last:mb-0`}>
-                  <span class="font-bold text-or text-sm w-12 shrink-0 pt-0.5">{ev.heure}</span>
-                  <span class="text-sm font-semibold text-marron/50 w-24 shrink-0 pt-0.5 uppercase tracking-wide">{ev.type}</span>
-                  <span class="text-sm">{ev.titre}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       <div class="text-center mt-12">
         <a
-          href="/assets/document/prog.pdf"
+          href="/Programation.pdf"
           download
           class="inline-block px-8 py-3 bg-marron text-beige-claire font-corps font-bold text-xs tracking-widest uppercase rounded-full hover:-translate-y-0.5 transition-transform">
           Programme complet en PDF
