@@ -4,22 +4,6 @@ import facebookUrl from '../assets/icons/facebook.svg';
 import instagramUrl from '../assets/icons/instagram.svg';
 import xUrl from '../assets/icons/X.svg';
 import youtubeUrl from '../assets/icons/youtube.svg';
-
-const footerLinks = [
-  { href: '/festival', label: 'Le festival' },
-  { href: '/programmation', label: 'La programmation' },
-  { href: '/artistes', label: 'Nos artistes' },
-  { href: '/scenes', label: 'Nos scènes' },
-  { href: '/infos_partique', label: 'Infos pratiques' },
-  { href: '/contact', label: 'Contact' },
-];
-
-const socialLinks = [
-  { href: 'https://www.facebook.com/?locale=fr_FR', label: 'Facebook', icon: facebookUrl },
-  { href: 'https://www.instagram.com/', label: 'Instagram', icon: instagramUrl },
-  { href: 'https://x.com/', label: 'Twitter/X', icon: xUrl },
-  { href: 'https://www.youtube.com/', label: 'YouTube', icon: youtubeUrl },
-];
 ---
 
 <footer class="bg-marron text-beige-claire py-16 px-8">
@@ -32,13 +16,12 @@ const socialLinks = [
     <nav aria-label="Liens utiles du pied de page">
       <h3 class="font-corps text-or text-sm uppercase tracking-widest mb-4 font-semibold">Menu</h3>
       <ul class="list-none p-0 m-0 flex flex-col gap-2">
-        {footerLinks.map(link => (
-          <li>
-            <a href={link.href} class="text-beige-claire/80 hover:text-or transition-colors text-sm">
-              {link.label}
-            </a>
-          </li>
-        ))}
+        <li><a href="/festival" class="text-beige-claire/80 hover:text-or transition-colors text-sm">Le festival</a></li>
+        <li><a href="/programmation" class="text-beige-claire/80 hover:text-or transition-colors text-sm">La programmation</a></li>
+        <li><a href="/artistes" class="text-beige-claire/80 hover:text-or transition-colors text-sm">Nos artistes</a></li>
+        <li><a href="/scenes" class="text-beige-claire/80 hover:text-or transition-colors text-sm">Nos scènes</a></li>
+        <li><a href="/infos_partique" class="text-beige-claire/80 hover:text-or transition-colors text-sm">Infos pratiques</a></li>
+        <li><a href="/contact" class="text-beige-claire/80 hover:text-or transition-colors text-sm">Contact</a></li>
       </ul>
     </nav>
 
@@ -55,18 +38,24 @@ const socialLinks = [
     <div>
       <h3 class="font-corps text-or text-sm uppercase tracking-widest mb-4 font-semibold">Nous suivre</h3>
       <div class="flex gap-4">
-        {socialLinks.map(s => (
-          <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`Suivez-nous sur ${s.label}`}>
-            <Image src={s.icon} alt="" aria-hidden="true" width={28} height={28} class="w-7 h-7 opacity-80 hover:opacity-100 transition-opacity" />
-          </a>
-        ))}
+        <a href="https://www.facebook.com/?locale=fr_FR" target="_blank" rel="noopener noreferrer" aria-label="Suivez-nous sur Facebook">
+          <Image src={facebookUrl} alt="" aria-hidden="true" width={28} height={28} class="w-7 h-7 opacity-80 hover:opacity-100 transition-opacity" />
+        </a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Suivez-nous sur Instagram">
+          <Image src={instagramUrl} alt="" aria-hidden="true" width={28} height={28} class="w-7 h-7 opacity-80 hover:opacity-100 transition-opacity" />
+        </a>
+        <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="Suivez-nous sur Twitter/X">
+          <Image src={xUrl} alt="" aria-hidden="true" width={28} height={28} class="w-7 h-7 opacity-80 hover:opacity-100 transition-opacity" />
+        </a>
+        <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="Suivez-nous sur YouTube">
+          <Image src={youtubeUrl} alt="" aria-hidden="true" width={28} height={28} class="w-7 h-7 opacity-80 hover:opacity-100 transition-opacity" />
+        </a>
       </div>
     </div>
 
   </div>
 </footer>
 
-<!-- BOUTON RETOUR EN HAUT -->
 <button
   id="btn-retour-haut"
   aria-label="Retour en haut de page"

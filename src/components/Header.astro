@@ -4,32 +4,21 @@ import logoUrl from '../assets/icons/logo.svg';
 import userUrl from '../assets/icons/user.svg';
 
 const currentPath = Astro.url.pathname;
-
-const navLinks = [
-  { href: '/', label: 'Accueil', active: currentPath === '/' },
-  { href: '/festival', label: 'Le Festival', active: currentPath === '/festival' },
-  { href: '/programmation', label: 'La Programmation', active: currentPath === '/programmation' },
-  { href: '/artistes', label: 'Nos Artistes', active: currentPath.startsWith('/artistes') },
-  { href: '/scenes', label: 'Nos Scènes', active: currentPath.startsWith('/scenes') },
-  { href: '/infos_partique', label: 'Infos Pratiques', active: currentPath === '/infos_partique' },
-  { href: '/contact', label: 'Contact', active: currentPath === '/contact' },
-];
 ---
 
 <header class="fixed top-0 left-0 w-full h-[70px] px-6 flex justify-between items-center z-[100] bg-beige-claire shadow-sm">
   <a href="/" class="z-[110] shrink-0">
-    <Image src={logoUrl} alt="Logo Festicloze - Retour à l'accueil" width={98} height={18} style="width:98px;height:18px" />
+    <Image src={logoUrl} alt="Logo Festicloze - Retour a l'accueil" width={98} height={18} style="width:98px;height:18px" />
   </a>
 
   <nav id="nav-desktop" class="hidden md:flex items-center gap-7">
-    {navLinks.map((link) => (
-      <a
-        href={link.href}
-        class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${link.active ? 'text-or' : 'text-marron'}`}
-      >
-        {link.label}
-      </a>
-    ))}
+    <a href="/" class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${currentPath === '/' ? 'text-or' : 'text-marron'}`}>Accueil</a>
+    <a href="/festival" class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${currentPath === '/festival' ? 'text-or' : 'text-marron'}`}>Le Festival</a>
+    <a href="/programmation" class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${currentPath === '/programmation' ? 'text-or' : 'text-marron'}`}>La Programmation</a>
+    <a href="/artistes" class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${currentPath.startsWith('/artistes') ? 'text-or' : 'text-marron'}`}>Nos Artistes</a>
+    <a href="/scenes" class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${currentPath.startsWith('/scenes') ? 'text-or' : 'text-marron'}`}>Nos Scenes</a>
+    <a href="/infos_partique" class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${currentPath === '/infos_partique' ? 'text-or' : 'text-marron'}`}>Infos Pratiques</a>
+    <a href="/contact" class={`font-corps text-[11px] font-bold uppercase tracking-widest hover:text-or transition-colors ${currentPath === '/contact' ? 'text-or' : 'text-marron'}`}>Contact</a>
     <a
       id="user-btn-desktop"
       href="/profil"
@@ -81,16 +70,13 @@ const navLinks = [
   </button>
 
   <ul id="nav-mobile-list" class="flex flex-col gap-5 list-none p-0 m-0">
-    {navLinks.map((link) => (
-      <li>
-        <a
-          href={link.href}
-          class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${link.active ? 'text-or' : 'text-white'}`}
-        >
-          {link.label}
-        </a>
-      </li>
-    ))}
+    <li><a href="/" class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${currentPath === '/' ? 'text-or' : 'text-white'}`}>Accueil</a></li>
+    <li><a href="/festival" class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${currentPath === '/festival' ? 'text-or' : 'text-white'}`}>Le Festival</a></li>
+    <li><a href="/programmation" class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${currentPath === '/programmation' ? 'text-or' : 'text-white'}`}>La Programmation</a></li>
+    <li><a href="/artistes" class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${currentPath.startsWith('/artistes') ? 'text-or' : 'text-white'}`}>Nos Artistes</a></li>
+    <li><a href="/scenes" class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${currentPath.startsWith('/scenes') ? 'text-or' : 'text-white'}`}>Nos Scenes</a></li>
+    <li><a href="/infos_partique" class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${currentPath === '/infos_partique' ? 'text-or' : 'text-white'}`}>Infos Pratiques</a></li>
+    <li><a href="/contact" class={`font-corps font-bold text-base uppercase tracking-wide hover:text-or transition-colors ${currentPath === '/contact' ? 'text-or' : 'text-white'}`}>Contact</a></li>
   </ul>
 </nav>
 
