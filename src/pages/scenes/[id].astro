@@ -1,9 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
 import PbImage from '../../components/PbImage.astro';
-import pb from '../../js/backend.mjs';
-import starEmpty from '../../assets/icons/favorite.png?url';
-import starFilled from '../../assets/icons/favorite_filled.png?url';
+import pb from '../../../backend/backend.mjs';
+import starEmpty from '../../assets/icons/favorite.svg';
+import starFilled from '../../assets/icons/favorite_filled.svg';
 
 const { id } = Astro.params;
 
@@ -55,8 +56,8 @@ try {
         data-id={scene.id}
         aria-label="Ajouter aux favoris"
         style="display:none">
-        <img src={starEmpty} alt="" class="star-empty w-5 h-5" />
-        <img src={starFilled} alt="" class="star-filled hidden w-5 h-5" />
+        <Image src={starEmpty} alt="" width={20} height={20} class="star-empty w-5 h-5" />
+        <Image src={starFilled} alt="" width={20} height={20} class="star-filled hidden w-5 h-5" />
       </button>
 
       <!-- Titre en bas du hero -->
@@ -147,7 +148,7 @@ try {
 </Layout>
 
 <script>
-  import pb from '../../js/backend.mjs';
+  import pb from '../../../backend/backend.mjs';
   import { initFavBtns, isFavoriScene, toggleFavoriScene } from '../../js/favoris.mjs';
   initFavBtns();
 

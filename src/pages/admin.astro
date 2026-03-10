@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getArtistesByDate, getScenesByNom } from '../js/backend.mjs';
+import { getArtistesByDate, getScenesByNom } from '../../backend/backend.mjs';
 
 // Protection basique : rediriger si non connecté (géré côté client via JS)
 let artistes: any[] = [];
@@ -230,7 +230,7 @@ const sceneEditee = idParam ? scenes.find(s => s.id === idParam) : null;
 </Layout>
 
 <script>
-  import pb from '../js/backend.mjs';
+  import pb from '../../backend/backend.mjs';
 
   // Protection : réservé aux admins
   if (!pb.authStore.isValid || !pb.authStore.record?.['admin']) {

@@ -1,6 +1,7 @@
 ---
-import logoUrl from '../assets/icons/logo.svg?url';
-import userUrl from '../assets/icons/user.svg?url';
+import { Image } from 'astro:assets';
+import logoUrl from '../assets/icons/logo.svg';
+import userUrl from '../assets/icons/user.svg';
 
 const currentPath = Astro.url.pathname;
 
@@ -18,7 +19,7 @@ const navLinks = [
 <!-- HEADER -->
 <header class="fixed top-0 left-0 w-full h-[70px] px-6 flex justify-between items-center z-[100] bg-beige-claire shadow-sm">
   <a href="/" class="z-[110] shrink-0">
-    <img src={logoUrl} alt="Logo Festicloze — Retour à l'accueil" width="98" height="18" style="width:98px;height:18px" />
+    <Image src={logoUrl} alt="Logo Festicloze — Retour à l'accueil" width={98} height={18} style="width:98px;height:18px" />
   </a>
 
   <!-- Nav desktop -->
@@ -35,7 +36,7 @@ const navLinks = [
       href="/profil"
       aria-label="Mon compte"
       class="ml-2 w-9 h-9 rounded-full border border-beige hover:border-or transition-colors flex items-center justify-center shrink-0 overflow-hidden">
-      <img id="user-icon-desktop" src={userUrl} alt="" aria-hidden="true" class="w-5 h-5 transition-all" />
+      <Image id="user-icon-desktop" src={userUrl} alt="" aria-hidden="true" width={20} height={20} class="w-5 h-5 transition-all" />
     </a>
   </nav>
 
@@ -46,7 +47,7 @@ const navLinks = [
       href="/profil"
       aria-label="Mon compte"
       class="w-9 h-9 rounded-full border border-beige hover:border-or transition-colors flex items-center justify-center shrink-0 overflow-hidden">
-      <img id="user-icon-mobile" src={userUrl} alt="" aria-hidden="true" class="w-5 h-5 transition-all" />
+      <Image id="user-icon-mobile" src={userUrl} alt="" aria-hidden="true" width={20} height={20} class="w-5 h-5 transition-all" />
     </a>
 
   <!-- Hamburger mobile -->
@@ -95,7 +96,7 @@ const navLinks = [
 
 <script>
   import '../js/menu.js';
-  import pb, { getImageUrl } from '../js/backend.mjs';
+  import pb, { getImageUrl } from '../../backend/backend.mjs';
 
   function applyAvatar(imgEl: HTMLImageElement, user: Record<string, any>) {
     if (user['img']) {

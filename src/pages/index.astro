@@ -3,13 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import PbImage from '../components/PbImage.astro';
 import heroImg from '../assets/img/hero_acceuil.avif';
-import logoCreditMutuel from '../assets/icons/logo_credit_mutuel.svg?url';
-import logoCocaCola from '../assets/icons/logo_coca_cola.svg?url';
-import logoDeezer from '../assets/icons/logo_deezer.svg?url';
-import logoNrj from '../assets/icons/logo_nrj.svg?url';
-import logoWeezevent from '../assets/icons/logo_weezevent.svg?url';
-import logoDesperados from '../assets/icons/logo_desperados.svg?url';
-import { getArtistesByDate } from '../js/backend.mjs';
+import logoCreditMutuel from '../assets/icons/logo_credit_mutuel.svg';
+import logoCocaCola from '../assets/icons/logo_coca_cola.svg';
+import logoDeezer from '../assets/icons/logo_deezer.svg';
+import logoNrj from '../assets/icons/logo_nrj.svg';
+import logoWeezevent from '../assets/icons/logo_weezevent.svg';
+import logoDesperados from '../assets/icons/logo_desperados.svg';
+import { getArtistesByDate } from '../../backend/backend.mjs';
 
 let artistes: any[] = [];
 try {
@@ -253,22 +253,22 @@ try {
         <!-- Logos partenaires -->
         <div class="flex flex-wrap justify-center items-center gap-6 mb-10">
           <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <img src={logoCreditMutuel} alt="Crédit Mutuel" class="max-h-10 max-w-full object-contain" />
+            <Image src={logoCreditMutuel} alt="Crédit Mutuel" width={120} height={40} class="max-h-10 max-w-full object-contain" />
           </div>
           <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <img src={logoCocaCola} alt="Coca-Cola" class="max-h-10 max-w-full object-contain" />
+            <Image src={logoCocaCola} alt="Coca-Cola" width={120} height={40} class="max-h-10 max-w-full object-contain" />
           </div>
           <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <img src={logoDeezer} alt="Deezer" class="max-h-10 max-w-full object-contain" />
+            <Image src={logoDeezer} alt="Deezer" width={120} height={40} class="max-h-10 max-w-full object-contain" />
           </div>
           <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <img src={logoNrj} alt="NRJ" class="max-h-10 max-w-full object-contain" />
+            <Image src={logoNrj} alt="NRJ" width={120} height={40} class="max-h-10 max-w-full object-contain" />
           </div>
           <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <img src={logoWeezevent} alt="Weezevent" class="max-h-10 max-w-full object-contain" />
+            <Image src={logoWeezevent} alt="Weezevent" width={120} height={40} class="max-h-10 max-w-full object-contain" />
           </div>
           <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <img src={logoDesperados} alt="Desperados" class="max-h-10 max-w-full object-contain" />
+            <Image src={logoDesperados} alt="Desperados" width={120} height={40} class="max-h-10 max-w-full object-contain" />
           </div>
         </div>
 

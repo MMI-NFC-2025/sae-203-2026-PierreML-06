@@ -1,7 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import PbImage from './PbImage.astro';
-import starEmpty from '../assets/icons/favorite.png?url';
-import starFilled from '../assets/icons/favorite_filled.png?url';
+import starEmpty from '../assets/icons/favorite.svg';
+import starFilled from '../assets/icons/favorite_filled.svg';
 
 interface Props {
   artiste: any;
@@ -19,8 +20,8 @@ const { artiste, date, scene_nom } = Astro.props;
     data-id={artiste.id}
     aria-label="Ajouter aux favoris"
     style="display:none">
-    <img src={starEmpty} alt="" class="star-empty w-4 h-4" />
-    <img src={starFilled} alt="" class="star-filled hidden w-4 h-4" />
+    <Image src={starEmpty} alt="" width={16} height={16} class="star-empty w-4 h-4" />
+    <Image src={starFilled} alt="" width={16} height={16} class="star-filled hidden w-4 h-4" />
   </button>
   <a href={`/artistes/${artiste.id}`} class="block h-full">
     <div class="relative w-full h-52 overflow-hidden">

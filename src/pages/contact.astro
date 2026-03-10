@@ -1,9 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import mailIcon from '../assets/icons/mail.svg?url';
-import phoneIcon from '../assets/icons/phone.svg?url';
-import locateIcon from '../assets/icons/locate.svg?url';
-import sendIcon from '../assets/icons/send.svg?url';
+import { Image } from 'astro:assets';
+import mailIcon from '../assets/icons/mail.svg';
+import phoneIcon from '../assets/icons/phone.svg';
+import locateIcon from '../assets/icons/locate.svg';
+import sendIcon from '../assets/icons/send.svg';
 ---
 
 <Layout title="Contact — Festicloze">
@@ -22,7 +23,7 @@ import sendIcon from '../assets/icons/send.svg?url';
           <div class="flex flex-col gap-6">
             <div class="flex items-start gap-4">
               <div class="w-10 h-10 bg-beige rounded-xl flex items-center justify-center shrink-0">
-                <img src={mailIcon} alt="" aria-hidden="true" class="w-5 h-5" />
+                <Image src={mailIcon} alt="" aria-hidden="true" width={20} height={20} class="w-5 h-5" />
               </div>
               <div>
                 <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Email</p>
@@ -31,7 +32,7 @@ import sendIcon from '../assets/icons/send.svg?url';
             </div>
             <div class="flex items-start gap-4">
               <div class="w-10 h-10 bg-beige rounded-xl flex items-center justify-center shrink-0">
-                <img src={phoneIcon} alt="" aria-hidden="true" class="w-5 h-5" />
+                <Image src={phoneIcon} alt="" aria-hidden="true" width={20} height={20} class="w-5 h-5" />
               </div>
               <div>
                 <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Téléphone</p>
@@ -40,7 +41,7 @@ import sendIcon from '../assets/icons/send.svg?url';
             </div>
             <div class="flex items-start gap-4">
               <div class="w-10 h-10 bg-beige rounded-xl flex items-center justify-center shrink-0">
-                <img src={locateIcon} alt="" aria-hidden="true" class="w-5 h-5" />
+                <Image src={locateIcon} alt="" aria-hidden="true" width={20} height={20} class="w-5 h-5" />
               </div>
               <div>
                 <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Adresse</p>
@@ -111,7 +112,7 @@ import sendIcon from '../assets/icons/send.svg?url';
               type="submit"
               id="btn-contact"
               class="self-center flex items-center gap-2 px-10 py-3 bg-rouge text-white font-bold uppercase text-sm tracking-wider rounded-full hover:-translate-y-0.5 transition-transform cursor-pointer">
-              <img src={sendIcon} alt="" aria-hidden="true" class="w-4 h-4" />
+              <Image src={sendIcon} alt="" aria-hidden="true" width={16} height={16} class="w-4 h-4" />
               Envoyer
             </button>
 
@@ -124,7 +125,7 @@ import sendIcon from '../assets/icons/send.svg?url';
 </Layout>
 
 <script>
-  import pb from '../js/backend.mjs';
+  import pb from '../../backend/backend.mjs';
 
   const form = document.getElementById('form-contact') as HTMLFormElement;
   const retour = document.getElementById('retour-contact') as HTMLElement;

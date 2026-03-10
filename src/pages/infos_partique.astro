@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ticketIcon from '../assets/icons/ticket_purple.svg?url';
-import locateIcon from '../assets/icons/locate.svg?url';
+import { Image } from 'astro:assets';
+import ticketIcon from '../assets/icons/ticket_purple.svg';
+import locateIcon from '../assets/icons/locate.svg';
 
 ---
 
@@ -25,7 +26,7 @@ import locateIcon from '../assets/icons/locate.svg?url';
       <!-- TARIFS -->
       <section class="mb-16">
         <div class="flex items-center gap-3 mb-3">
-          <img src={ticketIcon} alt="" aria-hidden="true" class="w-8 h-8" style="filter: brightness(0)" />
+          <Image src={ticketIcon} alt="" aria-hidden="true" width={32} height={32} class="w-8 h-8" style="filter: brightness(0)" />
           <p class="font-corps text-or text-xs uppercase tracking-[4px]">Billetterie</p>
         </div>
         <h2 class="font-titre text-3xl text-marron leading-none mb-2">Tarifs Billets</h2>
@@ -143,7 +144,7 @@ import locateIcon from '../assets/icons/locate.svg?url';
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center gap-2 px-8 py-3 border border-or text-or font-corps font-bold uppercase text-xs tracking-widest rounded-full hover:bg-or hover:text-marron transition-colors">
-          <img src={locateIcon} alt="" aria-hidden="true" class="w-4 h-4" />
+          <Image src={locateIcon} alt="" aria-hidden="true" width={16} height={16} class="w-4 h-4" />
           Voir sur la carte
         </a>
       </div>

@@ -1,4 +1,4 @@
-import pb from './backend.mjs';
+import pb from '../../backend/backend.mjs';
 
 export function isFavoriArtiste(id) {
   if (!pb.authStore.isValid || !pb.authStore.record) return false;
