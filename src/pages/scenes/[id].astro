@@ -148,34 +148,7 @@ try {
 </Layout>
 
 <script>
-  import pb from '../../../backend/backend.mjs';
-  import { initFavBtns, isFavoriScene, toggleFavoriScene } from '../../js/favoris.mjs';
-  initFavBtns();
+  import { initFavoriDetail } from '../../js/favoriDetail.js';
 
-  const textBtn = document.getElementById('fav-text-btn') as HTMLButtonElement | null;
-  if (textBtn && pb.authStore.isValid) {
-    const starBtn = document.querySelector<HTMLElement>('.fav-btn[data-type="scene"]');
-    const id = starBtn?.dataset.id ?? '';
-
-    function syncTextBtn() {
-      const isFav = isFavoriScene(id);
-      textBtn!.textContent = isFav ? 'Supprimer des favoris' : 'Ajouter aux favoris';
-      textBtn!.style.display = '';
-    }
-    syncTextBtn();
-
-    textBtn.addEventListener('click', async () => {
-      textBtn.disabled = true;
-      await toggleFavoriScene(id);
-      syncTextBtn();
-      const empty = starBtn?.querySelector<HTMLImageElement>('.star-empty');
-      const filled = starBtn?.querySelector<HTMLImageElement>('.star-filled');
-      if (empty && filled) {
-        const isFav = isFavoriScene(id);
-        empty.classList.toggle('hidden', isFav);
-        filled.classList.toggle('hidden', !isFav);
-      }
-      textBtn.disabled = false;
-    });
-  }
+  initFavoriDetail('scene');
 </script>

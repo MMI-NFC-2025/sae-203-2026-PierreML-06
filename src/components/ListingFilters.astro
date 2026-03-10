@@ -1,0 +1,91 @@
+---
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  searchId: string;
+  searchPlaceholder?: string;
+  jourOptions?: Option[];
+  genreOptions?: Option[];
+  sceneOptions?: Option[];
+  jourLabel?: string;
+  genreLabel?: string;
+  sceneLabel?: string;
+  allJourLabel?: string;
+  allGenreLabel?: string;
+  allSceneLabel?: string;
+}
+
+const {
+  searchId,
+  searchPlaceholder = 'Rechercher un artiste...',
+  jourOptions = [],
+  genreOptions = [],
+  sceneOptions = [],
+  jourLabel = 'Jour',
+  genreLabel = 'Genre',
+  sceneLabel = 'Scène',
+  allJourLabel = 'Tous les jours',
+  allGenreLabel = 'Tous les genres',
+  allSceneLabel = 'Toutes les scènes',
+} = Astro.props;
+---
+
+<div class="mb-10 flex flex-col gap-4">
+  <div class="flex items-center gap-3">
+    <div class="relative flex-1">
+      <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-marron/40 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.35-4.35" />
+      </svg>
+      <input
+        id={searchId}
+        type="text"
+        placeholder={searchPlaceholder}
+        class="w-full bg-beige rounded-xl pl-10 pr-4 py-2.5 text-marron text-sm border-b-2 border-transparent focus:border-or outline-none transition-colors font-corps"
+      />
+    </div>
+    <button data-sort="date" class="filtre-sort shrink-0 px-4 py-2.5 rounded-xl text-xs font-corps font-bold uppercase tracking-wide border cursor-pointer transition-colors bg-marron text-beige-claire border-marron">Date</button>
+    <button data-sort="alpha" class="filtre-sort shrink-0 px-4 py-2.5 rounded-xl text-xs font-corps font-bold uppercase tracking-wide border cursor-pointer transition-colors bg-transparent text-marron border-beige hover:border-marron">A - Z</button>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-3">
+    {jourOptions.length > 0 && (
+      <div class="flex flex-col gap-1">
+        <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">{jourLabel}</label>
+        <select id="filtre-jour" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
+          <option value="">{allJourLabel}</option>
+          {jourOptions.map((jour) => (
+            <option value={jour.value}>{jour.label}</option>
+          ))}
+        </select>
+      </div>
+    )}
+
+    {genreOptions.length > 0 && (
+      <div class="flex flex-col gap-1">
+        <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">{genreLabel}</label>
+        <select id="filtre-genre" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
+          <option value="">{allGenreLabel}</option>
+          {genreOptions.map((genre) => (
+            <option value={genre.value}>{genre.label}</option>
+          ))}
+        </select>
+      </div>
+    )}
+
+    {sceneOptions.length > 0 && (
+      <div class="flex flex-col gap-1">
+        <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">{sceneLabel}</label>
+        <select id="filtre-scene" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
+          <option value="">{allSceneLabel}</option>
+          {sceneOptions.map((scene) => (
+            <option value={scene.value}>{scene.label}</option>
+          ))}
+        </select>
+      </div>
+    )}
+  </div>
+</div>

@@ -15,12 +15,38 @@ let artistes: any[] = [];
 try {
   artistes = await getArtistesByDate();
 } catch (_) {}
+
+const practicalItems = [
+  { label: 'Parking gratuit', detail: 'Accès fléché depuis les entrées de ville' },
+  { label: 'Espace vélo', detail: 'Parc sécurisé + réparations d\'urgence' },
+  { label: 'Bar hivernal', detail: 'Vin chaud & douceurs locales' },
+  { label: 'Boutique', detail: 'Souvenirs et éditions du festival' },
+  { label: 'Restauration', detail: 'Restaurateurs partenaires sur place' },
+  { label: 'Accessibilité', detail: 'Site accessible aux personnes à mobilité réduite' },
+];
+
+const partnerLogos = [
+  { src: logoCreditMutuel, alt: 'Crédit Mutuel' },
+  { src: logoCocaCola, alt: 'Coca-Cola' },
+  { src: logoDeezer, alt: 'Deezer' },
+  { src: logoNrj, alt: 'NRJ' },
+  { src: logoWeezevent, alt: 'Weezevent' },
+  { src: logoDesperados, alt: 'Desperados' },
+];
+
+const institutionalPartners = [
+  'Ville de Montbéliard',
+  'Pays de Montbéliard Agglomération',
+  'Région Bourgogne-Franche-Comté',
+  'MA Scène Nationale',
+  'Conservatoire du Pays de Montbéliard',
+  'France Bleu Belfort-Montbéliard',
+  'L\'Est Républicain',
+];
 ---
 
-<Layout title="Festiclose — Accueil">
+<Layout title="Festicloze - Accueil">
   <main>
-
-    <!-- ===== HERO ===== -->
     <section class="relative h-screen flex flex-col justify-center items-center overflow-hidden">
       <div class="absolute inset-0">
         <Image
@@ -31,10 +57,7 @@ try {
         <div class="absolute inset-0 bg-marron/60"></div>
       </div>
 
-      <!-- Mobile : colonne centrée / Desktop : 2 colonnes -->
       <div class="relative z-10 w-full max-w-6xl mx-auto px-8 flex flex-col items-center gap-8 md:flex-row md:justify-between md:items-center">
-
-        <!-- Gauche -->
         <div class="flex flex-col items-center gap-5 md:items-start">
           <div class="flex flex-col items-center gap-3 md:items-start">
             <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-1">Festival Baroque de Noël</p>
@@ -52,7 +75,6 @@ try {
           </a>
         </div>
 
-        <!-- Droite : cercle date -->
         <div class="flex flex-col items-center justify-center w-64 h-64 md:w-80 md:h-80 bg-vert rounded-full shrink-0 gap-2">
           <p class="text-white/60 font-corps text-xs uppercase tracking-widest">Dates</p>
           <p class="text-white font-corps font-bold text-base md:text-lg text-center leading-snug tracking-wider m-0">
@@ -61,17 +83,14 @@ try {
           <div class="h-px w-8 bg-white/40 my-1"></div>
           <p class="text-white/70 font-corps text-xs text-center tracking-wide">Montbéliard</p>
         </div>
-
       </div>
 
-      <!-- Indicateur de scroll -->
       <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
         <span class="text-beige-claire/50 font-corps text-xs uppercase tracking-widest">Découvrir</span>
         <div class="w-px h-8 bg-beige-claire/30 animate-pulse"></div>
       </div>
     </section>
 
-    <!-- ===== TEASER FESTIVAL ===== -->
     <section class="bg-marron py-20 px-8">
       <div class="max-w-3xl mx-auto text-center">
         <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-6">Temple Saint-Martin, Montbéliard</p>
@@ -89,7 +108,6 @@ try {
       </div>
     </section>
 
-    <!-- ===== PROGRAMMATION CAROUSEL ===== -->
     <section class="py-20 bg-beige-claire">
       <div class="max-w-6xl mx-auto px-6 mb-12">
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -172,7 +190,6 @@ try {
       </div>
     </section>
 
-    <!-- ===== ARTISTES & SCÈNES CTA ===== -->
     <section class="py-16 px-6 bg-beige">
       <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -201,7 +218,6 @@ try {
       </div>
     </section>
 
-    <!-- ===== INFOS PRATIQUES ===== -->
     <section class="py-20 px-6 bg-beige-claire">
       <div class="max-w-6xl mx-auto">
         <div class="md:grid md:grid-cols-2 md:gap-16 md:items-center">
@@ -219,14 +235,7 @@ try {
           </div>
 
           <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0">
-            {[
-              { label: 'Parking gratuit', detail: 'Accès fléché depuis les entrées de ville' },
-              { label: 'Espace vélo', detail: 'Parc sécurisé + réparations d\'urgence' },
-              { label: 'Bar hivernal', detail: 'Vin chaud & douceurs locales' },
-              { label: 'Boutique', detail: 'Souvenirs et éditions du festival' },
-              { label: 'Restauration', detail: 'Restaurateurs partenaires sur place' },
-              { label: 'Accessibilité', detail: 'Site accessible aux personnes à mobilité réduite' },
-            ].map(item => (
+            {practicalItems.map((item) => (
               <li class="bg-beige rounded-xl px-4 py-3 flex flex-col gap-1">
                 <span class="font-corps font-bold text-marron text-xs uppercase tracking-wide flex items-center gap-2">
                   <span class="w-1.5 h-1.5 rounded-full bg-or shrink-0"></span>
@@ -241,7 +250,6 @@ try {
       </div>
     </section>
 
-    <!-- ===== PARTENAIRES ===== -->
     <section class="py-16 px-6 bg-beige">
       <div class="max-w-6xl mx-auto">
         <div class="text-center mb-10">
@@ -250,39 +258,22 @@ try {
           <div class="h-px w-12 bg-or mx-auto mt-4"></div>
         </div>
 
-        <!-- Logos partenaires -->
         <div class="flex flex-wrap justify-center items-center gap-6 mb-10">
-          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
-            <Image src={logoCreditMutuel} alt="Crédit Mutuel" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
-          </div>
-          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
-            <Image src={logoCocaCola} alt="Coca-Cola" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
-          </div>
-          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
-            <Image src={logoDeezer} alt="Deezer" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
-          </div>
-          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
-            <Image src={logoNrj} alt="NRJ" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
-          </div>
-          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
-            <Image src={logoWeezevent} alt="Weezevent" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
-          </div>
-          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
-            <Image src={logoDesperados} alt="Desperados" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
-          </div>
+          {partnerLogos.map((logo) => (
+            <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
+              <Image src={logo.src} alt={logo.alt} width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
+            </div>
+          ))}
         </div>
 
-        <!-- Partenaires institutionnels -->
         <div class="h-px w-full bg-beige-claire mb-8"></div>
         <p class="text-center font-corps text-marron/40 text-xs uppercase tracking-widest mb-5">Soutiens institutionnels</p>
         <ul class="flex flex-wrap justify-center gap-3 list-none p-0">
-          <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">Ville de Montbéliard</li>
-          <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">Pays de Montbéliard Agglomération</li>
-          <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">Région Bourgogne-Franche-Comté</li>
-          <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">MA Scène Nationale</li>
-          <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">Conservatoire du Pays de Montbéliard</li>
-          <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">France Bleu Belfort-Montbéliard</li>
-          <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">L'Est Républicain</li>
+          {institutionalPartners.map((partner) => (
+            <li class="px-4 py-2 bg-beige-claire border border-beige rounded-full text-marron/70 text-xs font-corps font-semibold tracking-wide">
+              {partner}
+            </li>
+          ))}
         </ul>
       </div>
     </section>

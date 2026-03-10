@@ -147,35 +147,7 @@ const date = artiste.dates_de_representation
 </Layout>
 
 <script>
-  import pb from '../../../backend/backend.mjs';
-  import { initFavBtns, isFavoriArtiste, toggleFavoriArtiste } from '../../js/favoris.mjs';
-  initFavBtns();
+  import { initFavoriDetail } from '../../js/favoriDetail.js';
 
-  const textBtn = document.getElementById('fav-text-btn') as HTMLButtonElement | null;
-  if (textBtn && pb.authStore.isValid) {
-    const starBtn = document.querySelector<HTMLElement>('.fav-btn[data-type="artiste"]');
-    const id = starBtn?.dataset.id ?? '';
-
-    function syncTextBtn() {
-      const isFav = isFavoriArtiste(id);
-      textBtn!.textContent = isFav ? 'Supprimer des favoris' : 'Ajouter aux favoris';
-      textBtn!.style.display = '';
-    }
-    syncTextBtn();
-
-    textBtn.addEventListener('click', async () => {
-      textBtn.disabled = true;
-      await toggleFavoriArtiste(id);
-      syncTextBtn();
-      // sync star icon too
-      const empty = starBtn?.querySelector<HTMLImageElement>('.star-empty');
-      const filled = starBtn?.querySelector<HTMLImageElement>('.star-filled');
-      if (empty && filled) {
-        const isFav = isFavoriArtiste(id);
-        empty.classList.toggle('hidden', isFav);
-        filled.classList.toggle('hidden', !isFav);
-      }
-      textBtn.disabled = false;
-    });
-  }
+  initFavoriDetail('artiste');
 </script>

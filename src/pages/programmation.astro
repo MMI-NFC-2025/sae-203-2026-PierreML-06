@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import PbImage from '../components/PbImage.astro';
+import ListingFilters from '../components/ListingFilters.astro';
 import theatreImg from '../assets/img/theatre.avif';
 import { getArtistesByDate } from '../../backend/backend.mjs';
 
@@ -10,7 +11,7 @@ try {
   artistes = await getArtistesByDate();
 } catch (_) {}
 
-const genres = [...new Set(artistes.map((a: any) => a.genre_musical).filter(Boolean))].sort() as string[];
+const genres = [...new Set(artistes.map((artiste: any) => artiste.genre_musical).filter(Boolean))].sort() as string[];
 
 const scenesMap = new Map<string, string>();
 for (const artiste of artistes) {
@@ -20,22 +21,31 @@ for (const artiste of artistes) {
     scenesMap.set(sceneId, sceneNom);
   }
 }
+
 const scenes = Array.from(scenesMap, ([id, nom]) => ({ id, nom })).sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
 
 const joursMap = new Map<string, { label: string; iso: string; artistes: any[] }>();
 for (const artiste of artistes) {
   if (!artiste.dates_de_representation) continue;
+
   const dt = new Date(artiste.dates_de_representation);
   const iso = dt.toISOString().substring(0, 10);
+
   if (!joursMap.has(iso)) {
     joursMap.set(iso, {
       iso,
-      label: dt.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase(),
+      label: dt.toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+      }).toUpperCase(),
       artistes: [],
     });
   }
+
   joursMap.get(iso)!.artistes.push(artiste);
 }
+
 const jours = Array.from(joursMap.values()).sort((a, b) => a.iso.localeCompare(b.iso));
 ---
 
@@ -47,73 +57,26 @@ const jours = Array.from(joursMap.values()).sort((a, b) => a.iso.localeCompare(b
       <div class="h-px w-12 bg-or mb-10"></div>
       <Image
         src={theatreImg}
-        alt="Interieur du theatre avec ses balcons"
+        alt="Intérieur du théâtre avec ses balcons"
         class="w-full rounded-2xl object-cover max-h-105 mb-3"
       />
-      <p class="text-center text-marron/40 text-xs font-corps mb-12 italic">Temple Saint-Martin de Montbeliard</p>
+      <p class="text-center text-marron/40 text-xs font-corps mb-12 italic">Temple Saint-Martin de Montbéliard</p>
 
       {jours.length === 0 && (
-        <p class="text-center text-marron/40 font-corps text-sm py-10">Programme a venir.</p>
+        <p class="text-center text-marron/40 font-corps text-sm py-10">Programme à venir.</p>
       )}
 
       {jours.length > 0 && (
         <>
-          <div class="mb-10 flex flex-col gap-4">
-            <div class="flex items-center gap-3">
-              <div class="relative flex-1">
-                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-marron/40 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.35-4.35" />
-                </svg>
-                <input
-                  id="recherche-programmation"
-                  type="text"
-                  placeholder="Rechercher un artiste..."
-                  class="w-full bg-beige rounded-xl pl-10 pr-4 py-2.5 text-marron text-sm border-b-2 border-transparent focus:border-or outline-none transition-colors font-corps"
-                />
-              </div>
-              <button data-sort="date" class="filtre-sort shrink-0 px-4 py-2.5 rounded-xl text-xs font-corps font-bold uppercase tracking-wide border cursor-pointer transition-colors bg-marron text-beige-claire border-marron">Date</button>
-              <button data-sort="alpha" class="filtre-sort shrink-0 px-4 py-2.5 rounded-xl text-xs font-corps font-bold uppercase tracking-wide border cursor-pointer transition-colors bg-transparent text-marron border-beige hover:border-marron">A - Z</button>
-            </div>
+          <ListingFilters
+            searchId="recherche-programmation"
+            searchPlaceholder="Rechercher un artiste..."
+            jourOptions={jours.map((jour) => ({ value: jour.iso, label: jour.label }))}
+            genreOptions={genres.map((genre) => ({ value: genre, label: genre }))}
+            sceneOptions={scenes.map((scene) => ({ value: scene.id, label: scene.nom }))}
+          />
 
-            <div class="flex flex-wrap items-center gap-3">
-              {jours.length > 0 && (
-                <div class="flex flex-col gap-1">
-                  <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">Jour</label>
-                  <select id="filtre-jour" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
-                    <option value="">Tous les jours</option>
-                    {jours.map((jour) => (
-                      <option value={jour.iso}>{jour.label}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-              {genres.length > 0 && (
-                <div class="flex flex-col gap-1">
-                  <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">Genre</label>
-                  <select id="filtre-genre" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
-                    <option value="">Tous les genres</option>
-                    {genres.map((genre) => (
-                      <option value={genre}>{genre}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-              {scenes.length > 0 && (
-                <div class="flex flex-col gap-1">
-                  <label class="font-corps text-marron/40 text-xs uppercase tracking-widest">Scene</label>
-                  <select id="filtre-scene" class="bg-beige rounded-xl px-4 py-2.5 text-marron text-sm border-b-2 border-beige focus:border-or outline-none transition-colors font-corps cursor-pointer">
-                    <option value="">Toutes les scenes</option>
-                    {scenes.map((scene) => (
-                      <option value={scene.id}>{scene.nom}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <p id="aucun-resultat-programmation" class="text-center text-marron/60 py-10 hidden font-corps text-sm">Aucun artiste ne correspond a votre recherche.</p>
+          <p id="aucun-resultat-programmation" class="text-center text-marron/60 py-10 hidden font-corps text-sm">Aucun artiste ne correspond à votre recherche.</p>
 
           <div id="liste-jours-programmation" class="flex flex-col gap-10">
             {jours.map((jour) => (
@@ -194,11 +157,11 @@ const jours = Array.from(joursMap.values()).sort((a, b) => a.iso.localeCompare(b
     <section class="bg-beige py-12 px-6">
       <div class="max-w-5xl mx-auto text-center">
         <p class="font-corps text-or text-xs uppercase tracking-[4px] mb-3">Informations</p>
-        <h2 class="font-titre text-2xl text-marron mb-4">Acces aux representations</h2>
+        <h2 class="font-titre text-2xl text-marron mb-4">Accès aux représentations</h2>
         <div class="h-px w-12 bg-or mx-auto mb-6"></div>
         <p class="text-marron/70 font-corps text-sm leading-relaxed max-w-xl mx-auto">
-          Toutes les representations ont lieu au Temple Saint-Martin, 25200 Montbeliard.
-          Portes ouvertes 30 min avant le debut.
+          Toutes les représentations ont lieu au Temple Saint-Martin, 25200 Montbéliard.
+          Portes ouvertes 30 min avant le début.
         </p>
       </div>
     </section>
@@ -206,117 +169,5 @@ const jours = Array.from(joursMap.values()).sort((a, b) => a.iso.localeCompare(b
 </Layout>
 
 <script>
-  const listeJours = document.getElementById('liste-jours-programmation');
-  const aucunResultat = document.getElementById('aucun-resultat-programmation');
-
-  if (listeJours) {
-    const ACTIF = 'bg-marron text-beige-claire border-marron';
-    const INACTIF_SORT = 'bg-transparent text-marron border-beige hover:border-marron';
-
-    let activeJour = '';
-    let activeGenre = '';
-    let activeScene = '';
-    let activeSort = 'date';
-    let recherche = '';
-
-    function cards() {
-      return Array.from(listeJours.querySelectorAll('[data-nom]'));
-    }
-
-    function updateSections() {
-      let visible = 0;
-
-      Array.from(listeJours.querySelectorAll('[data-jour-section]')).forEach((section) => {
-        const visibleCards = Array.from(section.querySelectorAll('[data-nom]')).filter((card) => {
-          return card instanceof HTMLElement && card.style.display !== 'none';
-        });
-
-        if (section instanceof HTMLElement) {
-          section.style.display = visibleCards.length > 0 ? '' : 'none';
-        }
-
-        visible += visibleCards.length;
-      });
-
-      if (aucunResultat instanceof HTMLElement) {
-        aucunResultat.style.display = visible === 0 ? 'block' : 'none';
-      }
-    }
-
-    function applyFilters() {
-      cards().forEach((card) => {
-        if (!(card instanceof HTMLElement)) return;
-
-        const match =
-          (!activeJour || card.dataset.jour === activeJour) &&
-          (!activeGenre || card.dataset.genre === activeGenre) &&
-          (!activeScene || card.dataset.scene === activeScene) &&
-          (!recherche || (card.dataset.nom ?? '').includes(recherche) || (card.dataset.genreLabel ?? '').includes(recherche));
-
-        card.style.display = match ? '' : 'none';
-      });
-
-      updateSections();
-    }
-
-    function applySort() {
-      Array.from(listeJours.querySelectorAll('[data-jour-grid]')).forEach((grid) => {
-        if (!(grid instanceof HTMLElement)) return;
-
-        const sorted = Array.from(grid.children).filter((card) => card instanceof HTMLElement);
-        sorted.sort((a, b) => {
-          if (!(a instanceof HTMLElement) || !(b instanceof HTMLElement)) return 0;
-          if (activeSort === 'alpha') {
-            return (a.dataset.nom ?? '').localeCompare(b.dataset.nom ?? '', 'fr');
-          }
-          return (a.dataset.date ?? '').localeCompare(b.dataset.date ?? '');
-        });
-
-        sorted.forEach((card) => {
-          grid.appendChild(card);
-        });
-      });
-    }
-
-    function updateSortBtns(sort) {
-      document.querySelectorAll('[data-sort]').forEach((btn) => {
-        if (!(btn instanceof HTMLElement)) return;
-        const isActif = btn.dataset.sort === sort;
-        btn.className = `filtre-sort shrink-0 px-4 py-2.5 rounded-xl text-xs font-corps font-bold uppercase tracking-wide border cursor-pointer transition-colors ${isActif ? ACTIF : INACTIF_SORT}`;
-      });
-    }
-
-    document.getElementById('recherche-programmation')?.addEventListener('input', (e) => {
-      if (!(e.target instanceof HTMLInputElement)) return;
-      recherche = e.target.value.toLowerCase().trim();
-      applyFilters();
-    });
-
-    document.getElementById('filtre-jour')?.addEventListener('change', (e) => {
-      if (!(e.target instanceof HTMLSelectElement)) return;
-      activeJour = e.target.value;
-      applyFilters();
-    });
-
-    document.getElementById('filtre-genre')?.addEventListener('change', (e) => {
-      if (!(e.target instanceof HTMLSelectElement)) return;
-      activeGenre = e.target.value;
-      applyFilters();
-    });
-
-    document.getElementById('filtre-scene')?.addEventListener('change', (e) => {
-      if (!(e.target instanceof HTMLSelectElement)) return;
-      activeScene = e.target.value;
-      applyFilters();
-    });
-
-    document.querySelectorAll('[data-sort]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        if (!(btn instanceof HTMLElement) || !btn.dataset.sort) return;
-        activeSort = btn.dataset.sort;
-        updateSortBtns(activeSort);
-        applySort();
-      });
-    });
-  }
+  import '../js/programmationPage.js';
 </script>
