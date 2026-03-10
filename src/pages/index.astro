@@ -3,12 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import PbImage from '../components/PbImage.astro';
 import heroImg from '../assets/img/hero_acceuil.avif';
-import logoCreditMutuel from '../assets/icons/logo_credit_mutuel.svg';
-import logoCocaCola from '../assets/icons/logo_coca_cola.svg';
-import logoDeezer from '../assets/icons/logo_deezer.svg';
-import logoNrj from '../assets/icons/logo_nrj.svg';
-import logoWeezevent from '../assets/icons/logo_weezevent.svg';
-import logoDesperados from '../assets/icons/logo_desperados.svg';
+import logoCreditMutuel from '../assets/img/Partenaire1.avif';
+import logoCocaCola from '../assets/img/Partenaire2.avif';
+import logoDeezer from '../assets/img/Partenaire3.avif';
+import logoNrj from '../assets/img/Partenaire4.avif';
+import logoWeezevent from '../assets/img/Partenaire5.avif';
+import logoDesperados from '../assets/img/Partenaire6.avif';
 import { getArtistesByDate } from '../../backend/backend.mjs';
 
 let artistes: any[] = [];
@@ -252,23 +252,23 @@ try {
 
         <!-- Logos partenaires -->
         <div class="flex flex-wrap justify-center items-center gap-6 mb-10">
-          <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <Image src={logoCreditMutuel} alt="Crédit Mutuel" width={120} height={40} class="max-h-10 max-w-full object-contain" />
+          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
+            <Image src={logoCreditMutuel} alt="Crédit Mutuel" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
           </div>
-          <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <Image src={logoCocaCola} alt="Coca-Cola" width={120} height={40} class="max-h-10 max-w-full object-contain" />
+          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
+            <Image src={logoCocaCola} alt="Coca-Cola" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
           </div>
-          <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <Image src={logoDeezer} alt="Deezer" width={120} height={40} class="max-h-10 max-w-full object-contain" />
+          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
+            <Image src={logoDeezer} alt="Deezer" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
           </div>
-          <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <Image src={logoNrj} alt="NRJ" width={120} height={40} class="max-h-10 max-w-full object-contain" />
+          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
+            <Image src={logoNrj} alt="NRJ" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
           </div>
-          <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <Image src={logoWeezevent} alt="Weezevent" width={120} height={40} class="max-h-10 max-w-full object-contain" />
+          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
+            <Image src={logoWeezevent} alt="Weezevent" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
           </div>
-          <div class="bg-beige-claire rounded-2xl px-6 py-4 flex items-center justify-center h-20 w-40 shadow-sm">
-            <Image src={logoDesperados} alt="Desperados" width={120} height={40} class="max-h-10 max-w-full object-contain" />
+          <div class="bg-marron rounded-2xl px-5 py-4 flex items-center justify-center h-24 w-44 shadow-sm border border-marron/10">
+            <Image src={logoDesperados} alt="Desperados" width={140} height={60} class="max-h-12 w-auto max-w-[82%] object-contain" />
           </div>
         </div>
 
