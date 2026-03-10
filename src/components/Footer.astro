@@ -37,7 +37,7 @@ import youtubeUrl from '../assets/icons/youtube.svg';
 
     <div>
       <h3 class="font-corps text-or text-sm uppercase tracking-widest mb-4 font-semibold">Nous suivre</h3>
-      <div class="flex gap-4">
+      <div class="flex gap-4 mb-6">
         <a href="https://www.facebook.com/?locale=fr_FR" target="_blank" rel="noopener noreferrer" aria-label="Suivez-nous sur Facebook">
           <Image src={facebookUrl} alt="" aria-hidden="true" width={28} height={28} class="w-7 h-7 opacity-80 hover:opacity-100 transition-opacity" />
         </a>
@@ -50,6 +50,10 @@ import youtubeUrl from '../assets/icons/youtube.svg';
         <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="Suivez-nous sur YouTube">
           <Image src={youtubeUrl} alt="" aria-hidden="true" width={28} height={28} class="w-7 h-7 opacity-80 hover:opacity-100 transition-opacity" />
         </a>
+      </div>
+      <div class="flex flex-col gap-2">
+        <a href="/mentions-legales" class="text-beige-claire/80 hover:text-or transition-colors text-sm">Mentions légales</a>
+        <a href="/confidentialite" class="text-beige-claire/80 hover:text-or transition-colors text-sm">Politique de confidentialité</a>
       </div>
     </div>
 
