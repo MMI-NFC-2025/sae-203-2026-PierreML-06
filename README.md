@@ -2,6 +2,7 @@
 - Nom: Mouilleseaux Lhuillier
 - Prénom: Pierre
 - url: https://sae203.pierre-mouilleseaux-lhuillier.fr/
+- url netlify : https://phenomenal-meerkat-95170d.netlify.app/
 
 compte admin site (accès modification artiste / scène. le compte admin peux être crée via inscription puis le booléen admin a true dans pocketbase )
 - e-mail : admin@gmail.com
